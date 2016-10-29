@@ -13,12 +13,12 @@ defmodule EnvisaEx.TPI do
   end
 
   @doc """
-  Takes a base16 string and decodes it then validates the checksum.
+  Takes a binary string and trims it then validates the checksum.
   """
   def decode(encoded_string) do
-    string = Base.decode16!(encoded_string)
+    string = String.trim(encoded_string)
 
-    if valid?(string), do: {:ok, string}, else: {:error, string}
+    if valid?(encoded_string), do: {:ok, string}, else: {:error, encoded_string}
   end
 
   @doc """

@@ -7,11 +7,11 @@ defmodule EnvisaEx.TPITest do
   end
 
   test "valid-response decoding is correct" do
-    assert EnvisaEx.TPI.decode("3030353653656372657433330D0A") == {:ok, "0056Secret33\r\n"}
+    assert EnvisaEx.TPI.decode("0056Secret33\r\n") == {:ok, "0056Secret33"}
   end
 
   test "invalid-response decoding is correct" do
-    assert EnvisaEx.TPI.decode("3030353653656372657433340D0A") == {:error, "0056Secret34\r\n"}
+    assert EnvisaEx.TPI.decode("0056Secret34\r\n") == {:error, "0056Secret34\r\n"}
   end
 
   test "correctly identifies valid commands" do
