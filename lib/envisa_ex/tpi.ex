@@ -4,6 +4,8 @@ defmodule EnvisaEx.TPI do
   from / to the EnvisaLink TPI hardware module.
   """
 
+  use Bitwise
+
   @doc """
   Takes a binary string and appends the checksum and the EOLs.
   """
@@ -38,6 +40,7 @@ defmodule EnvisaEx.TPI do
     String.codepoints(string)
     |> Enum.map(fn element -> element |> Base.encode16 end)
     |> Enum.reduce(0, fn element, acc -> String.to_integer(element, 16) + acc end)
+    |> Bitwise.band(255)
     |> Integer.to_string(16)
     |> binary_part(0, 2)
   end

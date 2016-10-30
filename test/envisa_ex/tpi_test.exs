@@ -3,11 +3,11 @@ defmodule EnvisaEx.TPITest do
   doctest EnvisaEx.TPI
 
   test "request encoding is correct" do
-    assert EnvisaEx.TPI.encode("0056Secret") == "3030353653656372657433330D0A"
+    assert EnvisaEx.TPI.encode("005user") == "005user54\r\n"
   end
 
   test "valid-response decoding is correct" do
-    assert EnvisaEx.TPI.decode("0056Secret33\r\n") == {:ok, "0056Secret33"}
+    assert EnvisaEx.TPI.decode("005SecretFB\r\n") == {:ok, "005SecretFB"}
   end
 
   test "invalid-response decoding is correct" do
@@ -15,7 +15,7 @@ defmodule EnvisaEx.TPITest do
   end
 
   test "correctly identifies valid commands" do
-    assert EnvisaEx.TPI.valid?("0056Secret33\r\n")
+    assert EnvisaEx.TPI.valid?("005user54\r\n")
   end
 
   test "checksum is correct" do
@@ -23,6 +23,6 @@ defmodule EnvisaEx.TPITest do
   end
 
   test "checksum is truncated to 1 byte" do
-    assert EnvisaEx.TPI.checksum("0056Secret") == "33"
+    assert EnvisaEx.TPI.checksum("005123456") == "CA"
   end
 end
