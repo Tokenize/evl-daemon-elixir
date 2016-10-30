@@ -5,11 +5,10 @@ defmodule EnvisaEx.TPI do
   """
 
   @doc """
-  Takes a binary string and encodes it into base16 then appends the checksum and the EOLs.
+  Takes a binary string and appends the checksum and the EOLs.
   """
   def encode(string) do
     string <> checksum(string) <> "\r\n"
-    |> Base.encode16
   end
 
   @doc """
