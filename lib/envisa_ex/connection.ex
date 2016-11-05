@@ -30,7 +30,8 @@ defmodule EnvisaEx.Connection do
   def handle_call({:command, payload}, sender, state) do
     :ok = :gen_tcp.send(state.socket, EnvisaEx.TPI.encode(payload))
 
-    pending_commands = Map.put(state.pending_commands, String.slice(payload, 0..2), sender)
+    cmd = EnvisaEx.TPI.command_part(payload)
+    pending_commands = Map.put(state.pending_commands, cmd, sender)
     state = %{state | pending_commands: pending_commands}
 
     {:noreply, state}
@@ -41,7 +42,7 @@ defmodule EnvisaEx.Connection do
   end
 
   def handle_info({:tcp, socket, "500" <> payload}, %{socket: socket} = state) do
-    cmd = String.slice(payload, 0..2)
+    cmd = EnvisaEx.TPI.command_part(payload)
     {client, pending_commands} = Map.pop(state.pending_commands, cmd)
 
     GenServer.reply(client, :ok)
