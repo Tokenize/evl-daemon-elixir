@@ -51,7 +51,7 @@ defmodule EnvisaEx.Connection do
   end
 
   def handle_info({:tcp, socket, msg}, %{socket: socket} = state) do
-    decoded_message = EnvisaEx.TPI.decode(msg)
+    {:ok, decoded_message} = EnvisaEx.TPI.decode(msg)
 
     state = %{state | events_queue: EnvisaEx.EventQueue.push(state.events_queue, decoded_message)}
 
