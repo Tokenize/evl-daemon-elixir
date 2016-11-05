@@ -25,4 +25,12 @@ defmodule EnvisaEx.TPITest do
   test "checksum is truncated to 1 byte" do
     assert EnvisaEx.TPI.checksum("005123456") == "CA"
   end
+
+  test "command_part returns the correct part" do
+    assert EnvisaEx.TPI.command_part("005user54") == "005"
+  end
+
+  test "data_part returns the correct part" do
+    assert EnvisaEx.TPI.data_part("005user54") == "user"
+  end
 end

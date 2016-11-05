@@ -43,4 +43,18 @@ defmodule EnvisaEx.TPI do
     |> Bitwise.band(255)
     |> Integer.to_string(16)
   end
+
+  @doc """
+  Takes a binary string representing a TPI message and returns its command part.
+  """
+  def command_part(string) do
+    String.slice(string, 0..2)
+  end
+
+  @doc """
+  Takes a binary string representing a TPI message and returns its data part.
+  """
+  def data_part(string) do
+    String.slice(string, 3..-3)
+  end
 end
