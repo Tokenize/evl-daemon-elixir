@@ -1,5 +1,6 @@
 defmodule EnvisaEx.Connection do
   use GenServer
+  require Logger
 
   @initial_state %{socket: nil, events_queue: nil, pending_commands: %{}, hostname: nil, port: 4025, password: nil}
 
@@ -20,6 +21,8 @@ defmodule EnvisaEx.Connection do
   end
 
   def handle_call(:connect, _sender, state) do
+    Logger.info "Connecting..."
+
     opts = [:binary, active: true, packet: :line]
     {:ok, socket} = :gen_tcp.connect(state.hostname, state.port, opts)
     new_state = %{state | socket: socket}
@@ -28,6 +31,8 @@ defmodule EnvisaEx.Connection do
   end
 
   def handle_call({:command, payload}, sender, state) do
+    Logger.info "Sending [#{inspect payload}]"
+
     :ok = :gen_tcp.send(state.socket, EnvisaEx.TPI.encode(payload))
 
     cmd = EnvisaEx.TPI.command_part(payload)
@@ -38,10 +43,14 @@ defmodule EnvisaEx.Connection do
   end
 
   def handle_cast(:disconnect, state) do
+    Logger.info "Disconnecting..."
+
     {:noreply, :gen_tcp.close(state.socket)}
   end
 
   def handle_info({:tcp, socket, "500" <> payload}, %{socket: socket} = state) do
+    Logger.info "Receiving acknowledgment for [#{inspect payload}]"
+
     cmd = EnvisaEx.TPI.command_part(payload)
     {client, pending_commands} = Map.pop(state.pending_commands, cmd)
 
@@ -52,6 +61,8 @@ defmodule EnvisaEx.Connection do
   end
 
   def handle_info({:tcp, socket, msg}, %{socket: socket} = state) do
+    Logger.info "Receiving [#{inspect msg}]"
+
     {:ok, decoded_message} = EnvisaEx.TPI.decode(msg)
 
     state = %{state | events_queue: EnvisaEx.EventQueue.push(state.events_queue, decoded_message)}
