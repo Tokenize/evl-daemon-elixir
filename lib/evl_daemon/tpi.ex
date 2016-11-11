@@ -1,4 +1,4 @@
-defmodule EnvisaEx.TPI do
+defmodule EvlDaemon.TPI do
   @moduledoc """
   This module includes the needed functions to encode and decode requests / responses
   from / to the EnvisaLink TPI hardware module.

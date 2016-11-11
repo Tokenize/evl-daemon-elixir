@@ -1,4 +1,4 @@
-defmodule EnvisaEx.EventQueue do
+defmodule EvlDaemon.EventQueue do
   use GenServer
 
   def start_link do

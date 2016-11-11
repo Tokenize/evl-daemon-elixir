@@ -1,4 +1,4 @@
-defmodule EnvisaEx.Connection do
+defmodule EvlDaemon.Connection do
   use GenServer
   require Logger
 
@@ -33,9 +33,9 @@ defmodule EnvisaEx.Connection do
   def handle_call({:command, payload}, sender, state) do
     Logger.info "Sending [#{inspect payload}]"
 
-    :ok = :gen_tcp.send(state.socket, EnvisaEx.TPI.encode(payload))
+    :ok = :gen_tcp.send(state.socket, EvlDaemon.TPI.encode(payload))
 
-    cmd = EnvisaEx.TPI.command_part(payload)
+    cmd = EvlDaemon.TPI.command_part(payload)
     pending_commands = Map.put(state.pending_commands, cmd, sender)
     state = %{state | pending_commands: pending_commands}
 
@@ -51,7 +51,7 @@ defmodule EnvisaEx.Connection do
   def handle_info({:tcp, socket, "500" <> payload}, %{socket: socket} = state) do
     Logger.info "Receiving acknowledgment for [#{inspect payload}]"
 
-    cmd = EnvisaEx.TPI.command_part(payload)
+    cmd = EvlDaemon.TPI.command_part(payload)
     {client, pending_commands} = Map.pop(state.pending_commands, cmd)
 
     GenServer.reply(client, :ok)
@@ -63,9 +63,9 @@ defmodule EnvisaEx.Connection do
   def handle_info({:tcp, socket, msg}, %{socket: socket} = state) do
     Logger.info "Receiving [#{inspect msg}]"
 
-    {:ok, decoded_message} = EnvisaEx.TPI.decode(msg)
+    {:ok, decoded_message} = EvlDaemon.TPI.decode(msg)
 
-    state = %{state | events_queue: EnvisaEx.EventQueue.push(state.events_queue, decoded_message)}
+    state = %{state | events_queue: EvlDaemon.EventQueue.push(state.events_queue, decoded_message)}
 
     {:noreply, state}
   end

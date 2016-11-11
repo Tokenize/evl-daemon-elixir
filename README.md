@@ -1,4 +1,4 @@
-# EnvisaEx
+# EvlDaemon
 
 **An Elixir API to the Envisa TPI (DSC) module**
 
@@ -6,19 +6,19 @@
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
 
-  1. Add `envisa_ex` to your list of dependencies in `mix.exs`:
+  1. Add `evl_daemon` to your list of dependencies in `mix.exs`:
 
     ```elixir
     def deps do
-      [{:envisa_ex, "~> 0.1.0"}]
+      [{:evl_daemon, "~> 0.1.0"}]
     end
     ```
 
-  2. Ensure `envisa_ex` is started before your application:
+  2. Ensure `evl_daemon` is started before your application:
 
     ```elixir
     def application do
-      [applications: [:envisa_ex]]
+      [applications: [:evl_daemon]]
     end
     ```
 

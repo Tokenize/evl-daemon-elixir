@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure for your application as:
 #
-#     config :envisa_ex, key: :value
+#     config :evl_daemon, key: :value
 #
 # And access this configuration in your application as:
 #
-#     Application.get_env(:envisa_ex, :key)
+#     Application.get_env(:evl_daemon, :key)
 #
 # Or configure a 3rd-party app:
 #
