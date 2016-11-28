@@ -20,8 +20,13 @@ defmodule EvlDaemon.EventQueue do
   end
 
   def handle_call(:pop, _from, queue) do
-    {{:value, value}, queue} = :queue.out(queue)
+    {result, queue} = :queue.out(queue)
 
-    {:reply, value, queue}
+    case result do
+      {:value, value} ->
+        {:reply, value, queue}
+      :empty ->
+        {:reply, nil, queue}
+    end
   end
 end

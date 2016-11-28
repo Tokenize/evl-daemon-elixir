@@ -17,4 +17,8 @@ defmodule EvlDaemon.EventQueueTest do
     value = EvlDaemon.EventQueue.pop(event_queue)
     assert value == 1
   end
+
+  test "returns nil if poppin an empty queue", %{event_queue: event_queue} do
+    assert EvlDaemon.EventQueue.pop(event_queue) == nil
+  end
 end
