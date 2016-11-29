@@ -2,7 +2,7 @@ defmodule EvlDaemon.Connection do
   use GenServer
   require Logger
 
-  @initial_state %{socket: nil, events_queue: nil, pending_commands: %{}, hostname: nil, port: 4025, password: nil}
+  @initial_state %{socket: nil, event_dispatcher: nil, pending_commands: %{}, hostname: nil, port: 4025, password: nil}
 
   def start_link(state \\ @initial_state) do
     GenServer.start_link(__MODULE__, Map.merge(@initial_state, state))
@@ -64,7 +64,7 @@ defmodule EvlDaemon.Connection do
     {:ok, decoded_message} = EvlDaemon.TPI.decode(msg)
 
     Logger.info "Receiving [#{inspect msg}] (#{EvlDaemon.Event.description(decoded_message)})"
-    state = %{state | events_queue: EvlDaemon.EventQueue.push(state.events_queue, decoded_message)}
+    state = %{state | event_dispatcher: EvlDaemon.EventDispatcher.enqueue(state.event_dispatcher, decoded_message)}
 
     {:noreply, state}
   end

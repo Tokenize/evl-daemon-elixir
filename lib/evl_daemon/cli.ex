@@ -28,8 +28,10 @@ defmodule EvlDaemon.CLI do
   end
 
   def process({host, password}) do
-    event_queue = EvlDaemon.EventQueue.start_link
-    {:ok, connection} = EvlDaemon.Connection.start_link(%{event_queue: event_queue, hostname: host, password: password})
+    event_dispatcher = EvlDaemon.EventDispatcher.start_link
+    opts = %{event_dispatcher: event_dispatcher, hostname: host, password: password}
+
+    {:ok, connection} = EvlDaemon.Connection.start_link(opts)
 
     EvlDaemon.Connection.connect(connection)
     EvlDaemon.Connection.command(connection, "005#{password}")
