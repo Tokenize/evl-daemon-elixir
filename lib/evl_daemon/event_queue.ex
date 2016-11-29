@@ -1,22 +1,35 @@
 defmodule EvlDaemon.EventQueue do
-  use GenServer
+  alias Experimental.GenStage
+  use GenStage
 
   def start_link do
-    GenServer.start_link(__MODULE__, :queue.new)
+    GenStage.start_link(__MODULE__, :queue.new)
+  end
+
+  def init(queue) do
+    {:producer, queue, dispatcher: GenStage.BroadcastDispatcher}
+  end
+
+  def length(pid) do
+    GenStage.call(pid, :length)
   end
 
   def push(pid, value) do
-    GenServer.cast(pid, {:push, value})
+    GenStage.cast(pid, {:push, value})
   end
 
   def pop(pid) do
-    GenServer.call(pid, :pop)
+    GenStage.call(pid, :pop)
   end
 
   def handle_cast({:push, value}, queue) do
     queue = :queue.in(value, queue)
 
-    {:noreply, queue}
+    {:noreply, [value], queue}
+  end
+
+  def handle_call(:length, _from, queue) do
+    {:reply, :queue.len(queue), [], queue}
   end
 
   def handle_call(:pop, _from, queue) do
@@ -24,9 +37,13 @@ defmodule EvlDaemon.EventQueue do
 
     case result do
       {:value, value} ->
-        {:reply, value, queue}
+        {:reply, value, [], queue}
       :empty ->
-        {:reply, nil, queue}
+        {:reply, nil, [], queue}
     end
+  end
+
+  def handle_demand(_demand, queue) do
+    {:noreply, [], queue}
   end
 end
