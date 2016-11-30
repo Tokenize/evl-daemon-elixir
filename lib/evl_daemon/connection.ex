@@ -31,7 +31,7 @@ defmodule EvlDaemon.Connection do
   end
 
   def handle_call({:command, payload}, sender, state) do
-    Logger.debug "Sending [#{inspect payload}]"
+    Logger.debug(fn -> "Sending [#{inspect payload}]" end)
 
     :ok = :gen_tcp.send(state.socket, EvlDaemon.TPI.encode(payload))
 
@@ -63,7 +63,7 @@ defmodule EvlDaemon.Connection do
   def handle_info({:tcp, socket, msg}, %{socket: socket} = state) do
     {:ok, decoded_message} = EvlDaemon.TPI.decode(msg)
 
-    Logger.debug "Receiving [#{inspect msg}] (#{EvlDaemon.Event.description(decoded_message)})"
+    Logger.debug(fn -> "Receiving [#{inspect msg}] (#{EvlDaemon.Event.description(decoded_message)})" end)
     EvlDaemon.EventDispatcher.enqueue(state.event_dispatcher, decoded_message)
 
     {:noreply, state}
