@@ -21,7 +21,7 @@ defmodule EvlDaemon.Connection do
   end
 
   def handle_call(:connect, _sender, state) do
-    Logger.info "Connecting..."
+    Logger.debug "Connecting..."
 
     opts = [:binary, active: true, packet: :line]
     {:ok, socket} = :gen_tcp.connect(state.hostname, state.port, opts)
@@ -31,7 +31,7 @@ defmodule EvlDaemon.Connection do
   end
 
   def handle_call({:command, payload}, sender, state) do
-    Logger.info "Sending [#{inspect payload}]"
+    Logger.debug "Sending [#{inspect payload}]"
 
     :ok = :gen_tcp.send(state.socket, EvlDaemon.TPI.encode(payload))
 
@@ -43,13 +43,13 @@ defmodule EvlDaemon.Connection do
   end
 
   def handle_cast(:disconnect, state) do
-    Logger.info "Disconnecting..."
+    Logger.debug "Disconnecting..."
 
     {:noreply, :gen_tcp.close(state.socket)}
   end
 
   def handle_info({:tcp, socket, "500" <> payload}, %{socket: socket} = state) do
-    Logger.info "Receiving acknowledgment for [#{inspect payload}]"
+    Logger.debug "Receiving acknowledgment for [#{inspect payload}]"
 
     cmd = EvlDaemon.TPI.command_part(payload)
     {client, pending_commands} = Map.pop(state.pending_commands, cmd)
@@ -63,8 +63,8 @@ defmodule EvlDaemon.Connection do
   def handle_info({:tcp, socket, msg}, %{socket: socket} = state) do
     {:ok, decoded_message} = EvlDaemon.TPI.decode(msg)
 
-    Logger.info "Receiving [#{inspect msg}] (#{EvlDaemon.Event.description(decoded_message)})"
     state = %{state | event_dispatcher: EvlDaemon.EventDispatcher.enqueue(state.event_dispatcher, decoded_message)}
+    Logger.debug "Receiving [#{inspect msg}] (#{EvlDaemon.Event.description(decoded_message)})"
 
     {:noreply, state}
   end
