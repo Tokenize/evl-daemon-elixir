@@ -5,12 +5,12 @@ defmodule EvlDaemon.EventNotifier.Console do
   use GenStage
   require Logger
 
-  def start_link do
-    GenStage.start_link(__MODULE__, :ok)
+  def start_link(dispatcher_pid) do
+    GenStage.start_link(__MODULE__, dispatcher_pid)
   end
 
-  def init(:ok) do
-    {:consumer, :ok}
+  def init(dispatcher_pid) do
+    {:consumer, :ok, subscribe_to: [dispatcher_pid]}
   end
 
   def filter(_term) do
