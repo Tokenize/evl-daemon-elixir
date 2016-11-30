@@ -63,8 +63,8 @@ defmodule EvlDaemon.Connection do
   def handle_info({:tcp, socket, msg}, %{socket: socket} = state) do
     {:ok, decoded_message} = EvlDaemon.TPI.decode(msg)
 
-    state = %{state | event_dispatcher: EvlDaemon.EventDispatcher.enqueue(state.event_dispatcher, decoded_message)}
     Logger.debug "Receiving [#{inspect msg}] (#{EvlDaemon.Event.description(decoded_message)})"
+    EvlDaemon.EventDispatcher.enqueue(state.event_dispatcher, decoded_message)
 
     {:noreply, state}
   end
