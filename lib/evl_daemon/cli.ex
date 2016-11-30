@@ -1,6 +1,4 @@
 defmodule EvlDaemon.CLI do
-  alias Experimental.GenStage
-
   def main(argv) do
     argv
     |> parse_args
@@ -30,15 +28,9 @@ defmodule EvlDaemon.CLI do
   end
 
   def process({host, password}) do
-    {:ok, event_dispatcher} = EvlDaemon.EventDispatcher.start_link
-    {:ok, event_notifier} = EvlDaemon.EventNotifier.Console.start_link
+    opts = %{hostname: host, password: password, event_dispatcher: nil}
 
-    opts = %{event_dispatcher: event_dispatcher, hostname: host, password: password}
-
-    {:ok, connection} = EvlDaemon.Connection.start_link(opts)
-
-    EvlDaemon.Connection.connect(connection)
-    EvlDaemon.Connection.command(connection, "005#{password}")
+    EvlDaemon.Supervisor.start_link(opts)
 
     Process.sleep(:infinity)
   end
