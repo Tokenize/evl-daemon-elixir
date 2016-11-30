@@ -18,7 +18,7 @@ defmodule EvlDaemon.Event do
   }
 
   def description(payload) do
-    command_description(payload) <> ", " <> data_description(payload)
+    command_description(payload) <> " " <> data_description(payload)
   end
 
   def command_description(payload) do
@@ -27,9 +27,19 @@ defmodule EvlDaemon.Event do
   end
 
   def data_description(payload) do
-    case EvlDaemon.TPI.data_part(payload) do
-      "" -> "containing no data."
-      data_part -> "containing data of #{data_part}."
+    do_data_description(EvlDaemon.TPI.command_part(payload), EvlDaemon.TPI.data_part(payload))
+  end
+
+  defp do_data_description("505", code) do
+    case code do
+      "0" -> "Fail"
+      "1" -> "Successful"
+      "2" -> "Timed out"
+      "3" -> "Password request"
     end
+  end
+
+  defp do_data_description(_command, code) do
+    code
   end
 end

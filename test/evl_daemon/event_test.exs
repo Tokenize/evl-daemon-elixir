@@ -10,11 +10,11 @@ defmodule EvlDaemon.EventTest do
     assert EvlDaemon.Event.command_description("005foobar") == "005"
   end
 
-  test "should return 'containing no data' for data-less commands" do
-    assert EvlDaemon.Event.data_description("50196") == "containing no data."
+  test "should return a blank for data-less commands" do
+    assert EvlDaemon.Event.data_description("50196") == ""
   end
 
-  test "should return 'containing data of' for commands with data" do
-    assert EvlDaemon.Event.data_description("5051CB") == "containing data of 1."
+  test "should return description for commands with data" do
+    assert EvlDaemon.Event.data_description("5051CB") == "Successful"
   end
 end
