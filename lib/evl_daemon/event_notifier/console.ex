@@ -18,7 +18,7 @@ defmodule EvlDaemon.EventNotifier.Console do
   end
 
   def notify(event) do
-    Logger.info("#{__MODULE__}: #{event}")
+    Logger.info("#{__MODULE__}: #{event} (#{EvlDaemon.Event.description(event)})")
   end
 
   def handle_events(events, _from, queue) do
