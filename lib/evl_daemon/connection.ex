@@ -5,19 +5,19 @@ defmodule EvlDaemon.Connection do
   @initial_state %{socket: nil, event_dispatcher: nil, pending_commands: %{}, hostname: nil, port: 4025, password: nil}
 
   def start_link(state \\ @initial_state) do
-    GenServer.start_link(__MODULE__, Map.merge(@initial_state, state))
+    GenServer.start_link(__MODULE__, Map.merge(@initial_state, state), name: __MODULE__)
   end
 
-  def connect(pid) do
-    GenServer.call(pid, :connect)
+  def connect do
+    GenServer.call(__MODULE__, :connect)
   end
 
-  def disconnect(pid) do
-    GenServer.cast(pid, :disconnect)
+  def disconnect do
+    GenServer.cast(__MODULE__, :disconnect)
   end
 
-  def command(pid, request) do
-    GenServer.call(pid, { :command, request })
+  def command(request) do
+    GenServer.call(__MODULE__, { :command, request })
   end
 
   def handle_call(:connect, _sender, state) do
