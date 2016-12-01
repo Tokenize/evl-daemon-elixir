@@ -42,6 +42,7 @@ defmodule EvlDaemon.TPI do
     |> Enum.reduce(0, fn element, acc -> String.to_integer(element, 16) + acc end)
     |> Bitwise.band(255)
     |> Integer.to_string(16)
+    |> String.pad_leading(2, ["0"])
   end
 
   @doc """

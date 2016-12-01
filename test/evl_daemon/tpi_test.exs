@@ -26,6 +26,10 @@ defmodule EvlDaemon.TPITest do
     assert EvlDaemon.TPI.checksum("005123456") == "CA"
   end
 
+  test "checksum gets a leading zero if needed" do
+    assert EvlDaemon.TPI.checksum("5108A") == "0F"
+  end
+
   test "command_part returns the correct part" do
     assert EvlDaemon.TPI.command_part("005user54") == "005"
   end
