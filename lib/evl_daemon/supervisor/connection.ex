@@ -1,4 +1,4 @@
-defmodule EvlDaemon.ConnectionSupervisor do
+defmodule EvlDaemon.Supervisor.Connection do
   use Supervisor
 
   def start_link(opts) do

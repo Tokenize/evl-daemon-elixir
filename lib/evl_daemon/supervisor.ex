@@ -16,7 +16,7 @@ defmodule EvlDaemon.Supervisor do
 
     opts = %{opts | event_dispatcher: dispatcher}
 
-    Supervisor.start_child(sup, supervisor(EvlDaemon.ConnectionSupervisor, [opts]))
-    Supervisor.start_child(sup, supervisor(EvlDaemon.EventNotifier.Supervisor, [dispatcher]))
+    Supervisor.start_child(sup, supervisor(EvlDaemon.Supervisor.Connection, [opts]))
+    Supervisor.start_child(sup, supervisor(EvlDaemon.Supervisor.EventNotifier, [dispatcher]))
   end
 end

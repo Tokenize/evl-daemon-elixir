@@ -1,4 +1,4 @@
-defmodule EvlDaemon.EventNotifier.Supervisor do
+defmodule EvlDaemon.Supervisor.EventNotifier do
   use Supervisor
 
   def start_link(dispatcher_pid) do
