@@ -28,8 +28,8 @@ defmodule EvlDaemon.EventNotifier.Console do
   @doc """
   Log the notification for the event to the console.
   """
-  def notify(event) do
-    Logger.info("#{__MODULE__}: #{event} (#{EvlDaemon.Event.description(event)})")
+  def notify({event, timestamp}) do
+    Logger.info("#{__MODULE__}: [#{timestamp}] #{event} (#{EvlDaemon.Event.description(event)})")
   end
 
   # Callbacks

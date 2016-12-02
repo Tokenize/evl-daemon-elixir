@@ -19,16 +19,22 @@ defmodule EvlDaemon.EventDispatcher do
   Enqueue event and dispatch it as soon as possible.
   """
   def enqueue(pid, value) do
-    GenStage.cast(pid, {:enqueue, value})
+    GenStage.cast(pid, {:enqueue, value, timestamp})
   end
 
   # Callbacks
 
-  def handle_cast({:enqueue, value}, state) do
-    {:noreply, [value], state}
+  def handle_cast({:enqueue, value, timestamp}, state) do
+    {:noreply, [{value, timestamp}], state}
   end
 
   def handle_demand(_demand, state) do
     {:noreply, [], state}
+  end
+
+  # Private functions
+
+  def timestamp do
+    DateTime.utc_now |> DateTime.to_unix
   end
 end
