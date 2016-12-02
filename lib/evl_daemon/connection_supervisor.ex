@@ -8,7 +8,7 @@ defmodule EvlDaemon.ConnectionSupervisor do
   def init(opts) do
     child_processes = [
       worker(EvlDaemon.Connection, [opts]),
-      worker(EvlDaemon.Client, [])
+      worker(EvlDaemon.Client, [opts])
     ]
 
     supervise(child_processes, strategy: :rest_for_one)

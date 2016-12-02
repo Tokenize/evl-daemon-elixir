@@ -32,9 +32,6 @@ defmodule EvlDaemon.CLI do
 
     EvlDaemon.Supervisor.start_link(opts)
 
-    EvlDaemon.Client.connect
-    EvlDaemon.Client.login(password)
-
     Process.sleep(:infinity)
   end
 end
