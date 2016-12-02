@@ -1,4 +1,9 @@
 defmodule EvlDaemon.Connection do
+  @moduledoc """
+  This module wraps a TCP connection and handles connecting, disconnecting, sending and receiving of commands
+  to the EVL module.
+  """
+
   use GenServer
   require Logger
 
@@ -8,17 +13,29 @@ defmodule EvlDaemon.Connection do
     GenServer.start_link(__MODULE__, Map.merge(@initial_state, state), name: __MODULE__)
   end
 
+  @doc """
+  Connect to host:port (as specified in the hash of opts passed to start_link).
+  """
   def connect do
     GenServer.call(__MODULE__, :connect)
   end
 
+  @doc """
+  Disconnect from host:port (as specified in the hash of opts passed to start_link).
+  """
   def disconnect do
     GenServer.cast(__MODULE__, :disconnect)
   end
 
+  @doc """
+  Send the request to the destination host. This command will be encoded by calling TPI.encode before
+  sending it.
+  """
   def command(request) do
     GenServer.call(__MODULE__, { :command, request })
   end
+
+  # Callbacks
 
   def handle_call(:connect, _sender, state) do
     Logger.debug "Connecting..."

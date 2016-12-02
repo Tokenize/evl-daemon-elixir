@@ -1,4 +1,9 @@
 defmodule EvlDaemon.EventDispatcher do
+  @moduledoc """
+  This module implements a dispatcher using GenStage and it acts as a producer
+  of events.
+  """
+
   alias Experimental.GenStage
   use GenStage
 
@@ -10,9 +15,14 @@ defmodule EvlDaemon.EventDispatcher do
     {:producer, :ok, dispatcher: GenStage.BroadcastDispatcher}
   end
 
+  @doc """
+  Enqueue event and dispatch it as soon as possible.
+  """
   def enqueue(pid, value) do
     GenStage.cast(pid, {:enqueue, value})
   end
+
+  # Callbacks
 
   def handle_cast({:enqueue, value}, state) do
     {:noreply, [value], state}

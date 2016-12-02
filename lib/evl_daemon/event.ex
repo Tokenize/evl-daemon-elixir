@@ -17,18 +17,29 @@ defmodule EvlDaemon.Event do
     "656" => "Exit Delay in Progress", "657" => "Entry Delay in Progress"
   }
 
+  @doc """
+  Return a human readable version of both the command and data portions of the event.
+  """
   def description(payload) do
     command_description(payload) <> " " <> data_description(payload)
   end
 
+  @doc """
+  Return a human readable version of the command portion of the event.
+  """
   def command_description(payload) do
     command_code = EvlDaemon.TPI.command_part(payload)
     Map.get(@command_map, command_code, command_code)
   end
 
+  @doc """
+  Return a human readable version of the data portion of the event.
+  """
   def data_description(payload) do
     do_data_description(EvlDaemon.TPI.command_part(payload), EvlDaemon.TPI.data_part(payload))
   end
+
+  # Private functions
 
   defp do_data_description("505", code) do
     case code do
