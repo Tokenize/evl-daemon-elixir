@@ -28,14 +28,13 @@ defmodule EvlDaemon.EventNotifier.Console do
   @doc """
   Log the notification for the event to the console.
   """
-  def notify({event, timestamp}) do
-    Logger.info("#{__MODULE__}: [#{timestamp}] #{event} (#{EvlDaemon.Event.description(event)})")
-  end
+  def notify([{event, timestamp} | []]), do: Logger.info("#{__MODULE__}: [#{timestamp}] #{event} (#{EvlDaemon.Event.description(event)})")
+  def notify([_head | tail]), do: notify(tail)
 
   # Callbacks
 
   def handle_events(events, _from, queue) do
-    Enum.each(events, fn (event) -> notify(event) end)
+    notify(events)
 
     {:noreply, [], queue}
   end
