@@ -15,7 +15,11 @@ defmodule EvlDaemon.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :gen_stage]]
+    [
+      applications: [
+        :logger, :gen_stage, :sendgrid
+      ]
+    ]
   end
 
   # Dependencies can be Hex packages:
@@ -29,7 +33,8 @@ defmodule EvlDaemon.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      { :gen_stage, "~> 0.9.0" }
+      { :gen_stage, "~> 0.9.0" },
+      { :sendgrid, "~> 1.3.0" }
     ]
   end
 

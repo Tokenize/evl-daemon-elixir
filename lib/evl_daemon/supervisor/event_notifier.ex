@@ -7,7 +7,8 @@ defmodule EvlDaemon.Supervisor.EventNotifier do
 
   def init(dispatcher_pid) do
     child_processes = [
-      worker(EvlDaemon.EventNotifier.Console, [dispatcher_pid])
+      worker(EvlDaemon.EventNotifier.Console, [dispatcher_pid]),
+      worker(EvlDaemon.EventNotifier.Email, [dispatcher_pid])
     ]
 
     supervise(child_processes, strategy: :one_for_one)

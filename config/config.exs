@@ -30,3 +30,4 @@ use Mix.Config
 #     import_config "#{Mix.env}.exs"
 
 config :logger, level: :info
+config :sendgrid, api_key: System.get_env("SENDGRID_API_KEY")
