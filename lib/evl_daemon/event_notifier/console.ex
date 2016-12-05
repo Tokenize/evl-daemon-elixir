@@ -15,7 +15,7 @@ defmodule EvlDaemon.EventNotifier.Console do
   end
 
   def init(dispatcher_pid) do
-    {:consumer, :ok, subscribe_to: [dispatcher_pid]}
+    {:consumer, :ok, subscribe_to: [{dispatcher_pid, selector: fn (event) -> filter(event) end}]}
   end
 
   @doc """
