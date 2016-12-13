@@ -7,7 +7,10 @@ defmodule EvlDaemon.Connection do
   use GenServer
   require Logger
 
-  @initial_state %{socket: nil, event_dispatcher: nil, pending_commands: %{}, hostname: nil, port: 4025, password: nil}
+  @initial_state %{socket: nil, event_dispatcher: nil, pending_commands: %{}}
+
+  @host Application.get_env(:evl_daemon, :host)
+  @port Application.get_env(:evl_daemon, :port)
 
   def start_link(state \\ @initial_state) do
     GenServer.start_link(__MODULE__, Map.merge(@initial_state, state), name: __MODULE__)
@@ -41,7 +44,7 @@ defmodule EvlDaemon.Connection do
     Logger.debug "Connecting..."
 
     opts = [:binary, active: true, packet: :line]
-    {:ok, socket} = :gen_tcp.connect(state.hostname, state.port, opts)
+    {:ok, socket} = :gen_tcp.connect(@host, @port, opts)
     new_state = %{state | socket: socket}
 
     {:reply, :ok, new_state}

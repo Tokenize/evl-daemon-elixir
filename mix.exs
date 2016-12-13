@@ -18,7 +18,8 @@ defmodule EvlDaemon.Mixfile do
     [
       applications: [
         :logger, :gen_stage, :sendgrid
-      ]
+      ],
+      mod: {EvlDaemon, []}
     ]
   end
 

@@ -30,4 +30,7 @@ use Mix.Config
 #     import_config "#{Mix.env}.exs"
 
 config :logger, level: :info
-config :sendgrid, api_key: System.get_env("SENDGRID_API_KEY")
+config :sendgrid, api_key: "SECRET"
+config :evl_daemon, host: '127.0.0.1'
+config :evl_daemon, port: 4025
+config :evl_daemon, password: "SECRET"

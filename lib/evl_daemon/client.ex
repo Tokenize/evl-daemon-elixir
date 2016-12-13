@@ -6,6 +6,8 @@ defmodule EvlDaemon.Client do
 
   use GenServer
 
+  @password Application.get_env(:evl_daemon, :password)
+
   def start_link(opts) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
@@ -44,7 +46,7 @@ defmodule EvlDaemon.Client do
   end
 
   def handle_call(:login, _sender, state) do
-    status = do_login(state.password)
+    status = do_login
 
     {:reply, status, state}
   end
@@ -57,7 +59,7 @@ defmodule EvlDaemon.Client do
 
   def handle_info(:timeout, state) do
     do_connect
-    do_login(state.password)
+    do_login
 
     {:noreply, state}
   end
@@ -68,7 +70,7 @@ defmodule EvlDaemon.Client do
     EvlDaemon.Connection.connect
   end
 
-  defp do_login(password) do
-    EvlDaemon.Connection.command("005#{password}")
+  defp do_login do
+    EvlDaemon.Connection.command("005#{@password}")
   end
 end
