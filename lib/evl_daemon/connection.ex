@@ -37,7 +37,7 @@ defmodule EvlDaemon.Connection do
 
   # Callbacks
 
-  def handle_call(:connect, _sender, state) do
+  def handle_call(:connect, sender, state) do
     host = Application.get_env(:evl_daemon, :host)
     port = Application.get_env(:evl_daemon, :port)
 
@@ -45,9 +45,11 @@ defmodule EvlDaemon.Connection do
 
     opts = [:binary, active: true, packet: :line]
     {:ok, socket} = :gen_tcp.connect(host, port, opts)
-    new_state = %{state | socket: socket}
 
-    {:reply, :ok, new_state}
+    pending_commands = push_pending_command(state.pending_commands, "5053", sender)
+    new_state = %{state | socket: socket, pending_commands: pending_commands}
+
+    {:noreply, new_state}
   end
 
   def handle_call({:command, payload}, sender, state) do
@@ -65,6 +67,17 @@ defmodule EvlDaemon.Connection do
     Logger.debug "Disconnecting..."
 
     {:noreply, :gen_tcp.close(state.socket)}
+  end
+
+  def handle_info({:tcp, socket, "5053" <> _trailer}, %{socket: socket} = state) do
+    Logger.debug "Receiving Login Interaction Password request"
+
+    {client, pending_commands} = pop_pending_command(state.pending_commands, "5053")
+
+    GenServer.reply(client, :ok)
+
+    state = %{state | pending_commands: pending_commands}
+    {:noreply, state}
   end
 
   def handle_info({:tcp, socket, "500" <> payload}, %{socket: socket} = state) do
