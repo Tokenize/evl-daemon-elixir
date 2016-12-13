@@ -55,8 +55,7 @@ defmodule EvlDaemon.Connection do
 
     :ok = :gen_tcp.send(state.socket, EvlDaemon.TPI.encode(payload))
 
-    cmd = EvlDaemon.TPI.command_part(payload)
-    pending_commands = Map.put(state.pending_commands, cmd, sender)
+    pending_commands = push_pending_command(state.pending_commands, payload, sender)
     state = %{state | pending_commands: pending_commands}
 
     {:noreply, state}
@@ -71,8 +70,7 @@ defmodule EvlDaemon.Connection do
   def handle_info({:tcp, socket, "500" <> payload}, %{socket: socket} = state) do
     Logger.debug "Receiving acknowledgment for [#{inspect payload}]"
 
-    cmd = EvlDaemon.TPI.command_part(payload)
-    {client, pending_commands} = Map.pop(state.pending_commands, cmd)
+    {client, pending_commands} = pop_pending_command(state.pending_commands, payload)
 
     GenServer.reply(client, :ok)
 
@@ -87,5 +85,17 @@ defmodule EvlDaemon.Connection do
     EvlDaemon.EventDispatcher.enqueue(state.event_dispatcher, decoded_message)
 
     {:noreply, state}
+  end
+
+  # Private functions
+
+  defp push_pending_command(pending_commands, payload, sender) do
+    pending_commands
+    |> Map.put(EvlDaemon.TPI.command_part(payload), sender)
+  end
+
+  defp pop_pending_command(pending_commands, payload) do
+    pending_commands
+    |> Map.pop(EvlDaemon.TPI.command_part(payload))
   end
 end
