@@ -5,7 +5,6 @@ defmodule EvlDaemon.Mixfile do
     [app: :evl_daemon,
      version: "0.1.0",
      elixir: "~> 1.3",
-     escript: escript_config,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
@@ -39,9 +38,5 @@ defmodule EvlDaemon.Mixfile do
       { :conform, github: "bitwalker/conform", override: true },
       { :distillery, github: "bitwalker/distillery", override: true }
     ]
-  end
-
-  defp escript_config do
-    [main_module: EvlDaemon.CLI]
   end
 end
