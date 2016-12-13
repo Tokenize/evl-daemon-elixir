@@ -6,8 +6,6 @@ defmodule EvlDaemon.Client do
 
   use GenServer
 
-  @password Application.get_env(:evl_daemon, :password)
-
   def start_link(opts) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
@@ -71,6 +69,7 @@ defmodule EvlDaemon.Client do
   end
 
   defp do_login do
-    EvlDaemon.Connection.command("005#{@password}")
+    password = Application.get_env(:evl_daemon, :password)
+    EvlDaemon.Connection.command("005#{password}")
   end
 end

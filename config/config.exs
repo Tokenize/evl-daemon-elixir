@@ -29,6 +29,7 @@ use Mix.Config
 #
 #     import_config "#{Mix.env}.exs"
 
+config :distillery, no_warn_missing: [ :poison ]
 config :logger, level: :info
 config :sendgrid, api_key: "SECRET"
 config :evl_daemon, host: '127.0.0.1'

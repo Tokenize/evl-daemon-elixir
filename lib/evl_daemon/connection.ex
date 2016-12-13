@@ -9,9 +9,6 @@ defmodule EvlDaemon.Connection do
 
   @initial_state %{socket: nil, event_dispatcher: nil, pending_commands: %{}}
 
-  @host Application.get_env(:evl_daemon, :host)
-  @port Application.get_env(:evl_daemon, :port)
-
   def start_link(state \\ @initial_state) do
     GenServer.start_link(__MODULE__, Map.merge(@initial_state, state), name: __MODULE__)
   end
@@ -41,10 +38,13 @@ defmodule EvlDaemon.Connection do
   # Callbacks
 
   def handle_call(:connect, _sender, state) do
-    Logger.debug "Connecting..."
+    host = Application.get_env(:evl_daemon, :host)
+    port = Application.get_env(:evl_daemon, :port)
+
+    Logger.debug "Connecting to #{host}:#{port}..."
 
     opts = [:binary, active: true, packet: :line]
-    {:ok, socket} = :gen_tcp.connect(@host, @port, opts)
+    {:ok, socket} = :gen_tcp.connect(host, port, opts)
     new_state = %{state | socket: socket}
 
     {:reply, :ok, new_state}
