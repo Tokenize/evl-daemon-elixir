@@ -56,7 +56,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       commented: false,
       datatype: :binary,
       default: "SECRET",
-      doc: "Provide documentation for evl_daemon.mailer_api_key here.",
+      doc: "The API key from our mail provider.",
       hidden: false,
       to: "evl_daemon.Elixir.EvlDaemon.Mailer.api_key"
     ],
@@ -74,7 +74,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
         46,
         49
       ],
-      doc: "Provide documentation for evl_daemon.host here.",
+      doc: "The host IP address for the EVL module.",
       hidden: false,
       to: "evl_daemon.host"
     ],
@@ -82,7 +82,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       commented: false,
       datatype: :integer,
       default: 4025,
-      doc: "Provide documentation for evl_daemon.port here.",
+      doc: "The port number for the EVL module.",
       hidden: false,
       to: "evl_daemon.port"
     ],
@@ -90,7 +90,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       commented: false,
       datatype: :binary,
       default: "SECRET",
-      doc: "Provide documentation for evl_daemon.password here.",
+      doc: "The password for the EVL module's web interface.",
       hidden: false,
       to: "evl_daemon.password"
     ],
@@ -98,7 +98,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       commented: false,
       datatype: :atom,
       default: false,
-      doc: "Provide documentation for evl_daemon.auto_connect here.",
+      doc: "Determines if we should connect automatically when the application starts.",
       hidden: false,
       to: "evl_daemon.auto_connect"
     ]
