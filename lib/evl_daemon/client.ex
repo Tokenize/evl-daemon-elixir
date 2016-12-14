@@ -11,7 +11,11 @@ defmodule EvlDaemon.Client do
   end
 
   def init(opts) do
-    {:ok, opts, 0}
+    if Application.get_env(:evl_daemon, :auto_connect) do
+      {:ok, opts, 0}
+    else
+      {:ok, opts}
+    end
   end
 
   @doc """

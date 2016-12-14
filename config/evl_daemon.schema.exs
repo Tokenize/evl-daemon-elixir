@@ -93,6 +93,14 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       doc: "Provide documentation for evl_daemon.password here.",
       hidden: false,
       to: "evl_daemon.password"
+    ],
+    "evl_daemon.auto_connect": [
+      commented: false,
+      datatype: :atom,
+      default: false,
+      doc: "Provide documentation for evl_daemon.auto_connect here.",
+      hidden: false,
+      to: "evl_daemon.auto_connect"
     ]
   ],
   transforms: [],
