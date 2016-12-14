@@ -35,7 +35,7 @@ defmodule EvlDaemon.Mixfile do
     [
       { :gen_stage, "~> 0.9.0" },
       { :sendgrid, "~> 1.3.0" },
-      { :conform, github: "bitwalker/conform", override: true },
+      { :conform, "~> 2.1.2" },
       { :distillery, github: "bitwalker/distillery", override: true }
     ]
   end
