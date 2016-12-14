@@ -16,7 +16,7 @@ defmodule EvlDaemon.Mixfile do
   def application do
     [
       applications: [
-        :logger, :distillery, :conform, :gen_stage, :sendgrid
+        :logger, :distillery, :conform, :gen_stage, :bamboo
       ],
       mod: {EvlDaemon, []}
     ]
@@ -34,7 +34,7 @@ defmodule EvlDaemon.Mixfile do
   defp deps do
     [
       { :gen_stage, "~> 0.9.0" },
-      { :sendgrid, "~> 1.3.0" },
+      { :bamboo, "~> 0.7" },
       { :conform, "~> 2.1.2" },
       { :distillery, github: "bitwalker/distillery", override: true }
     ]

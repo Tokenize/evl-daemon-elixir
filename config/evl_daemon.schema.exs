@@ -52,13 +52,13 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
   extends: [],
   import: [],
   mappings: [
-    "sendgrid.api_key": [
+    "evl_daemon.mailer_api_key": [
       commented: false,
       datatype: :binary,
       default: "SECRET",
-      doc: "Provide documentation for sendgrid.api_key here.",
+      doc: "Provide documentation for evl_daemon.mailer_api_key here.",
       hidden: false,
-      to: "sendgrid.api_key"
+      to: "evl_daemon.Elixir.EvlDaemon.Mailer.api_key"
     ],
     "evl_daemon.host": [
       commented: false,
