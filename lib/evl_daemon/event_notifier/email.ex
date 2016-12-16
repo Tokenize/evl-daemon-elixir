@@ -10,8 +10,6 @@ defmodule EvlDaemon.EventNotifier.Email do
   use GenStage
   require Logger
 
-  @recipients Application.get_env(:evl_daemon, :recipients)
-
   def start_link(opts) do
     GenStage.start_link(__MODULE__, opts)
   end
@@ -52,7 +50,7 @@ defmodule EvlDaemon.EventNotifier.Email do
 
     new_email
     |> from("noreply@tokenize.ca")
-    |> to("zaid@tokenize.ca")
+    |> to(Keyword.get(opts, :recipient))
     |> subject("Event [#{event}] triggered on #{timestamp}")
     |> text_body("Event: #{EvlDaemon.Event.description(event)}, timestamp: #{utc_timestamp}.")
     |> EvlDaemon.Mailer.deliver_now
