@@ -28,14 +28,15 @@ defmodule EvlDaemon.EventNotifier.Console do
   @doc """
   Log the notification for the event to the console.
   """
-  def notify([{event, timestamp} | []]), do: Logger.info("#{__MODULE__}: [#{timestamp}] #{event} (#{EvlDaemon.Event.description(event)})")
-  def notify([_head | tail]), do: notify(tail)
+  def notify(_event, opts \\ [])
+  def notify([{event, timestamp} | []], _opts), do: Logger.info("#{__MODULE__}: [#{timestamp}] #{event} (#{EvlDaemon.Event.description(event)})")
+  def notify([_head | tail], opts), do: notify(tail, opts)
 
   # Callbacks
 
-  def handle_events(events, _from, queue) do
+  def handle_events(events, _from, opts) do
     notify(events)
 
-    {:noreply, [], queue}
+    {:noreply, [], opts}
   end
 end

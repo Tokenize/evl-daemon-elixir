@@ -12,12 +12,12 @@ defmodule EvlDaemon.EventNotifier.Email do
 
   @recipients Application.get_env(:evl_daemon, :recipients)
 
-  def start_link(dispatcher_pid) do
-    GenStage.start_link(__MODULE__, dispatcher_pid)
+  def start_link(opts) do
+    GenStage.start_link(__MODULE__, opts)
   end
 
-  def init(dispatcher_pid) do
-    {:consumer, :ok, subscribe_to: [{dispatcher_pid, selector: fn (event) -> filter(event) end}]}
+  def init([dispatcher_pid | opts]) do
+    {:consumer, opts, subscribe_to: [{dispatcher_pid, selector: fn (event) -> filter(event) end}]}
   end
 
   @doc """
@@ -31,20 +31,20 @@ defmodule EvlDaemon.EventNotifier.Email do
   Send the notification for the event via email.
   """
 
-  def notify([{event, timestamp} | []]), do: do_notify(event, timestamp)
-  def notify([_head | tail]), do: notify(tail)
+  def notify([{event, timestamp} | []], opts), do: do_notify(event, timestamp, opts)
+  def notify([_head | tail], opts), do: notify(tail, opts)
 
   # Callbacks
 
-  def handle_events(events, _from, queue) do
-    notify(events)
+  def handle_events(events, _from, opts) do
+    notify(events, opts)
 
-    {:noreply, [], queue}
+    {:noreply, [], opts}
   end
 
   # Private functions
 
-  defp do_notify(event, timestamp) do
+  defp do_notify(event, timestamp, opts) do
     utc_timestamp =
       timestamp
       |> DateTime.from_unix!
