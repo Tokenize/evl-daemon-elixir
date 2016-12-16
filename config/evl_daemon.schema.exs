@@ -101,6 +101,19 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       doc: "Determines if we should connect automatically when the application starts.",
       hidden: false,
       to: "evl_daemon.auto_connect"
+    ],
+    "evl_daemon.event_notifiers": [
+      commented: false,
+      datatype: [
+        list: [list: {:atom, :binary}]
+      ],
+      default: [
+        [type: :console],
+        [type: :email, recipient: "person@example.com"]
+      ],
+      doc: "Enabled event notifiers and their options.",
+      hidden: false,
+      to: "evl_daemon.event_notifiers"
     ]
   ],
   transforms: [],

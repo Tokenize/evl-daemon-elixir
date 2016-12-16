@@ -6,11 +6,19 @@ defmodule EvlDaemon.Supervisor.EventNotifier do
   end
 
   def init(dispatcher_pid) do
-    child_processes = [
-      worker(EvlDaemon.EventNotifier.Console, [dispatcher_pid]),
-      worker(EvlDaemon.EventNotifier.Email, [dispatcher_pid])
-    ]
+    child_processes = for [notifier | opts] <- active_notifiers do
+      worker(notifier, [dispatcher_pid | opts])
+    end
 
     supervise(child_processes, strategy: :one_for_one)
+  end
+
+  defp active_notifiers do
+    for notifier <- Application.get_env(:evl_daemon, :event_notifiers) do
+      case Keyword.get(notifier, :type) do
+        :console -> [EvlDaemon.EventNotifier.Console]
+        :email -> [EvlDaemon.EventNotifier.Email, Keyword.delete(notifier, :type)]
+      end
+    end
   end
 end
