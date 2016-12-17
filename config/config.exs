@@ -9,3 +9,4 @@ config :evl_daemon, port: 4025
 config :evl_daemon, password: "SECRET"
 config :evl_daemon, auto_connect: false
 config :evl_daemon, event_notifiers: [[type: :console], [type: :email, recipient: "user@example.com"]]
+config :evl_daemon, zones: %{}

@@ -114,8 +114,23 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       doc: "Enabled event notifiers and their options.",
       hidden: false,
       to: "evl_daemon.event_notifiers"
-    ]
+    ],
+    "evl_daemon.zones": [
+      commented: true,
+      doc: "Zone mapping in the form of [number, \"description\"].",
+      hidden: false,
+      to: "evl_daemon.zones"
+    ],
   ],
-  transforms: [],
+  transforms: [
+    "evl_daemon.zones": fn (conf) ->
+      [{key, zone_string}]  = Conform.Conf.get(conf, "evl_daemon.zones")
+
+      Poison.Parser.parse!("[#{zone_string}]")
+      |> Enum.reduce(Map.new, fn ([zone | description], zone_map) ->
+         Map.put(zone_map, to_string(zone), hd(description))
+      end)
+    end
+  ],
   validators: []
 ]
