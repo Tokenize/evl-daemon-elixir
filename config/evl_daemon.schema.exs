@@ -50,7 +50,9 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
 """
 [
   extends: [],
-  import: [],
+  import: [
+    :poison
+  ],
   mappings: [
     "evl_daemon.mailer_api_key": [
       commented: false,
