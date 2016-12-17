@@ -16,8 +16,8 @@ defmodule EvlDaemon.Supervisor.EventNotifier do
   defp active_notifiers do
     for notifier <- Application.get_env(:evl_daemon, :event_notifiers) do
       case Keyword.get(notifier, :type) do
-        :console -> [EvlDaemon.EventNotifier.Console]
-        :email -> [EvlDaemon.EventNotifier.Email, Keyword.delete(notifier, :type)]
+        "console" -> [EvlDaemon.EventNotifier.Console]
+        "email" -> [EvlDaemon.EventNotifier.Email, List.flatten(Keyword.delete(notifier, :type))]
       end
     end
   end

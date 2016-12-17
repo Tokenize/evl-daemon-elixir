@@ -10,8 +10,8 @@ defmodule EvlDaemon.EventNotifier.Email do
   use GenStage
   require Logger
 
-  def start_link(opts) do
-    GenStage.start_link(__MODULE__, opts)
+  def start_link(dispatcher_pid, opts) do
+    GenStage.start_link(__MODULE__, [dispatcher_pid | opts])
   end
 
   def init([dispatcher_pid | opts]) do
