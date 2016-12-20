@@ -3,5 +3,5 @@
 
 use Mix.Config
 
-config :logger, level: :warn
+config :logger, level: :info
 config :evl_daemon, EvlDaemon.Mailer, adapter: Bamboo.TestAdapter
