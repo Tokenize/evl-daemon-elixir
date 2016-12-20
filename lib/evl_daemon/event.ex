@@ -4,18 +4,42 @@ defmodule EvlDaemon.Event do
   TPI responses.
   """
 
+  defstruct [:command, :data, :description, :priority, :timestamp]
+
   @command_map %{
-    "500" => "Command Acknowledge", "501" => "Command Error", "502" => "System Error",
-    "505" => "Login Interaction",
-    "601" => "Zone Alarm", "602" => "Zone Alarm Restore",
-    "603" => "Zone Tamper", "604" => "Zone Tamper Restore",
-    "605" => "Zone Fault", "606" => "Zone Fault Restore",
-    "609" => "Zone Open", "610" => "Zone Restored",
-    "650" => "Partition Ready", "651" => "Partition Not Ready",
-    "652" => "Partition Armed", "653" => "Partition Ready - Force Arming Enabled",
-    "654" => "Partition In Alarm", "655" => "Partition Disarmed",
-    "656" => "Exit Delay in Progress", "657" => "Entry Delay in Progress"
+    "501" => [description: "Command Error", priority: :critical],
+    "502" => [description: "System Error", priority: :critical],
+    "505" => [description: "Login Interaction", priority: :medium],
+    "601" => [description: "Zone Alarm", priority: :high],
+    "602" => [description: "Zone Alarm Restore", priority: :medium],
+    "603" => [description: "Zone Tamper", priority: :critical],
+    "604" => [description: "Zone Tamper Restore", priority: :medium],
+    "605" => [description: "Zone Fault", priority: :critical],
+    "606" => [description: "Zone Fault Restore", priority: :medium],
+    "609" => [description: "Zone Open", priority: :low],
+    "610" => [description: "Zone Restored", priority: :medium],
+    "650" => [description: "Partition Ready", priority: :low],
+    "651" => [description: "Partition Not Ready", priority: :low],
+    "652" => [description: "Partition Armed", priority: :medium],
+    "653" => [description: "Partition Ready - Force Arming Enabled", priority: :low],
+    "654" => [description: "Partition In Alarm", priority: :high],
+    "655" => [description: "Partition Disarmed", priority: :medium],
+    "656" => [description: "Exit Delay in Progress", priority: :medium],
+    "657" => [description: "Entry Delay in Progress", priority: :medium]
   }
+
+  @doc """
+  Return a new Event based on the payload and timestamp.
+  """
+  def new(payload, timestamp) do
+    %EvlDaemon.Event{
+      command: EvlDaemon.TPI.command_part(payload),
+      data: EvlDaemon.TPI.data_part(payload),
+      description: command_description(payload),
+      priority: command_priority(payload),
+      timestamp: timestamp,
+    }
+  end
 
   @doc """
   Return a human readable version of both the command and data portions of the event.
@@ -29,7 +53,8 @@ defmodule EvlDaemon.Event do
   """
   def command_description(payload) do
     command_code = EvlDaemon.TPI.command_part(payload)
-    Map.get(@command_map, command_code, command_code)
+    Map.get(@command_map, command_code, [description: command_code])
+    |> Keyword.get(:description)
   end
 
   @doc """
@@ -37,6 +62,15 @@ defmodule EvlDaemon.Event do
   """
   def data_description(payload) do
     do_data_description(EvlDaemon.TPI.command_part(payload), EvlDaemon.TPI.data_part(payload))
+  end
+
+  @doc """
+  Return priority for command portion of the event.
+  """
+  def command_priority(payload) do
+    command_code = EvlDaemon.TPI.command_part(payload)
+    Map.get(@command_map, command_code, [priority: :low])
+    |> Keyword.get(:priority)
   end
 
   # Private functions

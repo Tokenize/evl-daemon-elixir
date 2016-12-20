@@ -17,4 +17,14 @@ defmodule EvlDaemon.EventTest do
   test "should return description for commands with data" do
     assert EvlDaemon.Event.data_description("5051CB") == "Successful"
   end
+
+  test "should return a new Event based on payload and timestamp" do
+    timestamp = DateTime.utc_now |> DateTime.to_unix
+    system_error = EvlDaemon.Event.new("50297", timestamp)
+
+    assert system_error.command == "502"
+    assert system_error.data == ""
+    assert system_error.description == "System Error"
+    assert system_error.priority == :critical
+  end
 end
