@@ -47,7 +47,7 @@ defmodule EvlDaemon.EventNotifier.Email do
       |> DateTime.from_unix!
       |> DateTime.to_string
 
-    EvlDaemon.Email.Event.build(event, utc_timestamp, Keyword.get(opts, :recipient))
+    EvlDaemon.Email.Event.build(event, utc_timestamp, Keyword.get(opts, :recipient), Keyword.get(opts, :sender))
     |> EvlDaemon.Mailer.deliver_now
   end
 end

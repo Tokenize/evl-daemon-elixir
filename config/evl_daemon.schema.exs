@@ -111,7 +111,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       ],
       default: [
         [type: :console],
-        [type: :email, recipient: "person@example.com"]
+        [type: :email, recipient: "person@example.com", sender: "noreply@example.com"]
       ],
       doc: "Enabled event notifiers and their options.",
       hidden: false,
