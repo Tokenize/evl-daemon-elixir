@@ -6,7 +6,6 @@ defmodule EvlDaemon.EventNotifier.Email do
   @behaviour EvlDaemon.EventNotifier
 
   alias Experimental.GenStage
-  import Bamboo.Email
   use GenStage
   require Logger
 
@@ -48,11 +47,7 @@ defmodule EvlDaemon.EventNotifier.Email do
       |> DateTime.from_unix!
       |> DateTime.to_string
 
-    new_email
-    |> from("noreply@tokenize.ca")
-    |> to(Keyword.get(opts, :recipient))
-    |> subject("Event [#{event}] triggered on #{timestamp}")
-    |> text_body("Event: #{EvlDaemon.Event.description(event)}, timestamp: #{utc_timestamp}.")
+    EvlDaemon.Email.Event.build(event, utc_timestamp, Keyword.get(opts, :recipient))
     |> EvlDaemon.Mailer.deliver_now
   end
 end
