@@ -60,8 +60,10 @@ defmodule EvlDaemon.Client do
   end
 
   def handle_info(:timeout, state) do
-    do_connect
-    do_login
+    unless EvlDaemon.Connection.alive? do
+      do_connect
+      do_login
+    end
 
     {:noreply, state}
   end

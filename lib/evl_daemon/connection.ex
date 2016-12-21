@@ -35,6 +35,13 @@ defmodule EvlDaemon.Connection do
     GenServer.call(__MODULE__, { :command, request })
   end
 
+  @doc """
+  Check if the connection is alive by checking the underlying socket."
+  """
+  def alive? do
+    GenServer.call(__MODULE__, :alive?)
+  end
+
   # Callbacks
 
   def handle_call(:connect, sender, state) do
@@ -61,6 +68,15 @@ defmodule EvlDaemon.Connection do
     state = %{state | pending_commands: pending_commands}
 
     {:noreply, state}
+  end
+
+  def handle_call(:alive?, _sender, state) do
+    {status, _stats} = case state.socket do
+      nil -> {:error, nil}
+      socket -> :inet.getstat(socket)
+    end
+
+    {:reply, status == :ok, state}
   end
 
   def handle_cast(:disconnect, state) do
