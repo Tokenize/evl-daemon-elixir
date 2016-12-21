@@ -25,7 +25,7 @@ defmodule EvlDaemon.EventDispatcher do
   # Callbacks
 
   def handle_cast({:enqueue, value, timestamp}, state) do
-    {:noreply, [{value, timestamp}], state}
+    {:noreply, [EvlDaemon.Event.new(value, timestamp)], state}
   end
 
   def handle_demand(_demand, state) do

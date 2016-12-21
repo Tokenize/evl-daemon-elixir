@@ -20,15 +20,15 @@ defmodule EvlDaemon.EventNotifier.Email do
   @doc """
   Used by the dispatcher to only send events that we are interested in.
   """
-  def filter({event, _timestamp}) do
-    Enum.member?(~w(601 603 605 620 621 623 625), String.slice(event, 0..2))
+  def filter(event) do
+    Enum.member?([:high, :critical], event.priority)
   end
 
   @doc """
   Send the notification for the event via email.
   """
 
-  def notify([{event, timestamp} | []], opts), do: do_notify(event, timestamp, opts)
+  def notify([event | []], opts), do: do_notify(event, opts)
   def notify([_head | tail], opts), do: notify(tail, opts)
 
   # Callbacks
@@ -41,13 +41,8 @@ defmodule EvlDaemon.EventNotifier.Email do
 
   # Private functions
 
-  defp do_notify(event, timestamp, opts) do
-    utc_timestamp =
-      timestamp
-      |> DateTime.from_unix!
-      |> DateTime.to_string
-
-    EvlDaemon.Email.Event.build(event, utc_timestamp, Keyword.get(opts, :recipient), Keyword.get(opts, :sender))
+  defp do_notify(event, opts) do
+    EvlDaemon.Email.Event.build(event, Keyword.get(opts, :recipient), Keyword.get(opts, :sender))
     |> EvlDaemon.Mailer.deliver_now
   end
 end

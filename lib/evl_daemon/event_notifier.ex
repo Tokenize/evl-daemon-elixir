@@ -1,4 +1,4 @@
 defmodule EvlDaemon.EventNotifier do
-  @callback filter(event :: {String.t, non_neg_integer}) :: boolean
-  @callback notify(event :: {String.t, non_neg_integer}, opts :: [any]) :: atom
+  @callback filter(event :: EvlDaemon.Event) :: boolean
+  @callback notify(event :: EvlDaemon.Event, opts :: [any]) :: atom
 end

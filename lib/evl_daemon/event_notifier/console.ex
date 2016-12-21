@@ -29,7 +29,7 @@ defmodule EvlDaemon.EventNotifier.Console do
   Log the notification for the event to the console.
   """
   def notify(_event, opts \\ [])
-  def notify([{event, timestamp} | []], _opts), do: Logger.info("#{__MODULE__}: [#{timestamp}] #{event} (#{EvlDaemon.Event.description(event)})")
+  def notify([event | []], _opts), do: Logger.info("#{__MODULE__}: [#{event.timestamp}] #{event.command}:#{event.data} (#{event.description})")
   def notify([_head | tail], opts), do: notify(tail, opts)
 
   # Callbacks

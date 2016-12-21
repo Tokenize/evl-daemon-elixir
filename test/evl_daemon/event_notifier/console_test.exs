@@ -15,6 +15,6 @@ defmodule EvlDaemon.EventNotifier.ConsoleTest do
       EvlDaemon.EventDispatcher.enqueue(event_dispatcher, "5051CB")
     end
 
-    assert Regex.match?(~r/Elixir\.EvlDaemon\.EventNotifier\.Console: \[\d+\] 5051CB/, output)
+    assert Regex.match?(~r/Elixir\.EvlDaemon\.EventNotifier\.Console: \[\d+\] 505:1/, output)
   end
 end
