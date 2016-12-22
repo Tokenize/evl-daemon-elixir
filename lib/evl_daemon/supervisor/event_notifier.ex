@@ -18,6 +18,7 @@ defmodule EvlDaemon.Supervisor.EventNotifier do
       case Keyword.get(notifier, :type) do
         "console" -> [EvlDaemon.EventNotifier.Console]
         "email" -> [EvlDaemon.EventNotifier.Email, List.flatten(Keyword.delete(notifier, :type))]
+        "sms" -> [EvlDaemon.EventNotifier.SMS, List.flatten(Keyword.delete(notifier, :type))]
       end
     end
   end
