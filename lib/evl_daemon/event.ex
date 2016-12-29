@@ -35,7 +35,7 @@ defmodule EvlDaemon.Event do
     %EvlDaemon.Event{
       command: EvlDaemon.TPI.command_part(payload),
       data: EvlDaemon.TPI.data_part(payload),
-      description: command_description(payload),
+      description: description(payload),
       priority: command_priority(payload),
       timestamp: timestamp,
     }
