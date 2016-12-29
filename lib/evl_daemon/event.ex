@@ -45,7 +45,8 @@ defmodule EvlDaemon.Event do
   Return a human readable version of both the command and data portions of the event.
   """
   def description(payload) do
-    command_description(payload) <> " " <> data_description(payload)
+    (command_description(payload) <> " " <> data_description(payload))
+    |> String.trim
   end
 
   @doc """
