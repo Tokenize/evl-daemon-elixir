@@ -44,7 +44,7 @@ defmodule EvlDaemon.EventNotifier.SMS do
   def do_notify(event, opts) do
     headers = [content_type_header, authorization_header(opts)]
 
-    HTTPoison.post!(service_url(opts), body(event, opts), headers)
+    HTTPoison.post(service_url(opts), body(event, opts), headers)
     |> handle_response
   end
 
@@ -76,7 +76,7 @@ defmodule EvlDaemon.EventNotifier.SMS do
     "https://api.twilio.com/2010-04-01/Accounts/" <> Keyword.get(opts, :sid) <> "/Messages.json"
   end
 
-  defp handle_response(%{body: body}) do
+  defp handle_response({:ok, %{status_code: 201, body: body}}) do
     body |> Poison.decode!
   end
 end
