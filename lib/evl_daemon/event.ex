@@ -84,6 +84,14 @@ defmodule EvlDaemon.Event do
     end
   end
 
+  defp do_data_description(command, <<partition::binary-size(1), zone::binary>>) when command in ~w(601 602 603 604) do
+    "[Partition: " <> partition <> ", Zone: " <> zone <> "]"
+  end
+
+  defp do_data_description(command, zone) when command in ~w(605 606 609 610) do
+    "[Zone: " <> zone <> "]"
+  end
+
   defp do_data_description(_command, code) do
     code
   end

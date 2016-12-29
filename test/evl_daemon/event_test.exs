@@ -18,6 +18,14 @@ defmodule EvlDaemon.EventTest do
     assert EvlDaemon.Event.data_description("5051CB") == "Successful"
   end
 
+  test "should return description with raw partition & zone" do
+    assert EvlDaemon.Event.data_description("60110025A") == "[Partition: 1, Zone: 002]"
+  end
+
+  test "should return description with raw zone" do
+    assert EvlDaemon.Event.data_description("6060022E") == "[Zone: 002]"
+  end
+
   test "should return a new Event based on payload and timestamp" do
     timestamp = DateTime.utc_now |> DateTime.to_unix
     system_error = EvlDaemon.Event.new("50297", timestamp)
