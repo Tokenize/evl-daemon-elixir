@@ -130,7 +130,11 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
 
       Poison.Parser.parse!("[#{zone_string}]")
       |> Enum.reduce(Map.new, fn ([zone | description], zone_map) ->
-         Map.put(zone_map, to_string(zone), hd(description))
+         Map.put(
+           zone_map,
+           zone |> to_string |> String.pad_leading(3, "0"),
+           hd(description)
+         )
       end)
     end
   ],
