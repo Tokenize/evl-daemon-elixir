@@ -86,14 +86,23 @@ defmodule EvlDaemon.Event do
   end
 
   defp do_data_description(command, <<partition::binary-size(1), zone::binary>>) when command in ~w(601 602 603 604) do
-    "[Partition: " <> partition <> ", Zone: " <> zone <> "]"
+    "[Partition: " <> partition <> ", Zone: " <> do_zone_description(zone) <> "]"
   end
 
   defp do_data_description(command, zone) when command in ~w(605 606 609 610) do
-    "[Zone: " <> zone <> "]"
+    "[Zone: " <> do_zone_description(zone) <> "]"
   end
 
   defp do_data_description(_command, code) do
     code
+  end
+
+  defp do_zone_description(zone) do
+    zone_desc = Application.get_env(:evl_daemon, :zones) |> Map.get(zone)
+
+    case zone_desc do
+      nil -> zone
+      _ -> "#" <> String.trim_leading(zone, "0") <> " " <> zone_desc
+    end
   end
 end
