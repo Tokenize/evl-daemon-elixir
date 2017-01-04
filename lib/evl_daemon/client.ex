@@ -6,6 +6,8 @@ defmodule EvlDaemon.Client do
 
   use GenServer
 
+  @poll_interval 60000
+
   def start_link(opts) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
@@ -39,6 +41,13 @@ defmodule EvlDaemon.Client do
     GenServer.cast(__MODULE__, :status_report)
   end
 
+  @doc """
+  Send the poll command to keep the connection alive.
+  """
+  def poll do
+    GenServer.cast(__MODULE__, :poll)
+  end
+
   # Callbacks
 
   def handle_call(:connect, _sender, state) do
@@ -59,13 +68,21 @@ defmodule EvlDaemon.Client do
     {:noreply, state}
   end
 
+  def handle_cast(:poll, state) do
+    do_poll
+
+    {:noreply, state, @poll_interval}
+  end
+
   def handle_info(:timeout, state) do
-    unless EvlDaemon.Connection.alive? do
+    if EvlDaemon.Connection.alive? do
+      do_poll
+    else
       do_connect
       do_login
     end
 
-    {:noreply, state}
+    {:noreply, state, @poll_interval}
   end
 
   # Private functions
@@ -77,5 +94,9 @@ defmodule EvlDaemon.Client do
   defp do_login do
     password = Application.get_env(:evl_daemon, :password)
     EvlDaemon.Connection.command("005#{password}")
+  end
+
+  defp do_poll do
+    EvlDaemon.Connection.command("000")
   end
 end
