@@ -35,7 +35,7 @@ defmodule EvlDaemon.Client do
   end
 
   @doc """
-  Send the status report command and wait for acknowledgment.
+  Send the status report command and do not wait for acknowledgment.
   """
   def status_report do
     GenServer.cast(__MODULE__, :status_report)
