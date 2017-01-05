@@ -16,7 +16,7 @@ defmodule EvlDaemon.Mixfile do
   def application do
     [
       applications: [
-        :logger, :distillery, :conform, :gen_stage, :bamboo, :httpoison
+        :logger, :distillery, :conform, :gen_stage, :plug, :bamboo, :httpoison
       ],
       mod: {EvlDaemon, []}
     ]
