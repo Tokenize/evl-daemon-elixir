@@ -123,6 +123,22 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       hidden: false,
       to: "evl_daemon.zones"
     ],
+    "evl_daemon.system_emails_sender": [
+      commented: false,
+      datatype: :binary,
+      default: "noreply@example.com",
+      doc: "The sender address for system emails.",
+      hidden: false,
+      to: "evl_daemon.system_emails_sender"
+    ],
+    "evl_daemon.system_emails_recipient": [
+      commented: false,
+      datatype: :binary,
+      default: "user@example.com",
+      doc: "The recipient address for system emails.",
+      hidden: false,
+      to: "evl_daemon.system_emails_recipient"
+    ],
   ],
   transforms: [
     "evl_daemon.zones": fn (conf) ->

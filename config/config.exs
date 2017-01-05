@@ -12,3 +12,5 @@ config :evl_daemon, event_notifiers: [
   [type: :sms, from: "+1234567890", to: "+10987654321", sid: "SID", auth_token: "SECRET"]
 ]
 config :evl_daemon, zones: %{}
+config :evl_daemon, system_emails_sender: "noreply@example.com"
+config :evl_daemon, system_emails_recipient: "user@example.com"
