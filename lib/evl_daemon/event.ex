@@ -20,6 +20,8 @@ defmodule EvlDaemon.Event do
     "606" => [description: "Zone Fault Restore", priority: :medium],
     "609" => [description: "Zone Open", priority: :low],
     "610" => [description: "Zone Restored", priority: :medium],
+    "615" => [description: "Envisalink Zone Timer Dump", priority: :low],
+    "616" => [description: "Bypassed Zones Bitfield Dump", priority: :low],
     "650" => [description: "Partition Ready", priority: :low],
     "651" => [description: "Partition Not Ready", priority: :low],
     "652" => [description: "Partition Armed", priority: :medium],
