@@ -4,7 +4,7 @@ defmodule EvlDaemon.Mixfile do
   def project do
     [app: :evl_daemon,
      version: "0.1.0",
-     elixir: "~> 1.3",
+     elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
@@ -15,8 +15,8 @@ defmodule EvlDaemon.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     [
-      applications: [
-        :logger, :distillery, :conform, :gen_stage, :plug, :bamboo, :httpoison
+      extra_applications: [
+        :logger, :plug
       ],
       mod: {EvlDaemon, []}
     ]

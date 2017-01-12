@@ -6,7 +6,7 @@ defmodule EvlDaemon.Supervisor.EventNotifier do
   end
 
   def init(dispatcher_pid) do
-    child_processes = for [notifier | opts] <- active_notifiers do
+    child_processes = for [notifier | opts] <- active_notifiers() do
       worker(notifier, [dispatcher_pid | opts])
     end
 

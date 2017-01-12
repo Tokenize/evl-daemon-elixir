@@ -42,7 +42,7 @@ defmodule EvlDaemon.EventNotifier.SMS do
   # Private functions
 
   def do_notify(event, opts) do
-    headers = [content_type_header, authorization_header(opts)]
+    headers = [content_type_header(), authorization_header(opts)]
 
     HTTPoison.post(service_url(opts), body(event, opts), headers)
     |> handle_response

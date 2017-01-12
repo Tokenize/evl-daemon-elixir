@@ -7,7 +7,7 @@ defmodule EvlDaemon.Email.Event do
       |> DateTime.from_unix!
       |> DateTime.to_string
 
-    new_email
+    new_email()
     |> from(sender)
     |> to(recipient)
     |> subject("Event #{event.description} (#{event.command}) triggered at #{utc_timestamp}")

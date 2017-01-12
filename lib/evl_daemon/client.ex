@@ -51,13 +51,13 @@ defmodule EvlDaemon.Client do
   # Callbacks
 
   def handle_call(:connect, _sender, state) do
-    status = do_connect
+    status = do_connect()
 
     {:reply, status, state}
   end
 
   def handle_call(:login, _sender, state) do
-    status = do_login
+    status = do_login()
 
     {:reply, status, state}
   end
@@ -69,17 +69,17 @@ defmodule EvlDaemon.Client do
   end
 
   def handle_cast(:poll, state) do
-    do_poll
+    do_poll()
 
     {:noreply, state, @poll_interval}
   end
 
   def handle_info(:timeout, state) do
     if EvlDaemon.Connection.alive? do
-      do_poll
+      do_poll()
     else
-      do_connect
-      do_login
+      do_connect()
+      do_login()
     end
 
     {:noreply, state, @poll_interval}
