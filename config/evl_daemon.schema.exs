@@ -139,6 +139,14 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       hidden: false,
       to: "evl_daemon.system_emails_recipient"
     ],
+    "evl_daemon.log_level": [
+      commented: false,
+      datatype: [enum: [:debug, :info, :warn, :error]],
+      default: :info,
+      doc: "The logging level for the default logger.",
+      hidden: false,
+      to: "logger.level"
+    ]
   ],
   transforms: [
     "evl_daemon.zones": fn (conf) ->
