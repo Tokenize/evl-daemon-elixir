@@ -7,6 +7,7 @@ defmodule EvlDaemon.Supervisor do
 
   def init(opts) do
     child_processes = [
+      supervisor(Registry, [:duplicate, EvlDaemon.Registry]),
       worker(EvlDaemon.EventDispatcher, []),
       supervisor(EvlDaemon.Supervisor.Connection, []),
       supervisor(EvlDaemon.Supervisor.EventNotifier, [])

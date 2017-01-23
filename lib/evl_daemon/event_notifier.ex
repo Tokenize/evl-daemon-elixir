@@ -10,16 +10,17 @@ defmodule EvlDaemon.EventNotifier do
     quote location: :keep do
       @behaviour EvlDaemon.EventNotifier
 
-      alias Experimental.GenStage
-      use GenStage
       require Logger
+      use GenServer
 
       def start_link(opts \\ []) do
-        GenStage.start_link(__MODULE__, opts)
+        GenServer.start_link(__MODULE__, opts)
       end
 
       def init(opts) do
-        {:consumer, opts, subscribe_to: [{EvlDaemon.EventDispatcher, selector: fn (event) -> filter(event) end}]}
+        EvlDaemon.EventDispatcher.subscribe({__MODULE__, :filter})
+
+        {:ok, opts}
       end
 
       @doc """
@@ -37,10 +38,10 @@ defmodule EvlDaemon.EventNotifier do
       # Callbacks
 
       @doc false
-      def handle_events(events, _from, opts) do
+      def handle_info({:handle_events, events}, opts) do
         notify(events, opts)
 
-        {:noreply, [], opts}
+        {:noreply, opts}
       end
 
       defoverridable [filter: 1, notify: 2]
