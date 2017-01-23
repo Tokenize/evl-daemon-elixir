@@ -8,7 +8,7 @@ defmodule EvlDaemon do
     Logger.info "Starting EvlDaemon v#{@version}"
     EvlDaemon.Email.Application.starting(@version) |> EvlDaemon.Mailer.deliver_now
 
-    EvlDaemon.Supervisor.start_link(%{event_dispatcher: nil})
+    EvlDaemon.Supervisor.start_link
   end
 
   def stop(_state) do
