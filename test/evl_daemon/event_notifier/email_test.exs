@@ -4,14 +4,13 @@ defmodule EvlDaemon.EventNotifier.EmailTest do
   doctest EvlDaemon.EventNotifier.Email
 
   setup do
-    {:ok, event_dispatcher} = EvlDaemon.EventDispatcher.start_link
-    {:ok, _notifier} = EvlDaemon.EventNotifier.Email.start_link(event_dispatcher, [recipient: "person@example.com", sender: "noreply@example.com"])
+    EvlDaemon.EventNotifier.Email.start_link([recipient: "person@example.com", sender: "noreply@example.com"])
 
-    {:ok, event_dispatcher: event_dispatcher}
+    :ok
   end
 
-  test "successfully emails the event", %{event_dispatcher: event_dispatcher} do
-    EvlDaemon.EventDispatcher.enqueue(event_dispatcher, "60111F9")
+  test "successfully emails the event" do
+    EvlDaemon.EventDispatcher.enqueue("60111F9")
     timestamp = DateTime.utc_now |> DateTime.to_unix
     event = EvlDaemon.Event.new("60111F9", timestamp)
     notification = EvlDaemon.Email.Event.build(event, "person@example.com", "noreply@example.com")

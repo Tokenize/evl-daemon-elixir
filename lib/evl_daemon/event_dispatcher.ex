@@ -8,7 +8,7 @@ defmodule EvlDaemon.EventDispatcher do
   use GenStage
 
   def start_link do
-    GenStage.start_link(__MODULE__, :ok)
+    GenStage.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
   def init(:ok) do
@@ -18,8 +18,8 @@ defmodule EvlDaemon.EventDispatcher do
   @doc """
   Enqueue event and dispatch it as soon as possible.
   """
-  def enqueue(pid, value) do
-    GenStage.cast(pid, {:enqueue, value, do_timestamp()})
+  def enqueue(value) do
+    GenStage.cast(__MODULE__, {:enqueue, value, do_timestamp()})
   end
 
   # Callbacks

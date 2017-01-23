@@ -4,15 +4,14 @@ defmodule EvlDaemon.EventNotifier.ConsoleTest do
   doctest EvlDaemon.EventNotifier.Console
 
   setup do
-    {:ok, event_dispatcher} = EvlDaemon.EventDispatcher.start_link
-    {:ok, _notifier} = EvlDaemon.EventNotifier.Console.start_link(event_dispatcher)
+    EvlDaemon.EventNotifier.Console.start_link
 
-    {:ok, event_dispatcher: event_dispatcher}
+    :ok
   end
 
-  test "successfully logs the event", %{event_dispatcher: event_dispatcher} do
+  test "successfully logs the event"  do
     output = capture_log fn ->
-      EvlDaemon.EventDispatcher.enqueue(event_dispatcher, "5051CB")
+      EvlDaemon.EventDispatcher.enqueue("5051CB")
     end
 
     assert Regex.match?(~r/Elixir\.EvlDaemon\.EventNotifier\.Console: \[\d+\] 505:1/, output)

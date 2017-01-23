@@ -1,13 +1,13 @@
 defmodule EvlDaemon.Supervisor.EventNotifier do
   use Supervisor
 
-  def start_link(dispatcher_pid) do
-    {:ok, _pid} = Supervisor.start_link(__MODULE__, dispatcher_pid)
+  def start_link do
+    {:ok, _pid} = Supervisor.start_link(__MODULE__, [])
   end
 
-  def init(dispatcher_pid) do
+  def init([]) do
     child_processes = for [notifier | opts] <- active_notifiers() do
-      worker(notifier, [dispatcher_pid | opts])
+      worker(notifier, opts)
     end
 
     supervise(child_processes, strategy: :one_for_one)

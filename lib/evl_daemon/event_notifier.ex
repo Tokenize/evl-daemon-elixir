@@ -14,12 +14,12 @@ defmodule EvlDaemon.EventNotifier do
       use GenStage
       require Logger
 
-      def start_link(dispatcher_pid, opts \\ []) do
-        GenStage.start_link(__MODULE__, [dispatcher_pid | opts])
+      def start_link(opts \\ []) do
+        GenStage.start_link(__MODULE__, opts)
       end
 
-      def init([dispatcher_pid | opts]) do
-        {:consumer, opts, subscribe_to: [{dispatcher_pid, selector: fn (event) -> filter(event) end}]}
+      def init(opts) do
+        {:consumer, opts, subscribe_to: [{EvlDaemon.EventDispatcher, selector: fn (event) -> filter(event) end}]}
       end
 
       @doc """
