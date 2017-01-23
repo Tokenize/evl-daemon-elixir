@@ -5,7 +5,7 @@ defmodule EvlDaemon.Supervisor do
     {:ok, _pid} = Supervisor.start_link(__MODULE__, [])
   end
 
-  def init(opts) do
+  def init([]) do
     child_processes = [
       supervisor(Registry, [:duplicate, EvlDaemon.Registry]),
       worker(EvlDaemon.EventDispatcher, []),
