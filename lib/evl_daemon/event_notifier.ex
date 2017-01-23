@@ -18,7 +18,7 @@ defmodule EvlDaemon.EventNotifier do
       end
 
       def init(opts) do
-        EvlDaemon.EventDispatcher.subscribe({__MODULE__, :filter})
+        EvlDaemon.EventDispatcher.subscribe([])
 
         {:ok, opts}
       end
@@ -39,7 +39,7 @@ defmodule EvlDaemon.EventNotifier do
 
       @doc false
       def handle_info({:handle_event, event}, opts) do
-        notify(event, opts)
+        if filter(event), do: notify(event, opts)
 
         {:noreply, opts}
       end

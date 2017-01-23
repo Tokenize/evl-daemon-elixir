@@ -23,13 +23,13 @@ defmodule EvlDaemon.EventDispatcher do
   @doc """
   Subscribe the caller in order too receive event notifications.
   """
-  def subscribe(filter) do
-    Registry.register(EvlDaemon.Registry, "event_notifiers", filter)
+  def subscribe(args) do
+    Registry.register(EvlDaemon.Registry, "event_notifiers", args)
   end
 
   # Callbacks
 
-  def handle_cast({:enqueue, value, timestamp}, state) do
+  def handle_cast({:enqueue, value, timestamp}, _state) do
     event = EvlDaemon.Event.new(value, timestamp)
 
     do_dispatch_event(event)
@@ -45,15 +45,9 @@ defmodule EvlDaemon.EventDispatcher do
 
   defp do_dispatch_event(event) do
     Registry.dispatch(EvlDaemon.Registry, "event_notifiers", fn notifiers ->
-      for {pid, filter} <- notifiers do
-        if do_notify?(pid, filter, event) do
-           send(pid, {:handle_event, event})
-        end
+      for {pid, _} <- notifiers do
+        send(pid, {:handle_event, event})
       end
     end)
-  end
-
-  defp do_notify?(pid, {module, func}, event) do
-    apply(module, func, [event])
   end
 end
