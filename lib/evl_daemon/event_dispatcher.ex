@@ -39,7 +39,7 @@ defmodule EvlDaemon.EventDispatcher do
 
   # Private functions
 
-  def do_timestamp do
+  defp do_timestamp do
     DateTime.utc_now |> DateTime.to_unix
   end
 
