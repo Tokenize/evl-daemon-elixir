@@ -47,7 +47,7 @@ defmodule EvlDaemon.EventDispatcher do
     Registry.dispatch(EvlDaemon.Registry, "event_notifiers", fn notifiers ->
       for {pid, filter} <- notifiers do
         if do_notify?(pid, filter, event) do
-           send(pid, {:handle_events, [event]})
+           send(pid, {:handle_event, event})
         end
       end
     end)

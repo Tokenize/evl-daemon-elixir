@@ -38,8 +38,8 @@ defmodule EvlDaemon.EventNotifier do
       # Callbacks
 
       @doc false
-      def handle_info({:handle_events, events}, opts) do
-        notify(events, opts)
+      def handle_info({:handle_event, event}, opts) do
+        notify(event, opts)
 
         {:noreply, opts}
       end

@@ -11,9 +11,7 @@ defmodule EvlDaemon.EventNotifier.SMS do
     Enum.member?([:high, :critical], event.priority)
   end
 
-  def notify(_event, opts \\ [])
-  def notify([event | []], opts), do: do_notify(event, opts)
-  def notify([_head | tail], opts), do: notify(tail, opts)
+  def notify(event, opts), do: do_notify(event, opts)
 
   # Private functions
 
