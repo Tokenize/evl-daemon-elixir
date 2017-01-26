@@ -116,6 +116,14 @@ defmodule EvlDaemon.Connection do
     {:noreply, state}
   end
 
+  def handle_info({:tcp_closed, _socket}, state) do
+    {:stop, :connection_closed, state}
+  end
+
+  def handle_info(_info, state) do
+    {:noreply, state}
+  end
+
   # Private functions
 
   defp push_pending_command(pending_commands, payload, sender) do
