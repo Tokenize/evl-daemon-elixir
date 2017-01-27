@@ -117,6 +117,8 @@ defmodule EvlDaemon.Connection do
   end
 
   def handle_info({:tcp_closed, _socket}, state) do
+    Logger.error("#{__MODULE__} TCP socket closed. Terminating process #{inspect self()}.")
+
     {:stop, :connection_closed, state}
   end
 
