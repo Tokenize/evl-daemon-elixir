@@ -6,7 +6,7 @@ defmodule EvlDaemon.Event.Data do
 
   use Bitwise
 
-  @partition_only_commands ~w(653 654 655 656 657 658 659 660 663 664 670 671 672 673 674 701 702 751 840 841)
+  @partition_only_commands ~w(650 653 654 655 656 657 658 659 660 663 664 670 671 672 673 674 701 702 751 840 841)
 
   @doc """
   Return a human readable version of the data portion of the event.
