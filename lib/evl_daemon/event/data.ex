@@ -41,6 +41,10 @@ defmodule EvlDaemon.Event.Data do
     "[" <> Enum.join(keypad_states, ", ") <> "]"
   end
 
+  defp do_description("652", <<partition::binary-size(1), mode::binary>>) do
+    "[Partition: " <> partition <> ", Mode: " <> do_zone_armed_mode(mode) <> "]"
+  end
+
   defp do_description(command, <<partition::binary-size(1), zone::binary>>) when command in ~w(601 602 603 604) do
     "[Partition: " <> partition <> ", Zone: " <> do_zone_description(zone) <> "]"
   end
@@ -59,6 +63,15 @@ defmodule EvlDaemon.Event.Data do
     case zone_desc do
       nil -> zone
       _ -> "#" <> String.trim_leading(zone, "0") <> " " <> zone_desc
+    end
+  end
+
+  defp do_zone_armed_mode(code) do
+    case code do
+      "0" -> "Away"
+      "1" -> "Stay"
+      "2" -> "Zero-Entry-Away"
+      "3" -> "Zero-Entry-Stay"
     end
   end
 end

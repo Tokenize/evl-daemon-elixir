@@ -27,4 +27,8 @@ defmodule EvlDaemon.Event.DataTest do
   test "should return Keypad LED state" do
     assert EvlDaemon.Event.Data.description("51081FF") == "[Ready LED, Backlight LED]"
   end
+
+  test "should return 'Partition Armed' number & mode" do
+    assert EvlDaemon.Event.Data.description("65211FF") == "[Partition: 1, Mode: Stay]"
+  end
 end
