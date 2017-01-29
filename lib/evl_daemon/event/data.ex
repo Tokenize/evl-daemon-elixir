@@ -6,7 +6,10 @@ defmodule EvlDaemon.Event.Data do
 
   use Bitwise
 
-  @partition_only_commands ~w(650 653 654 655 656 657 658 659 660 663 664 670 671 672 673 674 701 702 751 840 841)
+  @keypad_commands ~w(510 511)
+  @partition_commands ~w(650 653 654 655 656 657 658 659 660 663 664 670 671 672 673 674 701 702 751 840 841)
+  @partition_zone_commands ~w(601 602 603 604)
+  @zone_commands ~w(605 606 609 610)
 
   @doc """
   Return a human readable version of the data portion of the event.
@@ -26,7 +29,7 @@ defmodule EvlDaemon.Event.Data do
     end
   end
 
-  defp do_description(command, code) when command in ~w(510 511) do
+  defp do_description(command, code) when command in @keypad_commands do
     state = (code |> String.to_integer(16))
     keypad_states = [
       {"Ready LED", state &&& 1},
@@ -47,15 +50,15 @@ defmodule EvlDaemon.Event.Data do
     "[Partition: " <> partition <> ", Mode: " <> do_zone_armed_mode(mode) <> "]"
   end
 
-  defp do_description(command, <<partition::binary-size(1), zone::binary>>) when command in ~w(601 602 603 604) do
+  defp do_description(command, <<partition::binary-size(1), zone::binary>>) when command in @partition_zone_commands do
     "[Partition: " <> partition <> ", Zone: " <> do_zone_description(zone) <> "]"
   end
 
-  defp do_description(command, zone) when command in ~w(605 606 609 610) do
+  defp do_description(command, zone) when command in @zone_commands do
     "[Zone: " <> do_zone_description(zone) <> "]"
   end
 
-  defp do_description(command, partition) when command in @partition_only_commands do
+  defp do_description(command, partition) when command in @partition_commands do
     "[Partition: " <> partition <> "]"
   end
 
