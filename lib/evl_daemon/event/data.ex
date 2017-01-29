@@ -4,6 +4,8 @@ defmodule EvlDaemon.Event.Data do
   event data portion.
   """
 
+  use Bitwise
+
   @doc """
   Return a human readable version of the data portion of the event.
   """
@@ -20,6 +22,23 @@ defmodule EvlDaemon.Event.Data do
       "2" -> "Timed out"
       "3" -> "Password request"
     end
+  end
+
+  defp do_description(command, code) when command in ~w(510 511) do
+    state = (code |> String.to_integer(16))
+    keypad_states = [
+      {"Ready LED", state &&& 1},
+      {"Armed LED", state &&& 2},
+      {"Memory LED", state &&& 4},
+      {"Bypass LED", state &&& 8},
+      {"Trouble LED", state &&& 16},
+      {"Program LED", state &&& 32},
+      {"Fire LED", state &&& 64},
+      {"Backlight LED", state &&& 128}
+    ]
+    |> Enum.filter_map(&(elem(&1, 1) != 0), &(elem(&1, 0)))
+
+    "[" <> Enum.join(keypad_states, ", ") <> "]"
   end
 
   defp do_description(command, <<partition::binary-size(1), zone::binary>>) when command in ~w(601 602 603 604) do

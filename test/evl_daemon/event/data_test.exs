@@ -23,4 +23,8 @@ defmodule EvlDaemon.Event.DataTest do
     assert EvlDaemon.Event.Data.description("6060022E") == "[Zone: #2 Front door]"
     Application.put_env(:evl_daemon, :zones, %{})
   end
+
+  test "should return Keypad LED state" do
+    assert EvlDaemon.Event.Data.description("51081FF") == "[Ready LED, Backlight LED]"
+  end
 end
