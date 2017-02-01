@@ -33,7 +33,7 @@ defmodule EvlDaemon.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      { :bamboo, "~> 0.7" },
+      { :bamboo, "~> 0.8" },
       { :conform, "~> 2.1.2" },
       { :distillery, github: "bitwalker/distillery", override: true },
       { :httpoison, "~> 0.10.0" }
