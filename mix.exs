@@ -35,7 +35,7 @@ defmodule EvlDaemon.Mixfile do
     [
       { :bamboo, "~> 0.8" },
       { :conform, "~> 2.1.2" },
-      { :distillery, github: "bitwalker/distillery", override: true },
+      { :distillery, "~> 1.1.0"},
       { :httpoison, "~> 0.10.0" }
     ]
   end
