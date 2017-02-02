@@ -12,6 +12,7 @@ defmodule EvlDaemon.EventNotifier do
 
       require Logger
       use GenServer
+      use EvlDaemon.ErrorNotifier
 
       def start_link(opts \\ []) do
         GenServer.start_link(__MODULE__, opts)

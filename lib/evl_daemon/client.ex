@@ -5,6 +5,7 @@ defmodule EvlDaemon.Client do
   """
 
   use GenServer
+  use EvlDaemon.ErrorNotifier
 
   @poll_interval 60000
 

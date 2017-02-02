@@ -5,6 +5,7 @@ defmodule EvlDaemon.Connection do
   """
 
   use GenServer
+  use EvlDaemon.ErrorNotifier
   require Logger
 
   @initial_state %{socket: nil, pending_commands: %{}}
