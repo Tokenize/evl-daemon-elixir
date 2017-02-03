@@ -6,7 +6,7 @@ defmodule EvlDaemon do
 
   def start(_type, _args) do
     Logger.info "Starting EvlDaemon v#{@version}"
-    EvlDaemon.Email.Application.starting(@version) |> EvlDaemon.Mailer.deliver_now
+    EvlDaemon.Email.Application.starting(@version) |> EvlDaemon.Mailer.deliver_later
 
     EvlDaemon.Supervisor.start_link
   end
