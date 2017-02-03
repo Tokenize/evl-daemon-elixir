@@ -11,18 +11,15 @@ defmodule EvlDaemon.Email.Application do
     |> subject("EvlDaemon v#{version} stopping...")
   end
 
-  def process_terminating(module, reason) when is_tuple(reason) do
-    actual_reason = elem(reason, 0)
-    reason_trace = elem(reason, 1)
-
+  def process_terminating(module, {reason, trace} = payload) when is_tuple(payload) do
     base_email()
-    |> subject("#{inspect module} terminating due to #{inspect actual_reason}")
-    |> text_body(Exception.format_stacktrace(reason_trace) <> default_body())
+    |> subject("#{module} terminating due to #{inspect reason}")
+    |> text_body(default_body() <> format_trace(trace))
   end
 
   def process_terminating(module, reason) do
     base_email()
-    |> subject("#{inspect module} terminating due to #{inspect reason}")
+    |> subject("#{module} terminating due to #{inspect reason}")
   end
 
   def base_email do
@@ -44,5 +41,13 @@ defmodule EvlDaemon.Email.Application do
 
   defp default_body do
     "Node: #{Node.self()}, UTC Time: #{DateTime.utc_now}"
+  end
+
+  defp format_trace(trace) when is_list(trace) do
+    trace |> Exception.format_stacktrace
+  end
+
+  defp format_trace(trace) do
+    (trace |> inspect) <> "\n"
   end
 end
