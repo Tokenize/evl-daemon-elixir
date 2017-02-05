@@ -24,6 +24,12 @@ defmodule EvlDaemon.Event.DataTest do
     Application.put_env(:evl_daemon, :zones, %{})
   end
 
+  test "should return partition description based on partition number" do
+    Application.put_env(:evl_daemon, :partitions, %{"2" => "Basement"})
+    assert EvlDaemon.Event.Data.description("6502CD") == "[Partition: #2 Basement]"
+    Application.put_env(:evl_daemon, :partitions, %{})
+  end
+
   test "should return Keypad LED state" do
     assert EvlDaemon.Event.Data.description("51081FF") == "[Ready LED, Backlight LED]"
   end

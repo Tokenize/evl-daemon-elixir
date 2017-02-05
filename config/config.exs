@@ -8,5 +8,6 @@ config :evl_daemon, password: "SECRET"
 config :evl_daemon, auto_connect: false
 config :evl_daemon, event_notifiers: []
 config :evl_daemon, zones: %{}
+config :evl_daemon, partitions: %{}
 config :evl_daemon, system_emails_sender: "noreply@example.com"
 config :evl_daemon, system_emails_recipient: "user@example.com"

@@ -47,11 +47,11 @@ defmodule EvlDaemon.Event.Data do
   end
 
   defp do_description("652", <<partition::binary-size(1), mode::binary>>) do
-    "[Partition: " <> partition <> ", Mode: " <> do_zone_armed_mode(mode) <> "]"
+    "[Partition: " <> do_partition_description(partition) <> ", Mode: " <> do_zone_armed_mode(mode) <> "]"
   end
 
   defp do_description(command, <<partition::binary-size(1), zone::binary>>) when command in @partition_zone_commands do
-    "[Partition: " <> partition <> ", Zone: " <> do_zone_description(zone) <> "]"
+    "[Partition: " <> do_partition_description(partition) <> ", Zone: " <> do_zone_description(zone) <> "]"
   end
 
   defp do_description(command, zone) when command in @zone_commands do
@@ -59,7 +59,7 @@ defmodule EvlDaemon.Event.Data do
   end
 
   defp do_description(command, partition) when command in @partition_commands do
-    "[Partition: " <> partition <> "]"
+    "[Partition: " <> do_partition_description(partition) <> "]"
   end
 
   defp do_description(_command, code) do
@@ -72,6 +72,15 @@ defmodule EvlDaemon.Event.Data do
     case zone_desc do
       nil -> zone
       _ -> "#" <> String.trim_leading(zone, "0") <> " " <> zone_desc
+    end
+  end
+
+  defp do_partition_description(partition) do
+    partition_desc = Application.get_env(:evl_daemon, :partitions) |> Map.get(partition)
+
+    case partition_desc do
+      nil -> partition
+      _ -> "#" <> partition <> " " <> partition_desc
     end
   end
 

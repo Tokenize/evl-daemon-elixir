@@ -123,6 +123,12 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       hidden: false,
       to: "evl_daemon.zones"
     ],
+    "evl_daemon.partitions": [
+      commented: true,
+      doc: "Partition mapping in the form of [number, \"description\"].",
+      hidden: false,
+      to: "evl_daemon.partitions"
+    ],
     "evl_daemon.system_emails_sender": [
       commented: false,
       datatype: :binary,
@@ -157,6 +163,18 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
          Map.put(
            zone_map,
            zone |> to_string |> String.pad_leading(3, "0"),
+           hd(description)
+         )
+      end)
+    end,
+    "evl_daemon.partitions": fn (conf) ->
+      [{key, partition_string}]  = Conform.Conf.get(conf, "evl_daemon.partitions")
+
+      Poison.Parser.parse!("[#{partition_string}]")
+      |> Enum.reduce(Map.new, fn ([partition | description], partition_map) ->
+         Map.put(
+           partition_map,
+           partition |> to_string,
            hd(description)
          )
       end)
