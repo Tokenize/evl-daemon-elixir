@@ -19,6 +19,9 @@ evl_daemon.event_notifiers = [type = "console"], [type = "email", recipient = "u
 # Zone mapping in the form of [number, "description"].
 evl_daemon.zones = [1, "Front door"], [2, "Garage door"], [3, "Basement door"], [4, "Kitchen door"], [5, "Office motion sensor"], [6, "Family room motion sensor"], [7, "Basement glass break sensor"], [8, "Basement motion sensor"]
 
+# Partition mapping in the form of [number, "description"].
+evl_daemon.partitions = [1, "Main"]
+
 # The sender address for system emails.
 evl_daemon.system_emails_sender = "noreply@example.com"
 
