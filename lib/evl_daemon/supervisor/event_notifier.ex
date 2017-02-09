@@ -6,7 +6,7 @@ defmodule EvlDaemon.Supervisor.EventNotifier do
   end
 
   def init([]) do
-    child_processes = for [notifier | opts] <- active_notifiers() do
+    child_processes = for [notifier | opts] <- (active_notifiers() ++ active_storage_engines()) do
       worker(notifier, opts)
     end
 
@@ -21,5 +21,16 @@ defmodule EvlDaemon.Supervisor.EventNotifier do
         "sms" -> [EvlDaemon.EventNotifier.SMS, List.flatten(Keyword.delete(notifier, :type))]
       end
     end
+  end
+
+  defp active_storage_engines do
+    for storage_engine <- Application.get_env(:evl_daemon, :storage_engines) do
+      case Keyword.get(storage_engine, :type) do
+        "memory" -> [EvlDaemon.StorageEngine.Memory, List.flatten(Keyword.delete(storage_engine, :type))]
+        _ -> nil
+      end
+    end
+
+    |> Enum.reject(fn engine -> is_nil(engine) end)
   end
 end

@@ -117,6 +117,18 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       hidden: false,
       to: "evl_daemon.event_notifiers"
     ],
+    "evl_daemon.storage_engines": [
+      commented: false,
+      datatype: [
+        list: [list: {:atom, :binary}]
+      ],
+      default: [
+        [type: :memory, maximum_events: "100"]
+      ],
+      doc: "Enabled storage engines and their options.",
+      hidden: false,
+      to: "evl_daemon.storage_engines"
+    ],
     "evl_daemon.zones": [
       commented: true,
       doc: "Zone mapping in the form of [number, \"description\"].",
