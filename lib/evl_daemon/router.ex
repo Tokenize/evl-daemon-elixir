@@ -7,7 +7,7 @@ defmodule EvlDaemon.Router do
   plug :dispatch
 
   def start_link do
-    {:ok, _} = Plug.Adapters.Cowboy.http(__MODULE__, [port: port_number()])
+    {:ok, _} = Plug.Adapters.Cowboy.http(__MODULE__, [], [port: port_number()])
   end
 
   match _ do

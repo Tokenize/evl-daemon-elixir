@@ -5,3 +5,4 @@ use Mix.Config
 
 config :logger, level: :info
 config :evl_daemon, EvlDaemon.Mailer, adapter: Bamboo.TestAdapter
+config :evl_daemon, api_port: 4001
