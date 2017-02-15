@@ -4,6 +4,8 @@ defmodule EvlDaemon.Event do
   TPI responses.
   """
 
+  @derive [Poison.Encoder]
+
   defstruct [:command, :data, :description, :priority, :timestamp]
 
   @doc """

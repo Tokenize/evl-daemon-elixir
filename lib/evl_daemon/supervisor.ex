@@ -9,6 +9,7 @@ defmodule EvlDaemon.Supervisor do
     child_processes = [
       supervisor(EvlDaemon.Supervisor.EventDispatcher, []),
       supervisor(EvlDaemon.Supervisor.Connection, []),
+      worker(EvlDaemon.Router, [])
     ]
 
     supervise(child_processes, strategy: :one_for_one)
