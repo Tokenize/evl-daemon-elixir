@@ -62,6 +62,23 @@ defmodule EvlDaemon.Event.Data do
     "[Partition: " <> do_partition_description(partition) <> "]"
   end
 
+  defp do_description("849", code) do
+    state = (code |> String.to_integer(16))
+    trouble_statuses = [
+      {"Service is Required", state &&& 1},
+      {"AC Power Lost", state &&& 2},
+      {"Telephone Line Fault", state &&& 4},
+      {"Failure to Communicate", state &&& 8},
+      {"Sensor/Zone Fault", state &&& 16},
+      {"Sensor/Zone Tamper", state &&& 32},
+      {"Sensor/Zone Low Battery", state &&& 64},
+      {"Loss of Time", state &&& 128}
+    ]
+    |> Enum.filter_map(&(elem(&1, 1) != 0), &(elem(&1, 0)))
+
+    "[" <> Enum.join(trouble_statuses, ", ") <> "]"
+  end
+
   defp do_description(_command, code) do
     code
   end

@@ -37,4 +37,8 @@ defmodule EvlDaemon.Event.DataTest do
   test "should return 'Partition Armed' number & mode" do
     assert EvlDaemon.Event.Data.description("65211FF") == "[Partition: 1, Mode: Stay]"
   end
+
+  test "should return correct Verbose Trouble Status" do
+    assert EvlDaemon.Event.Data.description("849080D") == "[Failure to Communicate]"
+  end
 end
