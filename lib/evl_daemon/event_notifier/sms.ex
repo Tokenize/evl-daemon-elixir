@@ -8,7 +8,7 @@ defmodule EvlDaemon.EventNotifier.SMS do
   use EvlDaemon.EventNotifier
 
   def filter(event) do
-    Enum.member?([:high, :critical], event.priority)
+    Enum.member?([:high], event.priority)
   end
 
   def notify(event, opts), do: do_notify(event, opts)
