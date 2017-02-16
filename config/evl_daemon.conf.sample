@@ -33,3 +33,6 @@ evl_daemon.system_emails_recipient = "user@example.com"
 
 # The logging level for the default logger.
 evl_daemon.log_level = info
+
+# The authentication token to access EVL Daemon over HTTP.
+evl_daemon.auth_token = SECRET

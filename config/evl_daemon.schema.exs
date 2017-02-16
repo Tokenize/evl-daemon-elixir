@@ -164,7 +164,15 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       doc: "The logging level for the default logger.",
       hidden: false,
       to: "logger.level"
-    ]
+    ],
+    "evl_daemon.auth_token": [
+      commented: false,
+      datatype: :binary,
+      default: "SECRET",
+      doc: "The authentication token to access EVL Daemon over HTTP.",
+      hidden: false,
+      to: "evl_daemon.auth_token"
+    ],
   ],
   transforms: [
     "evl_daemon.zones": fn (conf) ->

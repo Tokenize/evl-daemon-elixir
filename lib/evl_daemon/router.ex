@@ -2,6 +2,7 @@ defmodule EvlDaemon.Router do
   use Plug.Router
 
   plug Plug.Logger
+  plug EvlDaemon.Plug.AuthTokenValidator
   plug EvlDaemon.Plug.Events
   plug :match
   plug :dispatch
