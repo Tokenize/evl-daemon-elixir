@@ -8,9 +8,9 @@ defmodule EvlDaemon.Plug.AuthTokenValidator do
       conn
       |> send_resp(:unauthorized, "You need to specify a valid authentication token.")
       |> halt
+    else
+      conn
     end
-
-    conn
   end
 
   # Private functions
