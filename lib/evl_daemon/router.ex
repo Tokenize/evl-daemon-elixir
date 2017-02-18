@@ -4,6 +4,7 @@ defmodule EvlDaemon.Router do
   plug Plug.Logger, log: :debug
   plug EvlDaemon.Plug.AuthTokenValidator
   plug EvlDaemon.Plug.Events
+  plug EvlDaemon.Plug.SystemStatus
   plug :match
   plug :dispatch
 
