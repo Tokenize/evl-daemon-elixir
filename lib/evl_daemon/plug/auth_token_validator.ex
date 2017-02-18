@@ -6,7 +6,8 @@ defmodule EvlDaemon.Plug.AuthTokenValidator do
   def call(conn, _opts) do
     if invalid_auth_token?(conn) do
       conn
-      |> send_resp(:unauthorized, "You need to specify a valid authentication token.")
+      |> put_resp_content_type("application/json")
+      |> send_resp(:unauthorized, Poison.encode!(unauthorized_response_body()))
       |> halt
     else
       conn
@@ -28,5 +29,9 @@ defmodule EvlDaemon.Plug.AuthTokenValidator do
 
   defp auth_token do
     Application.get_env(:evl_daemon, :auth_token)
+  end
+
+  defp unauthorized_response_body do
+    %{error: "You need to specify a valid authentication token."}
   end
 end
