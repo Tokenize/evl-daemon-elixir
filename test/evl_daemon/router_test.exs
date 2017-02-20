@@ -85,5 +85,6 @@ defmodule EvlDaemon.RouterTest do
     assert Map.has_key?(decoded_response, "event_notifiers")
     assert Map.has_key?(decoded_response, "storage_engines")
     assert Map.has_key?(decoded_response, "connection")
+    assert Map.has_key?(decoded_response, "node_uptime")
   end
 end

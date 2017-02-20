@@ -18,7 +18,8 @@ defmodule EvlDaemon.Plug.SystemStatus do
     %{
       connection: configured_connection(),
       event_notifiers: configured_event_notifiers(),
-      storage_engines: configured_storage_engines()
+      storage_engines: configured_storage_engines(),
+      node_uptime: node_uptime()
     }
   end
 
@@ -42,5 +43,18 @@ defmodule EvlDaemon.Plug.SystemStatus do
       host: (Application.get_env(:evl_daemon, :host) |> to_string),
       port: Application.get_env(:evl_daemon, :port)
     }
+  end
+
+  defp node_uptime do
+    {uptime, _time_since_last_call} = :erlang.statistics(:wall_clock)
+
+    {formatted_uptime, unit} = case (uptime / 1000) do
+      seconds when seconds <= 60 -> {seconds, "seconds"}
+      seconds when seconds > 60 and seconds <= 3600 -> {seconds / 60, "minutes"}
+      seconds when seconds > 3600 and seconds <= 86400 -> {seconds / 3600000, "hours"}
+      seconds -> {seconds / 86400000, "days"}
+    end
+
+    "#{formatted_uptime |> Float.round(2)} #{unit}."
   end
 end
