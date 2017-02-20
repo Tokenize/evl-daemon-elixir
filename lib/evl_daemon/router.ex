@@ -13,7 +13,7 @@ defmodule EvlDaemon.Router do
   end
 
   match _ do
-    send_resp(conn, 404, "endpoint invalid.")
+    send_resp(conn, :not_found, "endpoint invalid.")
   end
 
   # Private functions
