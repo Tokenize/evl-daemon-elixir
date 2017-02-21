@@ -51,8 +51,8 @@ defmodule EvlDaemon.Plug.SystemStatus do
     {formatted_uptime, unit} = case (uptime / 1000) do
       seconds when seconds <= 60 -> {seconds, "seconds"}
       seconds when seconds > 60 and seconds <= 3600 -> {seconds / 60, "minutes"}
-      seconds when seconds > 3600 and seconds <= 86400 -> {seconds / 3600000, "hours"}
-      seconds -> {seconds / 86400000, "days"}
+      seconds when seconds > 3600 and seconds <= 86400 -> {seconds / 3600, "hours"}
+      seconds -> {seconds / 86400, "days"}
     end
 
     "#{formatted_uptime |> Float.round(2)} #{unit}."
