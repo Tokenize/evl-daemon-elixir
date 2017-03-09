@@ -110,8 +110,8 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
         list: [list: {:atom, :binary}]
       ],
       default: [
-        [type: :console],
-        [type: :email, recipient: "person@example.com", sender: "noreply@example.com"]
+        [type: "console"],
+        [type: "email", recipient: "person@example.com", sender: "noreply@example.com"]
       ],
       doc: "Enabled event notifiers and their options.",
       hidden: false,
@@ -123,7 +123,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
         list: [list: {:atom, :binary}]
       ],
       default: [
-        [type: :memory, maximum_events: "100"]
+        [type: "memory", maximum_events: "100"]
       ],
       doc: "Enabled storage engines and their options.",
       hidden: false,
