@@ -34,8 +34,8 @@ defmodule EvlDaemon.Mixfile do
   defp deps do
     [
       { :bamboo, "~> 0.8" },
-      { :conform, "~> 2.1.2" },
-      { :distillery, "~> 1.1.0"},
+      { :conform, "~> 2.3.0" },
+      { :distillery, "~> 1.2.2"},
       { :httpoison, "~> 0.10.0" },
       { :plug, "~> 1.3.0" },
       { :cowboy, "~> 1.1.2" }

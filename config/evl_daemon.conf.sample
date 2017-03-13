@@ -17,7 +17,7 @@ evl_daemon.auto_connect = true
 evl_daemon.event_notifiers = [type = "console"], [type = "email", recipient = "user@example.com", sender = "noreply@example.com"], [type = "sms", from = "+12345678", to = "+19876543", sid = "SID", auth_token = "Twilio AUTH TOKEN"]
 
 # Enabled storage engines and their options.
-evl_daemon.storage_engines = [type = "memory", maximum_events = "100"], [type = "dummy"],
+evl_daemon.storage_engines = [type = "memory", maximum_events = "100"]
 
 # Zone mapping in the form of [number, "description"].
 evl_daemon.zones = [1, "Front door"], [2, "Garage door"], [3, "Basement door"], [4, "Kitchen door"], [5, "Office motion sensor"], [6, "Family room motion sensor"], [7, "Basement glass break sensor"], [8, "Basement motion sensor"]

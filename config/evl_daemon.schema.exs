@@ -50,9 +50,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
 """
 [
   extends: [],
-  import: [
-    :poison
-  ],
+  import: [],
   mappings: [
     "evl_daemon.mailer_api_key": [
       commented: false,
@@ -131,12 +129,18 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     ],
     "evl_daemon.zones": [
       commented: true,
+      datatype: [
+        list: [list: :binary]
+      ],
       doc: "Zone mapping in the form of [number, \"description\"].",
       hidden: false,
       to: "evl_daemon.zones"
     ],
     "evl_daemon.partitions": [
       commented: true,
+      datatype: [
+        list: [list: :binary]
+      ],
       doc: "Partition mapping in the form of [number, \"description\"].",
       hidden: false,
       to: "evl_daemon.partitions"
@@ -176,27 +180,25 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
   ],
   transforms: [
     "evl_daemon.zones": fn (conf) ->
-      [{key, zone_string}]  = Conform.Conf.get(conf, "evl_daemon.zones")
+      [{key, zones}]  = Conform.Conf.get(conf, "evl_daemon.zones")
 
-      Poison.Parser.parse!("[#{zone_string}]")
-      |> Enum.reduce(Map.new, fn ([zone | description], zone_map) ->
-         Map.put(
-           zone_map,
-           zone |> to_string |> String.pad_leading(3, "0"),
-           hd(description)
-         )
+      Enum.reduce(zones, Map.new, fn ([zone | description], zone_map) ->
+        Map.put(
+          zone_map,
+          zone |> to_string |> String.pad_leading(3, "0"),
+          List.to_string(description)
+        )
       end)
     end,
     "evl_daemon.partitions": fn (conf) ->
-      [{key, partition_string}]  = Conform.Conf.get(conf, "evl_daemon.partitions")
+      [{key, partitions}]  = Conform.Conf.get(conf, "evl_daemon.partitions")
 
-      Poison.Parser.parse!("[#{partition_string}]")
-      |> Enum.reduce(Map.new, fn ([partition | description], partition_map) ->
-         Map.put(
-           partition_map,
-           partition |> to_string,
-           hd(description)
-         )
+      Enum.reduce(partitions, Map.new, fn ([partition | description], partition_map) ->
+        Map.put(
+          partition_map,
+          partition |> to_string,
+          List.to_string(description)
+        )
       end)
     end
   ],
