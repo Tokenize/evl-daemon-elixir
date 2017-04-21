@@ -7,8 +7,9 @@ defmodule EvlDaemon.StorageEngine.Memory do
   event gets deleted.
   """
 
-  use GenServer
   require Logger
+  use GenServer
+  use EvlDaemon.EventSubscriber
 
   @default_maxiumum_events "1000"
 
@@ -17,12 +18,6 @@ defmodule EvlDaemon.StorageEngine.Memory do
     state = {:queue.new, 0, maximum_events}
 
     GenServer.start_link(__MODULE__, state, name: __MODULE__)
-  end
-
-  def init(state) do
-    EvlDaemon.EventDispatcher.subscribe([])
-
-    {:ok, state}
   end
 
   @doc """

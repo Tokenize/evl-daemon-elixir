@@ -13,16 +13,7 @@ defmodule EvlDaemon.EventNotifier do
       require Logger
       use GenServer
       use EvlDaemon.ErrorNotifier
-
-      def start_link(opts \\ []) do
-        GenServer.start_link(__MODULE__, opts)
-      end
-
-      def init(opts) do
-        EvlDaemon.EventDispatcher.subscribe([])
-
-        {:ok, opts}
-      end
+      use EvlDaemon.EventSubscriber
 
       @doc """
       Used by the dispatcher to only send events that we are interested in.
