@@ -4,7 +4,6 @@ defmodule EvlDaemon.EventNotifier.SMS do
   via SMS.
   """
 
-  require Logger
   use EvlDaemon.EventNotifier
 
   def filter(event) do

@@ -7,7 +7,6 @@ defmodule EvlDaemon.StorageEngine.Memory do
   event gets deleted.
   """
 
-  require Logger
   use GenServer
   use EvlDaemon.EventSubscriber
 

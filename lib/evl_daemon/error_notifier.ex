@@ -6,8 +6,6 @@ defmodule EvlDaemon.ErrorNotifier do
 
   defmacro __using__(_) do
     quote location: :keep do
-      require Logger
-
       # Callbacks
 
       @doc false

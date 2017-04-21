@@ -10,7 +10,6 @@ defmodule EvlDaemon.EventNotifier do
     quote location: :keep do
       @behaviour EvlDaemon.EventNotifier
 
-      require Logger
       use GenServer
       use EvlDaemon.ErrorNotifier
       use EvlDaemon.EventSubscriber

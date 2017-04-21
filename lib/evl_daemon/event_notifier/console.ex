@@ -4,6 +4,7 @@ defmodule EvlDaemon.EventNotifier.Console do
   to the console.
   """
 
+  require Logger
   use EvlDaemon.EventNotifier
 
   def filter(_event), do: true
