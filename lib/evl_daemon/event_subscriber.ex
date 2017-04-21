@@ -19,6 +19,10 @@ defmodule EvlDaemon.EventSubscriber do
         raise "Override me!"
       end
 
+      def handle_info(_info, state) do
+        {:noreply, state}
+      end
+
       defoverridable [start_link: 1, init: 1, handle_info: 2]
     end
   end

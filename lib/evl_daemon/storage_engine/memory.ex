@@ -42,8 +42,4 @@ defmodule EvlDaemon.StorageEngine.Memory do
 
     {:noreply, state}
   end
-
-  def handle_info(_info, state) do
-    {:noreply, state}
-  end
 end
