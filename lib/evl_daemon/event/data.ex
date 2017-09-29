@@ -41,7 +41,8 @@ defmodule EvlDaemon.Event.Data do
       {"Fire LED", state &&& 64},
       {"Backlight LED", state &&& 128}
     ]
-    |> Enum.filter_map(&(elem(&1, 1) != 0), &(elem(&1, 0)))
+    |> Enum.filter(&(elem(&1, 1) != 0))
+    |> Enum.map(&(elem(&1, 0)))
 
     "[" <> Enum.join(keypad_states, ", ") <> "]"
   end
@@ -74,7 +75,8 @@ defmodule EvlDaemon.Event.Data do
       {"Sensor/Zone Low Battery", state &&& 64},
       {"Loss of Time", state &&& 128}
     ]
-    |> Enum.filter_map(&(elem(&1, 1) != 0), &(elem(&1, 0)))
+    |> Enum.filter(&(elem(&1, 1) != 0))
+    |> Enum.map(&(elem(&1, 0)))
 
     "[" <> Enum.join(trouble_statuses, ", ") <> "]"
   end
