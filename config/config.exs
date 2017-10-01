@@ -13,3 +13,4 @@ config :evl_daemon, partitions: %{}
 config :evl_daemon, system_emails_sender: "noreply@example.com"
 config :evl_daemon, system_emails_recipient: "user@example.com"
 config :evl_daemon, auth_token: "SECRET"
+config :pid_file, file: "/tmp/evl_daemon.pid"
