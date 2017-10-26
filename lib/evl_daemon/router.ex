@@ -2,6 +2,7 @@ defmodule EvlDaemon.Router do
   use Plug.Router
 
   plug Plug.Logger, log: :debug
+  plug Plug.Parsers, parsers: [:json], json_decoder: Poison
   plug EvlDaemon.Plug.AuthTokenValidator
   plug EvlDaemon.Plug.Events
   plug EvlDaemon.Plug.SystemStatus
