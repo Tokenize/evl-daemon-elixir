@@ -18,6 +18,20 @@ defmodule EvlDaemon.Event.Data do
     do_description(EvlDaemon.TPI.command_part(payload), EvlDaemon.TPI.data_part(payload))
   end
 
+  @doc """
+  Return the event's partition (if applicable).
+  """
+  def partition(payload) do
+    do_partition(EvlDaemon.TPI.command_part(payload), EvlDaemon.TPI.data_part(payload))
+  end
+
+  @doc """
+  Return the event's zone (if applicable).
+  """
+  def zone(payload) do
+    do_zone(EvlDaemon.TPI.command_part(payload), EvlDaemon.TPI.data_part(payload))
+  end
+
   # Private functions
 
   defp do_description("505", code) do
@@ -111,4 +125,26 @@ defmodule EvlDaemon.Event.Data do
       "3" -> "Zero-Entry-Stay"
     end
   end
+
+  defp do_partition(command, data) when command in @partition_commands do
+    data
+  end
+
+  defp do_partition(command, data) when command in @partition_zone_commands do
+    data
+    |> String.at(0)
+  end
+
+  defp do_partition(_command, _data) do; nil end
+
+  defp do_zone(command, data) when command in @zone_commands do
+    data
+  end
+
+  defp do_zone(command, data) when command in @partition_zone_commands do
+    data
+    |> String.slice(1..-1)
+  end
+
+  defp do_zone(_command, _data) do; nil end
 end

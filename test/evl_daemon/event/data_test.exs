@@ -41,4 +41,28 @@ defmodule EvlDaemon.Event.DataTest do
   test "should return correct Verbose Trouble Status" do
     assert EvlDaemon.Event.Data.description("849080D") == "[Failure to Communicate]"
   end
+
+  test "should return partition for partition commands" do
+    assert EvlDaemon.Event.Data.partition("6502CD") == "2"
+  end
+
+  test "should return partition for partition-zone commands" do
+    assert EvlDaemon.Event.Data.partition("60130045E") == "3"
+  end
+
+  test "should return nil partition for partition-less commands" do
+    assert EvlDaemon.Event.Data.partition("620000058") == nil
+  end
+
+  test "should return zone for zone commands" do
+    assert EvlDaemon.Event.Data.zone("60900332") == "003"
+  end
+
+  test "should return zone for partition-zone commands" do
+    assert EvlDaemon.Event.Data.zone("60130045E") == "004"
+  end
+
+  test "should return nil zone for zone-less commands" do
+    assert EvlDaemon.Event.Data.zone("620000058") == nil
+  end
 end

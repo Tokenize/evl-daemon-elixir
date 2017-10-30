@@ -6,7 +6,7 @@ defmodule EvlDaemon.Event do
 
   @derive [Poison.Encoder]
 
-  defstruct [:command, :data, :description, :priority, :timestamp]
+  defstruct [:command, :data, :description, :priority, :partition, :zone, :timestamp]
 
   @doc """
   Return a new Event based on the payload and timestamp.
@@ -17,6 +17,8 @@ defmodule EvlDaemon.Event do
       data: EvlDaemon.TPI.data_part(payload),
       description: description(payload),
       priority: EvlDaemon.Event.Command.priority(payload),
+      partition: EvlDaemon.Event.Data.partition(payload),
+      zone: EvlDaemon.Event.Data.zone(payload),
       timestamp: timestamp,
     }
   end
