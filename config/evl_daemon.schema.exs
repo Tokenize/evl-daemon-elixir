@@ -127,6 +127,18 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       hidden: false,
       to: "evl_daemon.storage_engines"
     ],
+    "evl_daemon.tasks": [
+      commented: false,
+      datatype: [
+        list: [list: {:atom, :binary}]
+      ],
+      default: [
+        [type: "status_report"]
+      ],
+      doc: "Enabled tasks and their options.",
+      hidden: false,
+      to: "evl_daemon.tasks"
+    ],
     "evl_daemon.zones": [
       commented: true,
       datatype: [

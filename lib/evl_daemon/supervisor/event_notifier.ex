@@ -6,7 +6,7 @@ defmodule EvlDaemon.Supervisor.EventNotifier do
   end
 
   def init([]) do
-    child_processes = for [notifier | opts] <- (active_notifiers() ++ active_storage_engines()) do
+    child_processes = for [notifier | opts] <- (active_notifiers() ++ active_storage_engines() ++ active_tasks()) do
       worker(notifier, opts)
     end
 
@@ -32,5 +32,16 @@ defmodule EvlDaemon.Supervisor.EventNotifier do
     end
 
     |> Enum.reject(fn engine -> is_nil(engine) end)
+  end
+
+  defp active_tasks do
+    for task <- Application.get_env(:evl_daemon, :tasks) do
+      case Keyword.get(task, :type) do
+        "status_report" -> [EvlDaemon.Task.StatusReport, List.flatten(Keyword.delete(task, :type))]
+        _ -> nil
+      end
+    end
+
+    |> Enum.reject(fn task -> is_nil(task) end)
   end
 end
