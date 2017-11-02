@@ -59,7 +59,8 @@ defmodule EvlDaemon.Event.Command do
     "900" => [description: "Code Required", priority: :high],
     "912" => [description: "Command Output Pressed", priority: :high],
     "921" => [description: "Master Code Required", priority: :high],
-    "922" => [description: "Installers Code Required", priority: :high]
+    "922" => [description: "Installers Code Required", priority: :high],
+    "S01" => [description: "Software Zone Alarm", priority: :high],
   }
 
   @doc """
