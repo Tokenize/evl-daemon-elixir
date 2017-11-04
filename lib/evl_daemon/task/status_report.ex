@@ -1,7 +1,7 @@
 defmodule EvlDaemon.Task.StatusReport do
   @moduledoc """
-  This module monitors the status for all zones & partitions and queries the system if
-  it doesn't receive any events for a pre-determined period of time.
+  This module monitors all events then returns the latest event
+  triggered for each zone & partition.
   """
 
   use GenServer
