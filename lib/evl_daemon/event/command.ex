@@ -51,7 +51,7 @@ defmodule EvlDaemon.Event.Command do
     "816" => [description: "Buffer Near Full", priority: :critical],
     "829" => [description: "General System Tamper", priority: :critical],
     "830" => [description: "General System Tamper Restore", priority: :medium],
-    "840" => [description: "Trouble LED ON", priority: :high],
+    "840" => [description: "Trouble LED ON", priority: :critical],
     "841" => [description: "Trouble LED OFF", priority: :medium],
     "842" => [description: "Fire Trouble Alarm", priority: :high],
     "843" => [description: "Fire Trouble Alarm Restore", priority: :medium],
