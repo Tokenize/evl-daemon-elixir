@@ -9,6 +9,7 @@ defmodule EvlDaemon.Supervisor do
     child_processes = [
       supervisor(EvlDaemon.Supervisor.EventDispatcher, []),
       supervisor(EvlDaemon.Supervisor.Connection, []),
+      supervisor(EvlDaemon.Supervisor.Task, []),
       worker(EvlDaemon.Router, [])
     ]
 

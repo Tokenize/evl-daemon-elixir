@@ -5,6 +5,7 @@ defmodule EvlDaemon.Router do
   plug Plug.Parsers, parsers: [:json], json_decoder: Poison
   plug EvlDaemon.Plug.AuthTokenValidator
   plug EvlDaemon.Plug.Events
+  plug EvlDaemon.Plug.Tasks
   plug EvlDaemon.Plug.SystemStatus
   plug :match
   plug :dispatch
