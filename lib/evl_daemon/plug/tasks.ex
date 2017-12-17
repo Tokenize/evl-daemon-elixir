@@ -7,43 +7,46 @@ defmodule EvlDaemon.Plug.Tasks do
   def init(options), do: options
 
   def call(%Plug.Conn{request_path: "/tasks", method: "POST", body_params: %{"type" => type} = params} = conn, _opts) when type in @task_types do
-    {code, message} = do_create_task(params)
+    task_opts = Map.delete(params, "type") |> Map.to_list
+    {code, message} = do_create_task(task_opts, type)
 
     conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(code, Poison.encode!(message))
-    |> halt
+    |> do_send_response(code, message)
   end
 
   def call(%Plug.Conn{request_path: "/tasks", method: "POST"} = conn, _opts) do
     conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(:unprocessable_entity, Poison.encode!("Unsupported task type."))
-    |> halt
+    |> do_send_unprocessable_entity_response
   end
 
   def call(%Plug.Conn{request_path: "/tasks", method: "DELETE", body_params: %{"type" => type} = params} = conn, _opts) when type in @task_types do
-    {code, message} = do_terminate_task(params)
+    task_opts = Map.delete(params, "type") |> Map.to_list
+    {code, message} = do_terminate_task(task_opts, type)
 
     conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(code, Poison.encode!(message))
-    |> halt
+    |> do_send_response(code, message)
   end
 
   def call(%Plug.Conn{request_path: "/tasks", method: "DELETE"} = conn, _opts) do
     conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(:unprocessable_entity, Poison.encode!("Unsupported task type."))
-    |> halt
+    |> do_send_unprocessable_entity_response
   end
 
   # Private functions
 
-  defp do_create_task(opts) do
-    task_type = opts["type"]
-    task_opts = opts |> Map.delete("type") |> Map.to_list
+  def do_send_response(conn, code, payload) do
+    conn
+    |> put_resp_content_type("application/json")
+    |> send_resp(code, Poison.encode!(payload))
+    |> halt
+  end
 
+  def do_send_unprocessable_entity_response(conn) do
+    conn
+    |> do_send_response(:unprocessable_entity, "Unsupported task type")
+  end
+
+  defp do_create_task(task_opts, task_type) do
     case do_create_task_process(task_opts, task_type) do
       {:ok, _pid} -> {:created, "Task [#{task_type}] created successfully."}
       {_, error} -> {:unprocessable_entity, error}
@@ -61,10 +64,7 @@ defmodule EvlDaemon.Plug.Tasks do
     end
   end
 
-  defp do_terminate_task(opts) do
-    task_type = opts["type"]
-    task_opts = opts |> Map.delete("type") |> Map.to_list
-
+  defp do_terminate_task(task_opts, task_type) do
     case do_terminate_task_process(task_opts, task_type) do
       :ok -> {:ok, "Task [#{task_type}] deleted successfully."}
       {:error, error} -> {:unprocessable_entity, error}
