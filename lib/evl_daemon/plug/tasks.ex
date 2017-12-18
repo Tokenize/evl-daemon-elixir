@@ -7,7 +7,7 @@ defmodule EvlDaemon.Plug.Tasks do
   def init(options), do: options
 
   def call(%Plug.Conn{request_path: "/tasks", method: "POST", body_params: %{"type" => type} = params} = conn, _opts) when type in @task_types do
-    task_opts = Map.delete(params, "type") |> Map.to_list
+    task_opts = atomized_task_opts(params)
     {code, message} = do_create_task(task_opts, type)
 
     conn
@@ -20,7 +20,7 @@ defmodule EvlDaemon.Plug.Tasks do
   end
 
   def call(%Plug.Conn{request_path: "/tasks", method: "DELETE", body_params: %{"type" => type} = params} = conn, _opts) when type in @task_types do
-    task_opts = Map.delete(params, "type") |> Map.to_list
+    task_opts = atomized_task_opts(params)
     {code, message} = do_terminate_task(task_opts, type)
 
     conn
@@ -101,5 +101,13 @@ defmodule EvlDaemon.Plug.Tasks do
   def module_name_for_task_type(type) do
     @tasks
     |> Map.get(type)
+  end
+
+  def atomized_task_opts(opts) do
+    _ = :zones
+
+    Map.delete(opts, "type")
+    |> Enum.map(fn {key, value} -> {String.to_existing_atom(key), value} end)
+    |> Enum.into([], fn {a, b} -> [{a, b}] end)
   end
 end
