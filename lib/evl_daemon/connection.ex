@@ -10,6 +10,10 @@ defmodule EvlDaemon.Connection do
 
   @initial_state %{socket: nil, pending_commands: %{}}
 
+  def child_spec(opts) do
+    %{id: __MODULE__, restart: :permanent, start: {__MODULE__, :start_link, opts}, type: :worker}
+  end
+
   def start_link(state \\ @initial_state) do
     GenServer.start_link(__MODULE__, Map.merge(@initial_state, state), name: __MODULE__)
   end

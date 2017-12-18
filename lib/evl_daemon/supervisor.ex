@@ -7,12 +7,12 @@ defmodule EvlDaemon.Supervisor do
 
   def init([]) do
     child_processes = [
-      supervisor(EvlDaemon.Supervisor.EventDispatcher, []),
-      supervisor(EvlDaemon.Supervisor.Connection, []),
-      supervisor(EvlDaemon.Supervisor.Task, []),
-      worker(EvlDaemon.Router, [])
+      EvlDaemon.Supervisor.EventDispatcher,
+      EvlDaemon.Supervisor.Connection,
+      EvlDaemon.Supervisor.Task,
+      EvlDaemon.Router,
     ]
 
-    supervise(child_processes, strategy: :one_for_one)
+    Supervisor.init(child_processes, strategy: :one_for_one)
   end
 end

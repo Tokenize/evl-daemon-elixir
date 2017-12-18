@@ -7,11 +7,11 @@ defmodule EvlDaemon.EventDispatcher do
   use GenServer
   use EvlDaemon.ErrorNotifier
 
-  def start_link do
+  def start_link(_opts) do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
-  def init(:ok) do
+  def init(_opts) do
     {:ok, []}
   end
   @doc """

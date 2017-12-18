@@ -1,16 +1,16 @@
 defmodule EvlDaemon.Supervisor.Connection do
   use Supervisor
 
-  def start_link do
+  def start_link(_opts) do
     {:ok, _pid} = Supervisor.start_link(__MODULE__, [])
   end
 
   def init(opts) do
     child_processes = [
-      worker(EvlDaemon.Connection, []),
-      worker(EvlDaemon.Client, [opts])
+      EvlDaemon.Connection,
+      {EvlDaemon.Client, [opts]}
     ]
 
-    supervise(child_processes, strategy: :rest_for_one)
+    Supervisor.init(child_processes, strategy: :rest_for_one)
   end
 end

@@ -9,6 +9,10 @@ defmodule EvlDaemon.Client do
 
   @poll_interval 60000
 
+  def child_spec(opts) do
+    %{id: __MODULE__, restart: :permanent, start: {__MODULE__, :start_link, opts}, type: :worker}
+  end
+
   def start_link(opts) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
