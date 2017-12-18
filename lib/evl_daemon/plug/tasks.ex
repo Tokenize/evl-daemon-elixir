@@ -32,6 +32,8 @@ defmodule EvlDaemon.Plug.Tasks do
     |> do_send_unprocessable_entity_response
   end
 
+  def call(conn, _opts), do: conn
+
   # Private functions
 
   def do_send_response(conn, code, payload) do
