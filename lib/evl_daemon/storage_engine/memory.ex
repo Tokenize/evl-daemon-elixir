@@ -22,13 +22,19 @@ defmodule EvlDaemon.StorageEngine.Memory do
   @doc """
   Return a list of all the events in the queue.
   """
-  def all do
-    GenServer.call(__MODULE__, :all)
+  def all(opts \\ []) do
+    GenServer.call(__MODULE__, {:all, opts})
   end
 
   # Callbacks
 
-  def handle_call(:all, _sender, {queue, _queue_size, _maximum_events} = state) do
+  def handle_call({:all, [order: :desc]}, _sender, {queue, _queue_size, _maximum_events} = state) do
+    events = :queue.reverse(queue)
+
+    {:reply, :queue.to_list(events), state}
+  end
+
+  def handle_call({:all, _opts}, _sender, {queue, _queue_size, _maximum_events} = state) do
     {:reply, :queue.to_list(queue), state}
   end
 
