@@ -7,8 +7,6 @@ defmodule EvlDaemon.Plug.TasksTest do
   @task_opts %{"type" => "silent_arm", "zones" => ["001", "003"]}
 
   setup do
-    EvlDaemon.StorageEngine.Memory.start_link([])
-
     Application.put_env(:evl_daemon, :auth_token, "test_token")
 
     on_exit fn ->

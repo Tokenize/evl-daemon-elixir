@@ -6,8 +6,6 @@ defmodule EvlDaemon.RouterTest do
   @opts EvlDaemon.Router.init([])
 
   setup do
-    EvlDaemon.StorageEngine.Memory.start_link([])
-
     Application.put_env(:evl_daemon, :auth_token, "test_token")
 
     :ok
@@ -50,6 +48,8 @@ defmodule EvlDaemon.RouterTest do
   end
 
   test "returns 200 when accessing valid endpoint with valid auth_token" do
+    EvlDaemon.StorageEngine.Memory.start_link([])
+
     conn = conn(:get, "/events?auth_token=test_token")
             |> EvlDaemon.Router.call(@opts)
 

@@ -6,8 +6,6 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
   @opts EvlDaemon.Router.init([])
 
   setup do
-    EvlDaemon.StorageEngine.Memory.start_link([])
-
     Application.put_env(:evl_daemon, :auth_token, "test_token")
 
     :ok

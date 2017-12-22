@@ -15,7 +15,12 @@ defmodule EvlDaemon.Plug.Events do
   # Private functions
 
   defp events do
-    EvlDaemon.StorageEngine.Memory.all([order: :desc])
+    pid = GenServer.whereis(EvlDaemon.StorageEngine.Memory)
+
+    case pid do
+      nil -> []
+      _ -> EvlDaemon.StorageEngine.Memory.all([order: :desc])
+    end
   end
 
   defp encoded_events(%Plug.Conn{query_params: %{"timezone_offset" => offset}}, events) when is_binary(offset) do
