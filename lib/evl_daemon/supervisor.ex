@@ -10,7 +10,7 @@ defmodule EvlDaemon.Supervisor do
       EvlDaemon.Supervisor.EventDispatcher,
       EvlDaemon.Supervisor.Connection,
       EvlDaemon.Supervisor.Task,
-      EvlDaemon.Router,
+      EvlDaemon.Router
     ]
 
     Supervisor.init(child_processes, strategy: :one_for_one)

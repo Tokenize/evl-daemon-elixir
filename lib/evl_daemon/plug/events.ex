@@ -19,13 +19,14 @@ defmodule EvlDaemon.Plug.Events do
 
     case pid do
       nil -> []
-      _ -> EvlDaemon.StorageEngine.Memory.all([order: :desc])
+      _ -> EvlDaemon.StorageEngine.Memory.all(order: :desc)
     end
   end
 
-  defp encoded_events(%Plug.Conn{query_params: %{"timezone_offset" => offset}}, events) when is_binary(offset) do
+  defp encoded_events(%Plug.Conn{query_params: %{"timezone_offset" => offset}}, events)
+       when is_binary(offset) do
     events
-    |> Enum.map(fn (event) ->
+    |> Enum.map(fn event ->
       %{event | timestamp: convert_timestamp(event.timestamp, offset)}
     end)
   end
@@ -35,11 +36,11 @@ defmodule EvlDaemon.Plug.Events do
   end
 
   defp convert_timestamp(timestamp, hour_offset) do
-    offset_in_seconds = (hour_offset |> String.to_integer) * 3600
+    offset_in_seconds = (hour_offset |> String.to_integer()) * 3600
 
     timestamp
-    |> DateTime.from_unix!
-    |> DateTime.to_naive
+    |> DateTime.from_unix!()
+    |> DateTime.to_naive()
     |> NaiveDateTime.add(offset_in_seconds, :second)
   end
 end

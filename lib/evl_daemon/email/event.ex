@@ -4,8 +4,8 @@ defmodule EvlDaemon.Email.Event do
   def build(event, recipient, sender) do
     utc_timestamp =
       event.timestamp
-      |> DateTime.from_unix!
-      |> DateTime.to_string
+      |> DateTime.from_unix!()
+      |> DateTime.to_string()
 
     new_email()
     |> from(sender)

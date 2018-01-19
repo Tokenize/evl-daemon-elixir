@@ -19,7 +19,7 @@ defmodule EvlDaemon.Event do
       priority: EvlDaemon.Event.Command.priority(payload),
       partition: EvlDaemon.Event.Data.partition(payload),
       zone: EvlDaemon.Event.Data.zone(payload),
-      timestamp: timestamp,
+      timestamp: timestamp
     }
   end
 
@@ -27,7 +27,8 @@ defmodule EvlDaemon.Event do
   Return a human readable version of both the command and data portions of the event.
   """
   def description(payload) do
-    (EvlDaemon.Event.Command.description(payload) <> " " <> EvlDaemon.Event.Data.description(payload))
-    |> String.trim
+    (EvlDaemon.Event.Command.description(payload) <>
+       " " <> EvlDaemon.Event.Data.description(payload))
+    |> String.trim()
   end
 end

@@ -6,7 +6,12 @@ defmodule EvlDaemon.EventSubscriber do
   defmacro __using__(_) do
     quote location: :keep do
       def child_spec(opts) do
-        %{id: __MODULE__, restart: :permanent, start: {__MODULE__, :start_link, opts}, type: :worker}
+        %{
+          id: __MODULE__,
+          restart: :permanent,
+          start: {__MODULE__, :start_link, opts},
+          type: :worker
+        }
       end
 
       def start_link(opts \\ []) do
@@ -27,7 +32,7 @@ defmodule EvlDaemon.EventSubscriber do
         {:noreply, state}
       end
 
-      defoverridable [start_link: 1, init: 1, handle_info: 2]
+      defoverridable start_link: 1, init: 1, handle_info: 2
     end
   end
 end

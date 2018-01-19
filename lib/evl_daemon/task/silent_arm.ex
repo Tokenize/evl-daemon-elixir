@@ -16,7 +16,8 @@ defmodule EvlDaemon.Task.SilentArm do
 
   # Callbacks
 
-  def handle_info({:handle_event, %EvlDaemon.Event{command: code} = event}, state) when code in @alarm_triggers do
+  def handle_info({:handle_event, %EvlDaemon.Event{command: code} = event}, state)
+      when code in @alarm_triggers do
     if trigger_alarm?(event.zone, state) do
       EvlDaemon.EventDispatcher.enqueue("S01")
     end
@@ -24,7 +25,8 @@ defmodule EvlDaemon.Task.SilentArm do
     {:noreply, state}
   end
 
-  def handle_info({:handle_event, %EvlDaemon.Event{command: code}}, state) when code in @shutdown_triggers do
+  def handle_info({:handle_event, %EvlDaemon.Event{command: code}}, state)
+      when code in @shutdown_triggers do
     {:stop, :system_armed, state}
   end
 

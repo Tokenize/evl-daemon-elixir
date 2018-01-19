@@ -14,6 +14,7 @@ defmodule EvlDaemon.EventDispatcher do
   def init(_opts) do
     {:ok, []}
   end
+
   @doc """
   Enqueue event and dispatch it as soon as possible.
   """
@@ -41,7 +42,7 @@ defmodule EvlDaemon.EventDispatcher do
   # Private functions
 
   defp do_timestamp do
-    DateTime.utc_now |> DateTime.to_unix
+    DateTime.utc_now() |> DateTime.to_unix()
   end
 
   defp do_dispatch_event(event) do

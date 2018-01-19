@@ -2,11 +2,19 @@ defmodule EvlDaemon.Plug.Tasks do
   import Plug.Conn
 
   @tasks %{"silent_arm" => EvlDaemon.Task.SilentArm}
-  @task_types (@tasks |> Map.keys)
+  @task_types @tasks |> Map.keys()
 
   def init(options), do: options
 
-  def call(%Plug.Conn{request_path: "/tasks", method: "POST", body_params: %{"type" => type} = params} = conn, _opts) when type in @task_types do
+  def call(
+        %Plug.Conn{
+          request_path: "/tasks",
+          method: "POST",
+          body_params: %{"type" => type} = params
+        } = conn,
+        _opts
+      )
+      when type in @task_types do
     task_opts = atomized_task_opts(params)
     {code, message} = do_create_task(task_opts, type)
 
@@ -19,7 +27,15 @@ defmodule EvlDaemon.Plug.Tasks do
     |> do_send_unprocessable_entity_response
   end
 
-  def call(%Plug.Conn{request_path: "/tasks", method: "DELETE", body_params: %{"type" => type} = params} = conn, _opts) when type in @task_types do
+  def call(
+        %Plug.Conn{
+          request_path: "/tasks",
+          method: "DELETE",
+          body_params: %{"type" => type} = params
+        } = conn,
+        _opts
+      )
+      when type in @task_types do
     task_opts = atomized_task_opts(params)
     {code, message} = do_terminate_task(task_opts, type)
 
@@ -86,11 +102,13 @@ defmodule EvlDaemon.Plug.Tasks do
   def fetch_task_pid(task_type) do
     pid = GenServer.whereis(EvlDaemon.Supervisor.Task)
 
-    child_information = Supervisor.which_children(pid) |> Enum.find(fn (child) ->
-      {_id, _pid, _child_type, [child_module]} = child
+    child_information =
+      Supervisor.which_children(pid)
+      |> Enum.find(fn child ->
+        {_id, _pid, _child_type, [child_module]} = child
 
-      child_module == module_name_for_task_type(task_type)
-    end)
+        child_module == module_name_for_task_type(task_type)
+      end)
 
     case child_information do
       {_id, child_pid, _type, _module} -> child_pid

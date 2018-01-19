@@ -1,21 +1,21 @@
 defmodule EvlDaemon.Router do
   use Plug.Router
 
-  plug Plug.Logger, log: :debug
-  plug Plug.Parsers, parsers: [:json], json_decoder: Poison
-  plug EvlDaemon.Plug.AuthTokenValidator
-  plug EvlDaemon.Plug.Events
-  plug EvlDaemon.Plug.Tasks
-  plug EvlDaemon.Plug.SystemStatus
-  plug :match
-  plug :dispatch
+  plug(Plug.Logger, log: :debug)
+  plug(Plug.Parsers, parsers: [:json], json_decoder: Poison)
+  plug(EvlDaemon.Plug.AuthTokenValidator)
+  plug(EvlDaemon.Plug.Events)
+  plug(EvlDaemon.Plug.Tasks)
+  plug(EvlDaemon.Plug.SystemStatus)
+  plug(:match)
+  plug(:dispatch)
 
   def child_spec(opts) do
     %{id: __MODULE__, restart: :permanent, start: {__MODULE__, :start_link, opts}, type: :worker}
   end
 
   def start_link(opts \\ []) do
-    {:ok, _} = Plug.Adapters.Cowboy.http(__MODULE__, opts, [port: port_number()])
+    {:ok, _} = Plug.Adapters.Cowboy.http(__MODULE__, opts, port: port_number())
   end
 
   match _ do

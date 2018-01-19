@@ -42,8 +42,8 @@ defmodule EvlDaemon.Plug.SystemStatus do
 
   defp configured_connection do
     %{
-      alive?: EvlDaemon.Connection.alive?,
-      host: (Application.get_env(:evl_daemon, :host) |> to_string),
+      alive?: EvlDaemon.Connection.alive?(),
+      host: Application.get_env(:evl_daemon, :host) |> to_string,
       port: Application.get_env(:evl_daemon, :port)
     }
   end
@@ -58,12 +58,13 @@ defmodule EvlDaemon.Plug.SystemStatus do
   defp node_uptime do
     {uptime, _time_since_last_call} = :erlang.statistics(:wall_clock)
 
-    {formatted_uptime, unit} = case (uptime / 1000) do
-      seconds when seconds <= 60 -> {seconds, "seconds"}
-      seconds when seconds > 60 and seconds <= 3600 -> {seconds / 60, "minutes"}
-      seconds when seconds > 3600 and seconds <= 86400 -> {seconds / 3600, "hours"}
-      seconds -> {seconds / 86400, "days"}
-    end
+    {formatted_uptime, unit} =
+      case uptime / 1000 do
+        seconds when seconds <= 60 -> {seconds, "seconds"}
+        seconds when seconds > 60 and seconds <= 3600 -> {seconds / 60, "minutes"}
+        seconds when seconds > 3600 and seconds <= 86400 -> {seconds / 3600, "hours"}
+        seconds -> {seconds / 86400, "days"}
+      end
 
     "#{formatted_uptime |> Float.round(2)} #{unit}."
   end
@@ -80,7 +81,7 @@ defmodule EvlDaemon.Plug.SystemStatus do
   def partition_statuses do
     :partitions
     |> get_status_report()
-    |> Enum.reduce(%{}, fn ({partition, description}, statuses) ->
+    |> Enum.reduce(%{}, fn {partition, description}, statuses ->
       Map.merge(statuses, %{partition => description})
     end)
   end
@@ -88,7 +89,7 @@ defmodule EvlDaemon.Plug.SystemStatus do
   def zone_statuses do
     :zones
     |> get_status_report()
-    |> Enum.reduce(%{}, fn ({zone, description}, statuses) ->
+    |> Enum.reduce(%{}, fn {zone, description}, statuses ->
       Map.merge(statuses, %{zone => description})
     end)
   end

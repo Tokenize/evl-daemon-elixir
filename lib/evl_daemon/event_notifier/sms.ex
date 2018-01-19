@@ -25,8 +25,8 @@ defmodule EvlDaemon.EventNotifier.SMS do
     sid = Keyword.get(opts, :sid)
     auth_token = Keyword.get(opts, :auth_token)
 
-    hashed_credentials = (sid <> ":" <> auth_token) |> Base.encode64
-    {"Authorization", ("Basic " <> hashed_credentials)}
+    hashed_credentials = (sid <> ":" <> auth_token) |> Base.encode64()
+    {"Authorization", "Basic " <> hashed_credentials}
   end
 
   defp content_type_header do
@@ -34,15 +34,18 @@ defmodule EvlDaemon.EventNotifier.SMS do
   end
 
   defp body(event, opts) do
-    timestamp = event.timestamp |> DateTime.from_unix! |> DateTime.to_string
-    notification_message = "[EvlDaemon] Event " <> event.description <> "(#{event.command}:#{event.data}) triggered at " <> timestamp
+    timestamp = event.timestamp |> DateTime.from_unix!() |> DateTime.to_string()
+
+    notification_message =
+      "[EvlDaemon] Event " <>
+        event.description <> "(#{event.command}:#{event.data}) triggered at " <> timestamp
 
     %{
       From: Keyword.get(opts, :from),
       To: Keyword.get(opts, :to),
       Body: notification_message
     }
-    |> URI.encode_query
+    |> URI.encode_query()
   end
 
   defp service_url(opts) do
@@ -50,6 +53,6 @@ defmodule EvlDaemon.EventNotifier.SMS do
   end
 
   defp handle_response({:ok, %{status_code: 201, body: body}}) do
-    body |> Poison.decode!
+    body |> Poison.decode!()
   end
 end

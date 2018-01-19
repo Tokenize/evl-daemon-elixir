@@ -12,24 +12,27 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
   end
 
   test "returns 401 when accessing system status endpoint without auth_token" do
-    conn = conn(:get, "/system_status")
-            |> EvlDaemon.Router.call(@opts)
+    conn =
+      conn(:get, "/system_status")
+      |> EvlDaemon.Router.call(@opts)
 
     assert conn.state == :sent
     assert conn.status == 401
   end
 
   test "returns 401 when accessing system status endpoint with invalid auth_token" do
-    conn = conn(:get, "/system_status?auth_token=invalid")
-            |> EvlDaemon.Router.call(@opts)
+    conn =
+      conn(:get, "/system_status?auth_token=invalid")
+      |> EvlDaemon.Router.call(@opts)
 
     assert conn.state == :sent
     assert conn.status == 401
   end
 
   test "returns 200 & system status with valid auth_token" do
-    conn = conn(:get, "/system_status?auth_token=test_token")
-            |> EvlDaemon.Router.call(@opts)
+    conn =
+      conn(:get, "/system_status?auth_token=test_token")
+      |> EvlDaemon.Router.call(@opts)
 
     decoded_response = Poison.decode!(conn.resp_body)
 

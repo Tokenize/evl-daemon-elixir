@@ -24,7 +24,7 @@ defmodule EvlDaemon.EventNotifier do
       @doc """
       Log the notification for the event.
       """
-      def notify(_event, _opts), do: raise "Override me!"
+      def notify(_event, _opts), do: raise("Override me!")
 
       # Callbacks
 
@@ -35,7 +35,7 @@ defmodule EvlDaemon.EventNotifier do
         {:noreply, opts}
       end
 
-      defoverridable [filter: 1, notify: 2]
+      defoverridable filter: 1, notify: 2
     end
   end
 end

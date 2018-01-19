@@ -2,12 +2,14 @@ defmodule EvlDaemon.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :evl_daemon,
-     version: "0.2.0",
-     elixir: "~> 1.5",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps()]
+    [
+      app: :evl_daemon,
+      version: "0.2.0",
+      elixir: "~> 1.6",
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      deps: deps()
+    ]
   end
 
   # Configuration for the OTP application
@@ -16,7 +18,8 @@ defmodule EvlDaemon.Mixfile do
   def application do
     [
       extra_applications: [
-        :logger, :plug
+        :logger,
+        :plug
       ],
       mod: {EvlDaemon, []}
     ]
@@ -33,13 +36,13 @@ defmodule EvlDaemon.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      { :bamboo, "~> 0.8" },
-      { :conform, "~> 2.4.0" },
-      { :distillery, "~> 1.4.0", runtime: false},
-      { :httpoison, "~> 0.13.0" },
-      { :plug, "~> 1.3.0" },
-      { :cowboy, "~> 1.1.2" },
-      { :pid_file, "~> 0.1.0" }
+      {:bamboo, "~> 0.8"},
+      {:conform, "~> 2.4.0"},
+      {:distillery, "~> 1.4.0", runtime: false},
+      {:httpoison, "~> 0.13.0"},
+      {:plug, "~> 1.3.0"},
+      {:cowboy, "~> 1.1.2"},
+      {:pid_file, "~> 0.1.0"}
     ]
   end
 end

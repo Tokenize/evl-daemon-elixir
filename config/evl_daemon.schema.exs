@@ -188,13 +188,13 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       doc: "The authentication token to access EVL Daemon over HTTP.",
       hidden: false,
       to: "evl_daemon.auth_token"
-    ],
+    ]
   ],
   transforms: [
-    "evl_daemon.zones": fn (conf) ->
-      [{key, zones}]  = Conform.Conf.get(conf, "evl_daemon.zones")
+    "evl_daemon.zones": fn conf ->
+      [{key, zones}] = Conform.Conf.get(conf, "evl_daemon.zones")
 
-      Enum.reduce(zones, Map.new, fn ([zone | description], zone_map) ->
+      Enum.reduce(zones, Map.new(), fn [zone | description], zone_map ->
         Map.put(
           zone_map,
           zone |> to_string |> String.pad_leading(3, "0"),
@@ -202,10 +202,10 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
         )
       end)
     end,
-    "evl_daemon.partitions": fn (conf) ->
-      [{key, partitions}]  = Conform.Conf.get(conf, "evl_daemon.partitions")
+    "evl_daemon.partitions": fn conf ->
+      [{key, partitions}] = Conform.Conf.get(conf, "evl_daemon.partitions")
 
-      Enum.reduce(partitions, Map.new, fn ([partition | description], partition_map) ->
+      Enum.reduce(partitions, Map.new(), fn [partition | description], partition_map ->
         Map.put(
           partition_map,
           partition |> to_string,

@@ -10,8 +10,10 @@ defmodule EvlDaemon.ErrorNotifier do
 
       @doc false
       def terminate(reason, _state) when reason in [:normal, :shutdown], do: nil
+
       def terminate(reason, _state) do
-        EvlDaemon.Email.Application.process_terminating(__MODULE__, reason) |> EvlDaemon.Mailer.deliver_now
+        EvlDaemon.Email.Application.process_terminating(__MODULE__, reason)
+        |> EvlDaemon.Mailer.deliver_now()
       end
     end
   end

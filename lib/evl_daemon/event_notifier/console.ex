@@ -9,5 +9,9 @@ defmodule EvlDaemon.EventNotifier.Console do
 
   def filter(_event), do: true
 
-  def notify(event, _opts \\ []), do: Logger.info("#{__MODULE__}: [#{event.timestamp}] #{event.command}:#{event.data} (#{event.description})")
+  def notify(event, _opts \\ []),
+    do:
+      Logger.info(
+        "#{__MODULE__}: [#{event.timestamp}] #{event.command}:#{event.data} (#{event.description})"
+      )
 end

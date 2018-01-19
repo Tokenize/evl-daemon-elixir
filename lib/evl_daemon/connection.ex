@@ -37,7 +37,7 @@ defmodule EvlDaemon.Connection do
   sending it.
   """
   def command(request) do
-    GenServer.call(__MODULE__, { :command, request })
+    GenServer.call(__MODULE__, {:command, request})
   end
 
   @doc """
@@ -53,7 +53,7 @@ defmodule EvlDaemon.Connection do
     host = Application.get_env(:evl_daemon, :host)
     port = Application.get_env(:evl_daemon, :port)
 
-    Logger.debug "Connecting to #{host}:#{port}..."
+    Logger.debug("Connecting to #{host}:#{port}...")
 
     opts = [:binary, active: true, packet: :line]
     {:ok, socket} = :gen_tcp.connect(host, port, opts)
@@ -65,7 +65,7 @@ defmodule EvlDaemon.Connection do
   end
 
   def handle_call({:command, payload}, sender, state) do
-    Logger.debug(fn -> "Sending [#{inspect payload}]" end)
+    Logger.debug(fn -> "Sending [#{inspect(payload)}]" end)
 
     :ok = :gen_tcp.send(state.socket, EvlDaemon.TPI.encode(payload))
 
@@ -76,22 +76,23 @@ defmodule EvlDaemon.Connection do
   end
 
   def handle_call(:alive?, _sender, state) do
-    {status, _stats} = case state.socket do
-      nil -> {:error, nil}
-      socket -> :inet.getstat(socket)
-    end
+    {status, _stats} =
+      case state.socket do
+        nil -> {:error, nil}
+        socket -> :inet.getstat(socket)
+      end
 
     {:reply, status == :ok, state}
   end
 
   def handle_cast(:disconnect, state) do
-    Logger.debug "Disconnecting..."
+    Logger.debug("Disconnecting...")
 
     {:noreply, :gen_tcp.close(state.socket)}
   end
 
   def handle_info({:tcp, socket, "5053" <> _trailer}, %{socket: socket} = state) do
-    Logger.debug "Receiving Login Interaction Password request"
+    Logger.debug("Receiving Login Interaction Password request")
 
     {client, pending_commands} = pop_pending_command(state.pending_commands, "5053")
 
@@ -102,7 +103,7 @@ defmodule EvlDaemon.Connection do
   end
 
   def handle_info({:tcp, socket, "500" <> payload}, %{socket: socket} = state) do
-    Logger.debug "Receiving acknowledgment for [#{inspect payload}]"
+    Logger.debug("Receiving acknowledgment for [#{inspect(payload)}]")
 
     {client, pending_commands} = pop_pending_command(state.pending_commands, payload)
 
@@ -115,14 +116,17 @@ defmodule EvlDaemon.Connection do
   def handle_info({:tcp, socket, msg}, %{socket: socket} = state) do
     {:ok, decoded_message} = EvlDaemon.TPI.decode(msg)
 
-    Logger.debug(fn -> "Receiving [#{inspect msg}] (#{EvlDaemon.Event.description(decoded_message)})" end)
+    Logger.debug(fn ->
+      "Receiving [#{inspect(msg)}] (#{EvlDaemon.Event.description(decoded_message)})"
+    end)
+
     EvlDaemon.EventDispatcher.enqueue(decoded_message)
 
     {:noreply, state}
   end
 
   def handle_info({:tcp_closed, _socket}, state) do
-    Logger.error("#{__MODULE__} TCP socket closed. Terminating process #{inspect self()}.")
+    Logger.error("#{__MODULE__} TCP socket closed. Terminating process #{inspect(self())}.")
 
     {:stop, :connection_closed, state}
   end

@@ -39,11 +39,13 @@ defmodule EvlDaemon.Task.StatusReport do
     %{partitions: partitions, zones: zones}
   end
 
-  defp do_update_partitions(%EvlDaemon.Event{partition: partition} = event, partitions) when is_binary(partition) do
+  defp do_update_partitions(%EvlDaemon.Event{partition: partition} = event, partitions)
+       when is_binary(partition) do
     List.keystore(partitions, event.partition, 0, {event.partition, event.description})
   end
 
-  defp do_update_partitions(%EvlDaemon.Event{partition: partition}, partitions) when is_nil(partition) do
+  defp do_update_partitions(%EvlDaemon.Event{partition: partition}, partitions)
+       when is_nil(partition) do
     partitions
   end
 

@@ -13,8 +13,10 @@ defmodule EvlDaemon.StorageEngine.Memory do
   @default_maxiumum_events "1000"
 
   def start_link(opts) do
-    maximum_events = (Keyword.get(opts, :maximum_events, @default_maxiumum_events) |> String.to_integer)
-    state = {:queue.new, 0, maximum_events}
+    maximum_events =
+      Keyword.get(opts, :maximum_events, @default_maxiumum_events) |> String.to_integer()
+
+    state = {:queue.new(), 0, maximum_events}
 
     GenServer.start_link(__MODULE__, state, name: __MODULE__)
   end
@@ -41,10 +43,11 @@ defmodule EvlDaemon.StorageEngine.Memory do
   def handle_info({:handle_event, event}, {queue, queue_size, maximum_events}) do
     queue = :queue.in(event, queue)
 
-    state = cond do
-      queue_size >= maximum_events -> {:queue.drop(queue), queue_size, maximum_events}
-      true -> {queue, queue_size + 1, maximum_events}
-    end
+    state =
+      cond do
+        queue_size >= maximum_events -> {:queue.drop(queue), queue_size, maximum_events}
+        true -> {queue, queue_size + 1, maximum_events}
+      end
 
     {:noreply, state}
   end

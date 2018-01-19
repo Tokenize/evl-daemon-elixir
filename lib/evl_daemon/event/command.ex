@@ -60,7 +60,7 @@ defmodule EvlDaemon.Event.Command do
     "912" => [description: "Command Output Pressed", priority: :high],
     "921" => [description: "Master Code Required", priority: :high],
     "922" => [description: "Installers Code Required", priority: :high],
-    "S01" => [description: "Software Zone Alarm", priority: :high],
+    "S01" => [description: "Software Zone Alarm", priority: :high]
   }
 
   @doc """
@@ -68,7 +68,8 @@ defmodule EvlDaemon.Event.Command do
   """
   def description(payload) do
     command_code = EvlDaemon.TPI.command_part(payload)
-    Map.get(@commands, command_code, [description: command_code])
+
+    Map.get(@commands, command_code, description: command_code)
     |> Keyword.get(:description)
   end
 
@@ -77,7 +78,8 @@ defmodule EvlDaemon.Event.Command do
   """
   def priority(payload) do
     command_code = EvlDaemon.TPI.command_part(payload)
-    Map.get(@commands, command_code, [priority: :low])
+
+    Map.get(@commands, command_code, priority: :low)
     |> Keyword.get(:priority)
   end
 end
