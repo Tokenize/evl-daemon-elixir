@@ -15,7 +15,11 @@ defmodule EvlDaemon.Connection do
   end
 
   def start_link(state \\ @initial_state) do
-    GenServer.start_link(__MODULE__, Map.merge(@initial_state, state), name: __MODULE__)
+    GenServer.start_link(__MODULE__, state, name: __MODULE__)
+  end
+
+  def init(state) do
+    {:ok, Map.merge(@initial_state, state)}
   end
 
   @doc """
