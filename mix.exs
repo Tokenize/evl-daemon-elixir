@@ -39,7 +39,7 @@ defmodule EvlDaemon.Mixfile do
       {:bamboo, "~> 0.8"},
       {:conform, "~> 2.4.0"},
       {:distillery, "~> 1.4.0", runtime: false},
-      {:httpoison, "~> 0.13.0"},
+      {:httpoison, "~> 1.0.0"},
       {:plug, "~> 1.3.0"},
       {:cowboy, "~> 1.1.2"},
       {:pid_file, "~> 0.1.0"}
