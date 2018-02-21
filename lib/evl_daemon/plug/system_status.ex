@@ -20,6 +20,7 @@ defmodule EvlDaemon.Plug.SystemStatus do
       event_notifiers: configured_event_notifiers(),
       storage_engines: configured_storage_engines(),
       tasks: configured_tasks(),
+      arming_modes: arming_modes(),
       partition_statuses: partition_statuses(),
       zone_statuses: zone_statuses(),
       node_uptime: node_uptime()
@@ -76,6 +77,14 @@ defmodule EvlDaemon.Plug.SystemStatus do
       nil -> %{"NA" => "StatusReport task is not running!"}
       _ -> EvlDaemon.Task.StatusReport.status() |> Map.get(key)
     end
+  end
+
+  def arming_modes do
+    :arming_modes
+    |> get_status_report()
+    |> Enum.reduce(%{}, fn {partition, description}, statuses ->
+      Map.merge(statuses, %{partition => description})
+    end)
   end
 
   def partition_statuses do

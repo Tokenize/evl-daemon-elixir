@@ -5,6 +5,7 @@ defmodule EvlDaemon.Event.Data do
   """
 
   use Bitwise
+  import EvlDaemon.Event.Guards
 
   @keypad_commands ~w(510 511)
   @partition_commands ~w(650 653 654 655 656 657 658 659 660 663 664 670 671 672 673 674 701 702 751 840 841)
@@ -138,6 +139,11 @@ defmodule EvlDaemon.Event.Data do
   end
 
   defp do_partition(command, data) when command in @partition_zone_commands do
+    data
+    |> String.at(0)
+  end
+
+  defp do_partition(command, data) when is_partition_armed_command(command) do
     data
     |> String.at(0)
   end
