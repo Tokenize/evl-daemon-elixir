@@ -5,7 +5,7 @@ defmodule EvlDaemon.Event.Guards do
 
   @partition_commands ~w(650 653 654 655 656 657 658 659 660 663 664 670 671 672 673 674 701 702 751 840 841)
   @partition_zone_commands ~w(601 602 603 604)
-  @zone_commands  ~w(605 606 609 610)
+  @zone_commands ~w(605 606 609 610)
   @keypad_commands ~w(510 511)
   @partition_armed_command ~w(652)
 

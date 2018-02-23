@@ -65,7 +65,7 @@ defmodule EvlDaemon.Event.Data do
   end
 
   defp do_description(command, <<partition::binary-size(1), zone::binary>>)
-  when is_partition_zone_command(command) do
+       when is_partition_zone_command(command) do
     "[Partition: " <>
       do_partition_description(partition) <> ", Zone: " <> do_zone_description(zone) <> "]"
   end
