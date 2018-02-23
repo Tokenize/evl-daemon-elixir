@@ -7,11 +7,6 @@ defmodule EvlDaemon.Event.Data do
   use Bitwise
   import EvlDaemon.Event.Guards
 
-  @keypad_commands ~w(510 511)
-  @partition_commands ~w(650 653 654 655 656 657 658 659 660 663 664 670 671 672 673 674 701 702 751 840 841)
-  @partition_zone_commands ~w(601 602 603 604)
-  @zone_commands ~w(605 606 609 610)
-
   @doc """
   Return a human readable version of the data portion of the event.
   """
@@ -44,7 +39,7 @@ defmodule EvlDaemon.Event.Data do
     end
   end
 
-  defp do_description(command, code) when command in @keypad_commands do
+  defp do_description(command, code) when is_keypad_command(command) do
     state = code |> String.to_integer(16)
 
     keypad_states =
@@ -70,16 +65,16 @@ defmodule EvlDaemon.Event.Data do
   end
 
   defp do_description(command, <<partition::binary-size(1), zone::binary>>)
-       when command in @partition_zone_commands do
+  when is_partition_zone_command(command) do
     "[Partition: " <>
       do_partition_description(partition) <> ", Zone: " <> do_zone_description(zone) <> "]"
   end
 
-  defp do_description(command, zone) when command in @zone_commands do
+  defp do_description(command, zone) when is_zone_command(command) do
     "[Zone: " <> do_zone_description(zone) <> "]"
   end
 
-  defp do_description(command, partition) when command in @partition_commands do
+  defp do_description(command, partition) when is_partition_command(command) do
     "[Partition: " <> do_partition_description(partition) <> "]"
   end
 
@@ -134,11 +129,11 @@ defmodule EvlDaemon.Event.Data do
     end
   end
 
-  defp do_partition(command, data) when command in @partition_commands do
+  defp do_partition(command, data) when is_partition_command(command) do
     data
   end
 
-  defp do_partition(command, data) when command in @partition_zone_commands do
+  defp do_partition(command, data) when is_partition_zone_command(command) do
     data
     |> String.at(0)
   end
@@ -152,11 +147,11 @@ defmodule EvlDaemon.Event.Data do
     nil
   end
 
-  defp do_zone(command, data) when command in @zone_commands do
+  defp do_zone(command, data) when is_zone_command(command) do
     data
   end
 
-  defp do_zone(command, data) when command in @partition_zone_commands do
+  defp do_zone(command, data) when is_partition_zone_command(command) do
     data
     |> String.slice(1..-1)
   end
