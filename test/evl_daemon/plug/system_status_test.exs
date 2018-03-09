@@ -44,7 +44,7 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
     assert Map.has_key?(decoded_response, "node_uptime")
   end
 
-  describe "armed modes" do
+  describe "armed modes when query_status is false" do
     setup [:start_status_report_task]
 
     test "returns Armed-Away" do
@@ -136,6 +136,9 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
       arming_modes = Map.get(decoded_response, "arming_modes")
       assert Map.get(arming_modes, "1") == "Failed to arm."
     end
+  end
+
+  describe "armed modes when query_status is true" do
   end
 
   # Private functions
