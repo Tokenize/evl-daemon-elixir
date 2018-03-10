@@ -8,16 +8,18 @@ defmodule EvlDaemon.Task.StatusReport do
   use EvlDaemon.EventSubscriber
 
   @default_status %{partitions: [], zones: [], arming_modes: []}
-  @query_status_delay 0
+  @query_status_delay 1000
 
   def start_link(opts) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
 
-  def init([query_status: "true"] = opts) do
-    EvlDaemon.EventDispatcher.subscribe(opts)
+  def init([query_status: "true"] = _opts) do
+    EvlDaemon.EventDispatcher.subscribe([])
 
-    {:ok, @default_status, @query_status_delay}
+    Process.send_after(__MODULE__, :query_status, @query_status_delay)
+
+    {:ok, @default_status}
   end
 
   def init(_opts) do
@@ -36,7 +38,7 @@ defmodule EvlDaemon.Task.StatusReport do
     {:noreply, do_update_state(event, state)}
   end
 
-  def handle_info(:timeout, state) do
+  def handle_info(:query_status, state) do
     if EvlDaemon.Connection.alive?() do
       EvlDaemon.Client.status_report()
     end

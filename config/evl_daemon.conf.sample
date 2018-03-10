@@ -20,7 +20,7 @@ evl_daemon.event_notifiers = [type = "console"], [type = "email", recipient = "u
 evl_daemon.storage_engines = [type = "memory", maximum_events = "100"]
 
 # Enabled tasks and their options.
-evl_daemon.tasks = [type = "status_report"]
+evl_daemon.tasks = [type = "status_report", query_status = "true"]
 
 # Zone mapping in the form of [number, "description"].
 evl_daemon.zones = [1, "Front door"], [2, "Garage door"], [3, "Basement door"], [4, "Kitchen door"], [5, "Office motion sensor"], [6, "Family room motion sensor"], [7, "Basement glass break sensor"], [8, "Basement motion sensor"]
