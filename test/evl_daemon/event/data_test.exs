@@ -65,4 +65,20 @@ defmodule EvlDaemon.Event.DataTest do
   test "should return nil zone for zone-less commands" do
     assert EvlDaemon.Event.Data.zone("620000058") == nil
   end
+
+  test "should return nil data for partition command" do
+    assert EvlDaemon.Event.Data.data("6502CD") == nil
+  end
+
+  test "should return nil data for zone command" do
+    assert EvlDaemon.Event.Data.data("60900332") == nil
+  end
+
+  test "should return nil data for partition-zone command" do
+    assert EvlDaemon.Event.Data.data("60130045E") == nil
+  end
+
+  test "should return data for any non zoned/partitioned/zone-partitioned command" do
+    assert EvlDaemon.Event.Data.data("56100015D") == "0001"
+  end
 end

@@ -28,6 +28,13 @@ defmodule EvlDaemon.Event.Data do
     do_zone(EvlDaemon.TPI.command_part(payload), EvlDaemon.TPI.data_part(payload))
   end
 
+  @doc """
+  Return the event's data (excluding the zone and partition).
+  """
+  def data(payload) do
+    do_data(EvlDaemon.TPI.command_part(payload), EvlDaemon.TPI.data_part(payload))
+  end
+
   # Private functions
 
   defp do_description("505", code) do
@@ -159,4 +166,13 @@ defmodule EvlDaemon.Event.Data do
   defp do_zone(_command, _data) do
     nil
   end
+
+  defp do_data(cmd, <<_::binary-size(1), "">>) when is_partition_command(cmd), do: nil
+  defp do_data(cmd, <<_::binary-size(1), dt::binary>>) when is_partition_command(cmd), do: dt
+  defp do_data(cmd, <<_::binary-size(3), "">>) when is_zone_command(cmd), do: nil
+  defp do_data(cmd, <<_::binary-size(3), dt::binary>>) when is_zone_command(cmd), do: dt
+  defp do_data(cmd, <<_::binary-size(4), "">>) when is_partition_zone_command(cmd), do: nil
+  defp do_data(cmd, <<_::binary-size(4), dt::binary>>) when is_partition_zone_command(cmd), do: dt
+
+  defp do_data(_command, dt), do: dt
 end
