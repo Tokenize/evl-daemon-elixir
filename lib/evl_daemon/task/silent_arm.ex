@@ -37,7 +37,8 @@ defmodule EvlDaemon.Task.SilentArm do
   # Private functions
 
   defp trigger_alarm?(zone, state) do
-    state |> Keyword.get(:zones, [])
+    state
+    |> Keyword.get(:zones, [])
     |> Enum.member?(zone)
   end
 end

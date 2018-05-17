@@ -3,7 +3,7 @@ defmodule EvlDaemon.Router do
 
   plug(Plug.Logger, log: :debug)
   plug(Plug.Parsers, parsers: [:json], json_decoder: Poison)
-  plug CORSPlug, origin: "*", methods: ["GET", "DELETE"]
+  plug(CORSPlug, origin: "*", methods: ["GET", "DELETE"])
   plug(EvlDaemon.Plug.AuthTokenValidator)
   plug(EvlDaemon.Plug.Events)
   plug(EvlDaemon.Plug.Tasks)

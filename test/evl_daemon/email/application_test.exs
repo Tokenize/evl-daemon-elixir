@@ -14,7 +14,8 @@ defmodule EvlDaemon.Email.ApplicationTest do
     reason =
       {{:badmatch, {:error, :econnreset}},
        [
-         {EvlDaemon.Connection, :handle_call, 3, [file: 'lib/evl_daemon/connection.ex', line: 55]},
+         {EvlDaemon.Connection, :handle_call, 3,
+          [file: 'lib/evl_daemon/connection.ex', line: 55]},
          {:gen_server, :try_handle_call, 4, [file: 'gen_server.erl', line: 615]},
          {:gen_server, :handle_msg, 5, [file: 'gen_server.erl', line: 647]},
          {:proc_lib, :init_p_do_apply, 3, [file: 'proc_lib.erl', line: 247]}

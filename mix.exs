@@ -43,7 +43,7 @@ defmodule EvlDaemon.Mixfile do
       {:plug, "~> 1.3.0"},
       {:cowboy, "~> 1.1.2"},
       {:pid_file, "~> 0.1.0"},
-      {:cors_plug, "~> 1.5"},
+      {:cors_plug, "~> 1.5"}
     ]
   end
 end
