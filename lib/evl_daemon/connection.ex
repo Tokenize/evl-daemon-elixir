@@ -7,6 +7,7 @@ defmodule EvlDaemon.Connection do
   use GenServer
   use EvlDaemon.ErrorNotifier
   require Logger
+  alias EvlDaemon.{Event, EventDispatcher, TPI}
 
   @initial_state %{socket: nil, pending_commands: %{}}
 
@@ -71,7 +72,7 @@ defmodule EvlDaemon.Connection do
   def handle_call({:command, payload}, sender, state) do
     Logger.debug(fn -> "Sending [#{inspect(payload)}]" end)
 
-    :ok = :gen_tcp.send(state.socket, EvlDaemon.TPI.encode(payload))
+    :ok = :gen_tcp.send(state.socket, TPI.encode(payload))
 
     pending_commands = push_pending_command(state.pending_commands, payload, sender)
     state = %{state | pending_commands: pending_commands}
@@ -118,13 +119,13 @@ defmodule EvlDaemon.Connection do
   end
 
   def handle_info({:tcp, socket, msg}, %{socket: socket} = state) do
-    {:ok, decoded_message} = EvlDaemon.TPI.decode(msg)
+    {:ok, decoded_message} = TPI.decode(msg)
 
     Logger.debug(fn ->
-      "Receiving [#{inspect(msg)}] (#{EvlDaemon.Event.description(decoded_message)})"
+      "Receiving [#{inspect(msg)}] (#{Event.description(decoded_message)})"
     end)
 
-    EvlDaemon.EventDispatcher.enqueue(decoded_message)
+    EventDispatcher.enqueue(decoded_message)
 
     {:noreply, state}
   end
@@ -143,11 +144,11 @@ defmodule EvlDaemon.Connection do
 
   defp push_pending_command(pending_commands, payload, sender) do
     pending_commands
-    |> Map.put(EvlDaemon.TPI.command_part(payload), sender)
+    |> Map.put(TPI.command_part(payload), sender)
   end
 
   defp pop_pending_command(pending_commands, payload) do
     pending_commands
-    |> Map.pop(EvlDaemon.TPI.command_part(payload))
+    |> Map.pop(TPI.command_part(payload))
   end
 end

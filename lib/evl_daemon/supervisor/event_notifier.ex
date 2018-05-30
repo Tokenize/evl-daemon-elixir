@@ -1,5 +1,6 @@
 defmodule EvlDaemon.Supervisor.EventNotifier do
   use Supervisor
+  alias EvlDaemon.{EventNotifier, StorageEngine, Task}
 
   def start_link(_opts) do
     {:ok, _pid} = Supervisor.start_link(__MODULE__, [])
@@ -17,9 +18,9 @@ defmodule EvlDaemon.Supervisor.EventNotifier do
   defp active_notifiers do
     for notifier <- Application.get_env(:evl_daemon, :event_notifiers) do
       case Keyword.get(notifier, :type) do
-        "console" -> [EvlDaemon.EventNotifier.Console]
-        "email" -> [EvlDaemon.EventNotifier.Email, List.flatten(Keyword.delete(notifier, :type))]
-        "sms" -> [EvlDaemon.EventNotifier.SMS, List.flatten(Keyword.delete(notifier, :type))]
+        "console" -> [EventNotifier.Console]
+        "email" -> [EventNotifier.Email, List.flatten(Keyword.delete(notifier, :type))]
+        "sms" -> [EventNotifier.SMS, List.flatten(Keyword.delete(notifier, :type))]
       end
     end
   end
@@ -28,7 +29,7 @@ defmodule EvlDaemon.Supervisor.EventNotifier do
     for storage_engine <- Application.get_env(:evl_daemon, :storage_engines) do
       case Keyword.get(storage_engine, :type) do
         "memory" ->
-          [EvlDaemon.StorageEngine.Memory, List.flatten(Keyword.delete(storage_engine, :type))]
+          [StorageEngine.Memory, List.flatten(Keyword.delete(storage_engine, :type))]
 
         _ ->
           nil
@@ -41,7 +42,7 @@ defmodule EvlDaemon.Supervisor.EventNotifier do
     for task <- Application.get_env(:evl_daemon, :tasks) do
       case Keyword.get(task, :type) do
         "status_report" ->
-          [EvlDaemon.Task.StatusReport, List.flatten(Keyword.delete(task, :type))]
+          [Task.StatusReport, List.flatten(Keyword.delete(task, :type))]
 
         _ ->
           nil

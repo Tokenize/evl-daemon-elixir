@@ -6,33 +6,34 @@ defmodule EvlDaemon.Event.Data do
 
   use Bitwise
   import EvlDaemon.Event.Guards
+  alias EvlDaemon.TPI
 
   @doc """
   Return a human readable version of the data portion of the event.
   """
   def description(payload) do
-    do_description(EvlDaemon.TPI.command_part(payload), EvlDaemon.TPI.data_part(payload))
+    do_description(TPI.command_part(payload), TPI.data_part(payload))
   end
 
   @doc """
   Return the event's partition (if applicable).
   """
   def partition(payload) do
-    do_partition(EvlDaemon.TPI.command_part(payload), EvlDaemon.TPI.data_part(payload))
+    do_partition(TPI.command_part(payload), TPI.data_part(payload))
   end
 
   @doc """
   Return the event's zone (if applicable).
   """
   def zone(payload) do
-    do_zone(EvlDaemon.TPI.command_part(payload), EvlDaemon.TPI.data_part(payload))
+    do_zone(TPI.command_part(payload), TPI.data_part(payload))
   end
 
   @doc """
   Return the event's data (excluding the zone and partition).
   """
   def data(payload) do
-    do_data(EvlDaemon.TPI.command_part(payload), EvlDaemon.TPI.data_part(payload))
+    do_data(TPI.command_part(payload), TPI.data_part(payload))
   end
 
   # Private functions

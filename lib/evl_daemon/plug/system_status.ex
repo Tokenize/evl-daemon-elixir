@@ -1,5 +1,6 @@
 defmodule EvlDaemon.Plug.SystemStatus do
   import Plug.Conn
+  alias EvlDaemon.{Connection, Task}
 
   def init(options), do: options
 
@@ -43,7 +44,7 @@ defmodule EvlDaemon.Plug.SystemStatus do
 
   defp configured_connection do
     %{
-      alive?: EvlDaemon.Connection.alive?(),
+      alive?: Connection.alive?(),
       host: Application.get_env(:evl_daemon, :host) |> to_string,
       port: Application.get_env(:evl_daemon, :port)
     }
@@ -75,7 +76,7 @@ defmodule EvlDaemon.Plug.SystemStatus do
 
     case pid do
       nil -> %{"NA" => "StatusReport task is not running!"}
-      _ -> EvlDaemon.Task.StatusReport.status() |> Map.get(key)
+      _ -> Task.StatusReport.status() |> Map.get(key)
     end
   end
 

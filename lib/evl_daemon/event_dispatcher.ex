@@ -6,6 +6,7 @@ defmodule EvlDaemon.EventDispatcher do
 
   use GenServer
   use EvlDaemon.ErrorNotifier
+  alias EvlDaemon.Event
 
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
@@ -32,7 +33,7 @@ defmodule EvlDaemon.EventDispatcher do
   # Callbacks
 
   def handle_cast({:enqueue, value, timestamp}, _state) do
-    event = EvlDaemon.Event.new(value, timestamp)
+    event = Event.new(value, timestamp)
 
     do_dispatch_event(event)
 

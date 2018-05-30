@@ -4,6 +4,8 @@ defmodule EvlDaemon.Event.Command do
   event commands and their priorities.
   """
 
+  alias EvlDaemon.TPI
+
   @commands %{
     "501" => [description: "Command Error", priority: :critical],
     "502" => [description: "System Error", priority: :critical],
@@ -67,7 +69,7 @@ defmodule EvlDaemon.Event.Command do
   Return a human readable version of the command portion of the event.
   """
   def description(payload) do
-    command_code = EvlDaemon.TPI.command_part(payload)
+    command_code = TPI.command_part(payload)
 
     Map.get(@commands, command_code, description: command_code)
     |> Keyword.get(:description)
@@ -77,7 +79,7 @@ defmodule EvlDaemon.Event.Command do
   Return priority for command portion of the event.
   """
   def priority(payload) do
-    command_code = EvlDaemon.TPI.command_part(payload)
+    command_code = TPI.command_part(payload)
 
     Map.get(@commands, command_code, priority: :low)
     |> Keyword.get(:priority)

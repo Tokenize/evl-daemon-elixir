@@ -1,7 +1,8 @@
 defmodule EvlDaemon.Plug.Tasks do
   import Plug.Conn
+  alias EvlDaemon.Task
 
-  @tasks %{"silent_arm" => EvlDaemon.Task.SilentArm}
+  @tasks %{"silent_arm" => Task.SilentArm}
   @task_types @tasks |> Map.keys()
 
   def init(options), do: options

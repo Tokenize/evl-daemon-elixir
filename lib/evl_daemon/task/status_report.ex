@@ -6,6 +6,7 @@ defmodule EvlDaemon.Task.StatusReport do
 
   use GenServer
   use EvlDaemon.EventSubscriber
+  alias EvlDaemon.{Connection, Client, Event, EventDispatcher}
 
   @default_status %{partitions: [], zones: [], arming_modes: []}
   @query_status_delay 1000
@@ -15,7 +16,7 @@ defmodule EvlDaemon.Task.StatusReport do
   end
 
   def init([query_status: "true"] = _opts) do
-    EvlDaemon.EventDispatcher.subscribe([])
+    EventDispatcher.subscribe([])
 
     Process.send_after(__MODULE__, :query_status, @query_status_delay)
 
@@ -23,7 +24,7 @@ defmodule EvlDaemon.Task.StatusReport do
   end
 
   def init(_opts) do
-    EvlDaemon.EventDispatcher.subscribe([])
+    EventDispatcher.subscribe([])
 
     {:ok, @default_status}
   end
@@ -39,8 +40,8 @@ defmodule EvlDaemon.Task.StatusReport do
   end
 
   def handle_info(:query_status, state) do
-    if EvlDaemon.Connection.alive?() do
-      EvlDaemon.Client.status_report()
+    if Connection.alive?() do
+      Client.status_report()
     end
 
     {:noreply, state}
@@ -64,25 +65,25 @@ defmodule EvlDaemon.Task.StatusReport do
     %{partitions: partitions, zones: zones, arming_modes: arming_modes}
   end
 
-  defp do_update_partitions(%EvlDaemon.Event{partition: partition} = event, partitions)
+  defp do_update_partitions(%Event{partition: partition} = event, partitions)
        when is_binary(partition) do
     List.keystore(partitions, event.partition, 0, {event.partition, event.description})
   end
 
-  defp do_update_partitions(%EvlDaemon.Event{partition: partition}, partitions)
+  defp do_update_partitions(%Event{partition: partition}, partitions)
        when is_nil(partition) do
     partitions
   end
 
-  defp do_update_zones(%EvlDaemon.Event{zone: zone} = event, zones) when is_binary(zone) do
+  defp do_update_zones(%Event{zone: zone} = event, zones) when is_binary(zone) do
     List.keystore(zones, event.zone, 0, {event.zone, event.description})
   end
 
-  defp do_update_zones(%EvlDaemon.Event{zone: zone}, zones) when is_nil(zone) do
+  defp do_update_zones(%Event{zone: zone}, zones) when is_nil(zone) do
     zones
   end
 
-  defp do_update_arming_modes(%EvlDaemon.Event{command: command} = event, arming_modes)
+  defp do_update_arming_modes(%Event{command: command} = event, arming_modes)
        when command == "652" do
     List.keystore(
       arming_modes,
@@ -93,12 +94,12 @@ defmodule EvlDaemon.Task.StatusReport do
     )
   end
 
-  defp do_update_arming_modes(%EvlDaemon.Event{command: command} = event, arming_modes)
+  defp do_update_arming_modes(%Event{command: command} = event, arming_modes)
        when command == "655" do
     List.keystore(arming_modes, event.partition, 0, {event.partition, "Unarmed."})
   end
 
-  defp do_update_arming_modes(%EvlDaemon.Event{command: command} = event, arming_modes)
+  defp do_update_arming_modes(%Event{command: command} = event, arming_modes)
        when command in ~w(659 672) do
     List.keystore(arming_modes, event.partition, 0, {event.partition, "Failed to arm."})
   end

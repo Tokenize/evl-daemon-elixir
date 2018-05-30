@@ -5,6 +5,7 @@ defmodule EvlDaemon.EventNotifier.Email do
   """
 
   use EvlDaemon.EventNotifier
+  alias EvlDaemon.{Email, Mailer}
 
   def filter(event) do
     Enum.member?([:high, :critical], event.priority)
@@ -15,7 +16,7 @@ defmodule EvlDaemon.EventNotifier.Email do
   # Private functions
 
   defp do_notify(event, opts) do
-    EvlDaemon.Email.Event.build(event, Keyword.get(opts, :recipient), Keyword.get(opts, :sender))
-    |> EvlDaemon.Mailer.deliver_now()
+    Email.Event.build(event, Keyword.get(opts, :recipient), Keyword.get(opts, :sender))
+    |> Mailer.deliver_now()
   end
 end

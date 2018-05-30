@@ -1,5 +1,6 @@
 defmodule EvlDaemon.Plug.Events do
   import Plug.Conn
+  alias EvlDaemon.StorageEngine
 
   def init(options), do: options
 
@@ -19,7 +20,7 @@ defmodule EvlDaemon.Plug.Events do
 
     case pid do
       nil -> []
-      _ -> EvlDaemon.StorageEngine.Memory.all(order: :desc)
+      _ -> StorageEngine.Memory.all(order: :desc)
     end
   end
 

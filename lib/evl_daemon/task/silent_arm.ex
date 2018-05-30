@@ -10,22 +10,23 @@ defmodule EvlDaemon.Task.SilentArm do
 
   use GenServer
   use EvlDaemon.EventSubscriber
+  alias EvlDaemon.{Event, EventDispatcher}
 
   @alarm_triggers ~w(609)
   @shutdown_triggers ~w(652 674)
 
   # Callbacks
 
-  def handle_info({:handle_event, %EvlDaemon.Event{command: code} = event}, state)
+  def handle_info({:handle_event, %Event{command: code} = event}, state)
       when code in @alarm_triggers do
     if trigger_alarm?(event.zone, state) do
-      EvlDaemon.EventDispatcher.enqueue("S01")
+      EventDispatcher.enqueue("S01")
     end
 
     {:noreply, state}
   end
 
-  def handle_info({:handle_event, %EvlDaemon.Event{command: code}}, state)
+  def handle_info({:handle_event, %Event{command: code}}, state)
       when code in @shutdown_triggers do
     {:stop, :system_armed, state}
   end
