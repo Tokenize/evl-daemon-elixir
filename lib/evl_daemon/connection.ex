@@ -122,7 +122,8 @@ defmodule EvlDaemon.Connection do
     {:ok, decoded_message} = TPI.decode(msg)
 
     Logger.debug(fn ->
-      "Receiving [#{inspect(msg)}] (#{Event.description(decoded_message)})"
+      description = Event.description(decoded_message)
+      "Receiving [#{inspect(msg)}] (#{description.command}:#{description.data})"
     end)
 
     EventDispatcher.enqueue(decoded_message)

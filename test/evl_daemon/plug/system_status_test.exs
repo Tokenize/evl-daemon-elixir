@@ -38,13 +38,13 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
 
     assert conn.state == :sent
     assert conn.status == 200
-    assert Map.has_key?(decoded_response, "event_notifiers")
-    assert Map.has_key?(decoded_response, "storage_engines")
+    assert Map.has_key?(decoded_response, "notifiers")
+    assert Map.has_key?(decoded_response, "storage")
     assert Map.has_key?(decoded_response, "connection")
-    assert Map.has_key?(decoded_response, "node_uptime")
+    assert Map.has_key?(decoded_response, "uptime")
   end
 
-  describe "armed modes when query_status is false" do
+  describe "armed states when query_status is false" do
     setup [:start_status_report_task]
 
     test "returns Armed-Away" do
@@ -57,8 +57,8 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
         |> EvlDaemon.Router.call(@opts)
 
       decoded_response = Poison.decode!(conn.resp_body)
-      arming_modes = Map.get(decoded_response, "arming_modes")
-      assert Map.get(arming_modes, "1") == "Armed in Away mode."
+      armed_state = Map.get(decoded_response, "armed_state")
+      assert Map.get(armed_state, "1") == "Armed in Away mode."
     end
 
     test "returns Armed-Stay" do
@@ -71,8 +71,8 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
         |> EvlDaemon.Router.call(@opts)
 
       decoded_response = Poison.decode!(conn.resp_body)
-      arming_modes = Map.get(decoded_response, "arming_modes")
-      assert Map.get(arming_modes, "1") == "Armed in Stay mode."
+      armed_state = Map.get(decoded_response, "armed_state")
+      assert Map.get(armed_state, "1") == "Armed in Stay mode."
     end
 
     test "returns Zero-Entry-Away" do
@@ -86,8 +86,8 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
         |> EvlDaemon.Router.call(@opts)
 
       decoded_response = Poison.decode!(conn.resp_body)
-      arming_modes = Map.get(decoded_response, "arming_modes")
-      assert Map.get(arming_modes, "1") == "Armed in Zero-Entry-Away mode."
+      armed_state = Map.get(decoded_response, "armed_state")
+      assert Map.get(armed_state, "1") == "Armed in Zero-Entry-Away mode."
     end
 
     test "returns Zero-Entry-Stay" do
@@ -101,8 +101,8 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
         |> EvlDaemon.Router.call(@opts)
 
       decoded_response = Poison.decode!(conn.resp_body)
-      arming_modes = Map.get(decoded_response, "arming_modes")
-      assert Map.get(arming_modes, "1") == "Armed in Zero-Entry-Stay mode."
+      armed_state = Map.get(decoded_response, "armed_state")
+      assert Map.get(armed_state, "1") == "Armed in Zero-Entry-Stay mode."
     end
 
     test "returns not armed if it gets a disarm event" do
@@ -117,8 +117,8 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
         |> EvlDaemon.Router.call(@opts)
 
       decoded_response = Poison.decode!(conn.resp_body)
-      arming_modes = Map.get(decoded_response, "arming_modes")
-      assert Map.get(arming_modes, "1") == "Unarmed."
+      armed_state = Map.get(decoded_response, "armed_state")
+      assert Map.get(armed_state, "1") == "Unarmed."
     end
 
     test "returns not armed if it gets a failed to arm event" do
@@ -133,12 +133,12 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
         |> EvlDaemon.Router.call(@opts)
 
       decoded_response = Poison.decode!(conn.resp_body)
-      arming_modes = Map.get(decoded_response, "arming_modes")
-      assert Map.get(arming_modes, "1") == "Failed to arm."
+      armed_state = Map.get(decoded_response, "armed_state")
+      assert Map.get(armed_state, "1") == "Failed to arm."
     end
   end
 
-  describe "armed modes when query_status is true" do
+  describe "armed states when query_status is true" do
   end
 
   # Private functions

@@ -8,7 +8,7 @@ defmodule EvlDaemon.Task.StatusReport do
   use EvlDaemon.EventSubscriber
   alias EvlDaemon.{Connection, Client, Event, EventDispatcher}
 
-  @default_status %{partitions: [], zones: [], arming_modes: []}
+  @default_status %{partitions: [], zones: [], armed_states: [], latest_event: nil}
   @query_status_delay 1000
 
   def start_link(opts) do
@@ -56,13 +56,13 @@ defmodule EvlDaemon.Task.StatusReport do
   defp do_update_state(event, status) do
     partitions = status.partitions
     zones = status.zones
-    arming_modes = status.arming_modes
+    armed_states = status.armed_states
 
     partitions = do_update_partitions(event, partitions)
     zones = do_update_zones(event, zones)
-    arming_modes = do_update_arming_modes(event, arming_modes)
+    armed_states = do_update_armed_states(event, armed_states)
 
-    %{partitions: partitions, zones: zones, arming_modes: arming_modes}
+    %{partitions: partitions, zones: zones, armed_states: armed_states, latest_event: event}
   end
 
   defp do_update_partitions(%Event{partition: partition} = event, partitions)
@@ -83,10 +83,10 @@ defmodule EvlDaemon.Task.StatusReport do
     zones
   end
 
-  defp do_update_arming_modes(%Event{command: command} = event, arming_modes)
+  defp do_update_armed_states(%EvlDaemon.Event{command: command} = event, armed_states)
        when command == "652" do
     List.keystore(
-      arming_modes,
+      armed_states,
       event.partition,
       0,
       {event.partition,
@@ -94,18 +94,18 @@ defmodule EvlDaemon.Task.StatusReport do
     )
   end
 
-  defp do_update_arming_modes(%Event{command: command} = event, arming_modes)
+  defp do_update_armed_states(%EvlDaemon.Event{command: command} = event, armed_states)
        when command == "655" do
-    List.keystore(arming_modes, event.partition, 0, {event.partition, "Unarmed."})
+    List.keystore(armed_states, event.partition, 0, {event.partition, "Unarmed."})
   end
 
-  defp do_update_arming_modes(%Event{command: command} = event, arming_modes)
+  defp do_update_armed_states(%EvlDaemon.Event{command: command} = event, armed_states)
        when command in ~w(659 672) do
-    List.keystore(arming_modes, event.partition, 0, {event.partition, "Failed to arm."})
+    List.keystore(armed_states, event.partition, 0, {event.partition, "Failed to arm."})
   end
 
-  defp do_update_arming_modes(_event, arming_modes) do
-    arming_modes
+  defp do_update_armed_states(_event, armed_states) do
+    armed_states
   end
 
   defp do_partition_armed_mode_description(<<_partition::binary-size(1), mode::binary-size(1)>>) do

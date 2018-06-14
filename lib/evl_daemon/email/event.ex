@@ -7,10 +7,12 @@ defmodule EvlDaemon.Email.Event do
       |> DateTime.from_unix!()
       |> DateTime.to_string()
 
+    description = (event.description.command <> " " <> event.description.data) |> String.trim()
+
     new_email()
     |> from(sender)
     |> to(recipient)
-    |> subject("Event #{event.description} (#{event.command}) triggered at #{utc_timestamp}")
+    |> subject("Event #{description} (#{event.command}) triggered at #{utc_timestamp}")
     |> text_body("Event: [#{event.command}:#{event.data}] triggered at #{utc_timestamp}.")
   end
 end

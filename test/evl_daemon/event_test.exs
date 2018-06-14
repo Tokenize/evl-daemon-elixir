@@ -8,7 +8,7 @@ defmodule EvlDaemon.EventTest do
 
     assert system_error.command == "502"
     assert system_error.data == ""
-    assert system_error.description == "System Error"
+    assert system_error.description.command == "System Error"
     assert system_error.priority == :critical
   end
 end

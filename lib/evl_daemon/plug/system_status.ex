@@ -17,14 +17,20 @@ defmodule EvlDaemon.Plug.SystemStatus do
 
   defp system_status_body do
     %{
+      armed_state: armed_state(),
       connection: configured_connection(),
-      event_notifiers: configured_event_notifiers(),
-      storage_engines: configured_storage_engines(),
+      last_event: latest_event(),
+      listeners: configured_listeners(),
+      notifiers: configured_event_notifiers(),
+      partitions: partitions(),
+      statuses: %{
+        zones: zone_statuses(),
+        partitions: partition_statuses()
+      },
+      storage: configured_storage_engines(),
       tasks: configured_tasks(),
-      arming_modes: arming_modes(),
-      partition_statuses: partition_statuses(),
-      zone_statuses: zone_statuses(),
-      node_uptime: node_uptime()
+      uptime: node_uptime(),
+      zones: zones()
     }
   end
 
@@ -57,18 +63,15 @@ defmodule EvlDaemon.Plug.SystemStatus do
     end)
   end
 
+  defp configured_listeners do
+    [
+      :http
+    ]
+  end
+
   defp node_uptime do
     {uptime, _time_since_last_call} = :erlang.statistics(:wall_clock)
-
-    {formatted_uptime, unit} =
-      case uptime / 1000 do
-        seconds when seconds <= 60 -> {seconds, "seconds"}
-        seconds when seconds > 60 and seconds <= 3600 -> {seconds / 60, "minutes"}
-        seconds when seconds > 3600 and seconds <= 86400 -> {seconds / 3600, "hours"}
-        seconds -> {seconds / 86400, "days"}
-      end
-
-    "#{formatted_uptime |> Float.round(2)} #{unit}."
+    uptime / 1000
   end
 
   defp get_status_report(key) do
@@ -80,8 +83,8 @@ defmodule EvlDaemon.Plug.SystemStatus do
     end
   end
 
-  def arming_modes do
-    :arming_modes
+  def armed_state do
+    :armed_states
     |> get_status_report()
     |> Enum.reduce(%{}, fn {partition, description}, statuses ->
       Map.merge(statuses, %{partition => description})
@@ -102,5 +105,23 @@ defmodule EvlDaemon.Plug.SystemStatus do
     |> Enum.reduce(%{}, fn {zone, description}, statuses ->
       Map.merge(statuses, %{zone => description})
     end)
+  end
+
+  defp zones do
+    Application.get_env(:evl_daemon, :zones)
+    |> Enum.map(fn {zone, name} ->
+      %{number: zone, name: name}
+    end)
+  end
+
+  defp partitions do
+    Application.get_env(:evl_daemon, :partitions)
+    |> Enum.map(fn {zone, name} ->
+      %{number: zone, name: name}
+    end)
+  end
+
+  defp latest_event do
+    :latest_event |> get_status_report()
   end
 end

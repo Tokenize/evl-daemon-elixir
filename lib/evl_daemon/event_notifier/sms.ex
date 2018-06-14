@@ -35,10 +35,11 @@ defmodule EvlDaemon.EventNotifier.SMS do
 
   defp body(event, opts) do
     timestamp = event.timestamp |> DateTime.from_unix!() |> DateTime.to_string()
+    description = (event.description.command <> " " <> event.description.data) |> String.trim()
 
     notification_message =
       "[EvlDaemon] Event " <>
-        event.description <> "(#{event.command}:#{event.data}) triggered at " <> timestamp
+        description <> "(#{event.command}:#{event.data}) triggered at " <> timestamp
 
     %{
       From: Keyword.get(opts, :from),
