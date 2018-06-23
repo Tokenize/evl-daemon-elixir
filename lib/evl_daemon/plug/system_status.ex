@@ -86,8 +86,8 @@ defmodule EvlDaemon.Plug.SystemStatus do
   def armed_state do
     :armed_states
     |> get_status_report()
-    |> Enum.reduce(%{}, fn {partition, description}, statuses ->
-      Map.merge(statuses, %{partition => description})
+    |> Enum.map(fn {partition, description} ->
+      %{partition: partition, state: description}
     end)
   end
 
