@@ -43,14 +43,12 @@ defmodule EvlDaemon.RouterTest do
   end
 
   test "returns 404 when accessing an invalid endpoint" do
-    Application.put_env(:evl_daemon, :auth_token, "secret")
-
     conn =
       conn(:get, "/invalid_endpoint?auth_token=test_token")
       |> EvlDaemon.Router.call(@opts)
 
     assert conn.state == :sent
-    assert conn.status == 401
+    assert conn.status == 404
   end
 
   test "returns 200 when accessing valid endpoint with valid auth_token" do
