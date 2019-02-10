@@ -19,7 +19,6 @@ defmodule EvlDaemon.Mixfile do
     [
       extra_applications: [
         :logger,
-        :plug
       ],
       mod: {EvlDaemon, []}
     ]
@@ -40,8 +39,7 @@ defmodule EvlDaemon.Mixfile do
       {:conform, "~> 2.4.0"},
       {:distillery, "~> 1.4.0", runtime: false},
       {:httpoison, "~> 1.4.0"},
-      {:plug, "~> 1.3.0"},
-      {:cowboy, "~> 1.1.2"},
+      {:plug_cowboy, "~> 2.0"},
       {:pid_file, "~> 0.1.0"},
       {:cors_plug, "~> 1.5"}
     ]
