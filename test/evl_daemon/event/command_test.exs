@@ -1,5 +1,5 @@
 defmodule EvlDaemon.Event.CommandTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest EvlDaemon.Event.Command
 
   test "should return a description for supported commands" do

@@ -1,5 +1,5 @@
 defmodule EvlDaemon.Event.DataTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest EvlDaemon.Event.Data
 
   test "should return a blank for data-less commands" do

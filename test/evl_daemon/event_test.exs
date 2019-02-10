@@ -1,5 +1,5 @@
 defmodule EvlDaemon.EventTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest EvlDaemon.Event
 
   test "should return a new Event based on payload and timestamp" do

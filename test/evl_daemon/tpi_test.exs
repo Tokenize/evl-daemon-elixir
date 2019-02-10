@@ -1,5 +1,5 @@
 defmodule EvlDaemon.TPITest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest EvlDaemon.TPI
 
   test "request encoding is correct" do

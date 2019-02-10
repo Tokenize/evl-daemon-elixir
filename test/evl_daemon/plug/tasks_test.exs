@@ -1,5 +1,5 @@
 defmodule EvlDaemon.Plug.TasksTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
   use Plug.Test
   doctest EvlDaemon.Plug.Tasks
 

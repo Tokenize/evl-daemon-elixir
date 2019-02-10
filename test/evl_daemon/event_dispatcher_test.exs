@@ -1,5 +1,5 @@
 defmodule EvlDaemon.EventDispatcherTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest EvlDaemon.EventDispatcher
 
   test "can successfully enqueue events" do
