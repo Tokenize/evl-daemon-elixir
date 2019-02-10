@@ -5,7 +5,7 @@ defmodule EvlDaemon.RouterTest do
 
   @opts EvlDaemon.Router.init([])
 
-  setup do
+  setup_all do
     Application.put_env(:evl_daemon, :auth_token, "test_token")
 
     :ok
