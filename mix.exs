@@ -35,10 +35,11 @@ defmodule EvlDaemon.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:bamboo, "~> 0.8"},
+      {:bamboo, "~> 1.2.0"},
       {:conform, "~> 2.4.0"},
       {:distillery, "~> 1.4.0", runtime: false},
       {:httpoison, "~> 1.4.0"},
+      {:poison, "~> 3.1"},
       {:plug_cowboy, "~> 2.0"},
       {:pid_file, "~> 0.1.0"},
       {:cors_plug, "~> 1.5"}
