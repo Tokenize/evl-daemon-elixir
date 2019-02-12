@@ -57,6 +57,6 @@ release :evl_daemon do
   ]
 
   set overlays: [
-    {:copy, "config/evl_daemon.json.sample", "evl_daemon.json"}
+    {:copy, "config/evl_daemon.json", "evl_daemon.json"}
   ]
 end
