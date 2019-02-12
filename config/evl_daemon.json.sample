@@ -14,6 +14,13 @@
         "type": "email",
         "recipient": "user@example.com",
         "sender": "noreply@example.com"
+      },
+      {
+        "type": "sms",
+        "from": "+123456789",
+        "to": "+123456789",
+        "sid": "SID",
+        "auth_token": "Twilio AUTH TOKEN"
       }
     ],
     "storage_engines": [
