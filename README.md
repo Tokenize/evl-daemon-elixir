@@ -10,7 +10,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
     ```elixir
     def deps do
-      [{:evl_daemon, "~> 0.1.0"}]
+      [{:evl_daemon, "~> 0.2.0"}]
     end
     ```
 
@@ -24,7 +24,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
 ## Usage
 
-  1. Edit the *evl_daemon.conf* file under the **config** directory (you can use evl_daemon.conf.sample as a template) and set your API keys, IP address and password.
+  1. Edit the *evl_daemon.json* file under the **config** directory (you can use evl_daemon.json.sample as a template) and set your API keys, IP address and password.
 
   2. Build a release by running one of the two commands:
     - `mix release` to build a release in development mode (no emails will be sent in this mode).

@@ -17,4 +17,4 @@ erl_crash.dump
 *.ez
 
 /evl_daemon
-/config/evl_daemon.conf
+/config/evl_daemon.json
