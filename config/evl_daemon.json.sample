@@ -1,0 +1,49 @@
+{
+  "evl_daemon": {
+    "host": "127.0.0.1",
+    "port": 4025,
+    "password": "SECRET",
+    "mailer_api_key": "SECRET API KEY",
+    "password": "EVL portal password",
+    "auto_connect": false,
+    "event_notifiers": [
+      {
+        "type": "console"
+      },
+      {
+        "type": "email",
+        "recipient": "user@example.com",
+        "sender": "noreply@example.com"
+      }
+    ],
+    "storage_engines": [
+      {
+        "type": "memory",
+        "maximum_events": "100"
+      }
+    ],
+    "tasks": [
+      {
+        "type": "status_report",
+        "query_status": false
+      }
+    ],
+    "zones": {
+      "1": "Front door",
+      "2": "Garage door",
+      "3": "Basement door",
+      "4": "Kitchen door",
+      "5": "Office motion sensor",
+      "6": "Family room motion sensor",
+      "7": "Basement glass break sensor",
+      "8": "Basement motion sensor"
+    },
+    "partitions": {
+      "1": "Main"
+    },
+    "system_emails_sender": "noreply@example.com",
+    "system_emails_recipient": "user@example.com",
+    "log_level": "info",
+    "auth_token": "secret"
+  }
+}

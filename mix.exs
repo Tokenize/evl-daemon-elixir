@@ -36,10 +36,11 @@ defmodule EvlDaemon.Mixfile do
   defp deps do
     [
       {:bamboo, "~> 1.2.0"},
+      {:distillery, "~> 2.0"},
       {:httpoison, "~> 1.4.0"},
       {:poison, "~> 3.1"},
       {:plug_cowboy, "~> 2.0"},
-      {:cors_plug, "~> 1.5"}
+      {:cors_plug, "~> 1.5"},
     ]
   end
 end
