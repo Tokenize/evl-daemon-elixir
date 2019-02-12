@@ -15,8 +15,8 @@ defmodule EvlDaemon.ConfigProvider do
     # All applications are already loaded at this point
     if File.exists?(config_path) do
       config_path
-      |> File.read!
-      |> Poison.decode!
+      |> File.read!()
+      |> Poison.decode!()
       |> persist()
     else
       :ok
@@ -41,7 +41,7 @@ defmodule EvlDaemon.ConfigProvider do
 
   defp persist(config) when is_map(config) do
     keyworded_config = to_keyword(config)
-    IO.inspect "Keyworded config: #{inspect keyworded_config}"
+
     for {app, app_config} <- keyworded_config do
       base_config = Application.get_all_env(app)
       merged = merge_config(base_config, app_config)
@@ -51,6 +51,7 @@ defmodule EvlDaemon.ConfigProvider do
         Application.put_env(app, k, transformed_value, persistent: true)
       end
     end
+
     :ok
   end
 
