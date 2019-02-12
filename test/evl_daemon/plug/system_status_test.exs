@@ -44,6 +44,27 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
     assert Map.has_key?(decoded_response, "uptime")
   end
 
+  describe "latest event" do
+    setup [:start_status_report_task]
+
+    test "return correct event" do
+      EvlDaemon.EventDispatcher.enqueue("65210FE")
+      EvlDaemon.EventDispatcher.enqueue("65220FF")
+      EvlDaemon.EventDispatcher.enqueue("6523000")
+
+      Process.sleep(100)
+
+      conn =
+        conn(:get, "/system_status?auth_token=test_token")
+        |> EvlDaemon.Router.call(@opts)
+
+      decoded_response = Poison.decode!(conn.resp_body)
+      last_event = Map.get(decoded_response, "last_event")
+      assert last_event["command"] == "652"
+      assert last_event["partition"] == "3"
+    end
+  end
+
   describe "armed states when query_status is false" do
     setup [:start_status_report_task]
 
