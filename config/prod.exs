@@ -4,4 +4,4 @@
 use Mix.Config
 
 config :logger, level: :info
-config :evl_daemon, EvlDaemon.Mailer, adapter: Bamboo.SendgridAdapter, api_key: "SECRET"
+config :evl_daemon, EvlDaemon.Mailer, adapter: Bamboo.SendGridAdapter, api_key: "SECRET"
