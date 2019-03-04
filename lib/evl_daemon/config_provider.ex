@@ -47,8 +47,9 @@ defmodule EvlDaemon.ConfigProvider do
       merged = merge_config(base_config, app_config)
 
       for {k, v} <- merged do
-        transformed_value = transform(k, v)
-        Application.put_env(app, k, transformed_value, persistent: true)
+        transformed_key = transform_key(k)
+        transformed_value = transform_value(k, v)
+        Application.put_env(app, transformed_key, transformed_value, persistent: true)
       end
     end
 
@@ -71,20 +72,30 @@ defmodule EvlDaemon.ConfigProvider do
 
   defp merge_config(_key, _val1, val2), do: val2
 
-  defp transform(key, value) when key in [:zones, :partitions] do
+  defp transform_value(key, value) when key in [:zones, :partitions] do
     value
     |> Enum.into(%{})
   end
 
-  defp transform(_key = :host, value) do
+  defp transform_value(_key = :host, value) do
     value
     |> String.to_charlist()
   end
 
-  defp transform(_key = :log_level, value) do
+  defp transform_value(_key = :log_level, value) do
     value
     |> String.to_atom()
   end
 
-  defp transform(_key, value), do: value
+  defp transform_value(_key = :mailer_api_key, value) do
+    adapter = Application.get_env(:evl_daemon, EvlDaemon.Mailer)
+              |> Keyword.get(:adapter)
+
+    [adapter: adapter, api_key: value]
+  end
+
+  defp transform_value(_key, value), do: value
+
+  defp transform_key(_key = :mailer_api_key), do: EvlDaemon.Mailer
+  defp transform_key(key), do: key
 end
