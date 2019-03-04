@@ -53,10 +53,10 @@ release :evl_daemon do
   ]
 
   set config_providers: [
-    {EvlDaemon.ConfigProvider, ["${RELEASE_ROOT_DIR}/evl_daemon.json"]}
+    {EvlDaemon.ConfigProvider, ["${RELEASE_ROOT_DIR}/etc/evl_daemon.json"]}
   ]
 
   set overlays: [
-    {:copy, "config/evl_daemon.json", "evl_daemon.json"}
+    {:copy, "config/evl_daemon.json", "etc/evl_daemon.json"}
   ]
 end
