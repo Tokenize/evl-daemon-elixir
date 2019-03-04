@@ -5,3 +5,4 @@ use Mix.Config
 
 config :logger, level: :info
 config :evl_daemon, EvlDaemon.Mailer, adapter: Bamboo.SendGridAdapter, api_key: "SECRET"
+config :kernel, pidfile: "/tmp/evl_daemon.pid"
