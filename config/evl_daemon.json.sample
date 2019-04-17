@@ -2,7 +2,6 @@
   "evl_daemon": {
     "host": "127.0.0.1",
     "port": 4025,
-    "password": "SECRET",
     "mailer_api_key": "SECRET API KEY",
     "password": "EVL portal password",
     "auto_connect": false,
