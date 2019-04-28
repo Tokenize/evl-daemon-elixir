@@ -40,7 +40,8 @@ defmodule EvlDaemon.Mixfile do
       {:httpoison, "~> 1.4.0"},
       {:poison, "~> 3.1"},
       {:plug_cowboy, "~> 2.0"},
-      {:cors_plug, "~> 1.5"}
+      {:cors_plug, "~> 1.5"},
+      {:dialyxir, "~> 1.0.0-rc.6", only: [:dev], runtime: false},
     ]
   end
 end
