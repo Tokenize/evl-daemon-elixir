@@ -76,9 +76,10 @@ defmodule EvlDaemon.Plug.Tasks do
     pid = GenServer.whereis(EvlDaemon.Supervisor.Task)
 
     child = fetch_task_pid(task_type)
+    child_module = module_name_for_task_type(task_type)
 
     case child do
-      nil -> Supervisor.start_child(pid, opts)
+      nil -> DynamicSupervisor.start_child(pid, {child_module, opts})
       _ -> {:error, :already_started}
     end
   end
