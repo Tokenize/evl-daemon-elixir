@@ -25,7 +25,7 @@ defmodule EvlDaemon.EventNotifier.Console do
 
   @impl GenServer
   def handle_info({:handle_event, event}, opts) do
-    if filter(event), do: notify(event, opts)
+    notify(event, opts)
 
     {:noreply, opts}
   end
