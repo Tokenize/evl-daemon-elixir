@@ -7,5 +7,5 @@ defmodule EvlDaemon.EventNotifier do
   @callback filter(event :: EvlDaemon.Event) :: boolean
 
   @doc "Processes the notification for the event."
-  @callback notify(event :: EvlDaemon.Event, opts :: [any]) :: atom
+  @callback notify(event :: EvlDaemon.Event, opts :: [any]) :: any
 end
