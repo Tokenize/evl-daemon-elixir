@@ -4,13 +4,26 @@ defmodule EvlDaemon.EventNotifier.SMS do
   via SMS.
   """
 
-  use EvlDaemon.EventNotifier
+  alias EvlDaemon.{EventNotifier, EventSubscriber}
+  use GenServer
+  use EventSubscriber
 
+  @behaviour EvlDaemon.EventNotifier
+
+  @impl EventNotifier
   def filter(event) do
     Enum.member?([:high], event.priority)
   end
 
+  @impl EventNotifier
   def notify(event, opts), do: do_notify(event, opts)
+
+  @impl GenServer
+  def handle_info({:handle_event, event}, opts) do
+    if filter(event), do: notify(event, opts)
+
+    {:noreply, opts}
+  end
 
   # Private functions
 
