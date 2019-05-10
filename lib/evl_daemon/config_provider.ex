@@ -88,8 +88,9 @@ defmodule EvlDaemon.ConfigProvider do
   end
 
   defp transform_value(_key = :mailer_api_key, value) do
-    adapter = Application.get_env(:evl_daemon, EvlDaemon.Mailer)
-              |> Keyword.get(:adapter)
+    adapter =
+      Application.get_env(:evl_daemon, EvlDaemon.Mailer)
+      |> Keyword.get(:adapter)
 
     [adapter: adapter, api_key: value]
   end
