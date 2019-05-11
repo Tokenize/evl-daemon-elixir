@@ -4,8 +4,8 @@ elixir:
 otp_release:
   - '21.3.6'
 script:
-  - mix dialyzer --halt-exit-status --format short
   - mix test
+  - mix dialyzer --halt-exit-status --format short
 cache:
   directories:
     - priv/plts
