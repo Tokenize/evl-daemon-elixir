@@ -11,6 +11,7 @@ defmodule EvlDaemon.Event.Data do
   @doc """
   Return a human readable version of the data portion of the event.
   """
+  @spec description(payload :: String.t()) :: String.t()
   def description(payload) do
     do_description(TPI.command_part(payload), TPI.data_part(payload))
   end
@@ -18,6 +19,7 @@ defmodule EvlDaemon.Event.Data do
   @doc """
   Return the event's partition (if applicable).
   """
+  @spec partition(payload :: String.t()) :: String.t()
   def partition(payload) do
     do_partition(TPI.command_part(payload), TPI.data_part(payload))
   end
@@ -25,6 +27,7 @@ defmodule EvlDaemon.Event.Data do
   @doc """
   Return the event's zone (if applicable).
   """
+  @spec zone(payload :: String.t()) :: String.t()
   def zone(payload) do
     do_zone(TPI.command_part(payload), TPI.data_part(payload))
   end
@@ -32,6 +35,7 @@ defmodule EvlDaemon.Event.Data do
   @doc """
   Return the event's data (excluding the zone and partition).
   """
+  @spec data(payload :: String.t()) :: String.t()
   def data(payload) do
     do_data(TPI.command_part(payload), TPI.data_part(payload))
   end

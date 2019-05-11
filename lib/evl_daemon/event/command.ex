@@ -68,6 +68,7 @@ defmodule EvlDaemon.Event.Command do
   @doc """
   Return a human readable version of the command portion of the event.
   """
+  @spec description(payload :: String.t()) :: String.t()
   def description(payload) do
     command_code = TPI.command_part(payload)
 
@@ -78,6 +79,7 @@ defmodule EvlDaemon.Event.Command do
   @doc """
   Return priority for command portion of the event.
   """
+  @spec priority(payload :: String.t()) :: String.t()
   def priority(payload) do
     command_code = TPI.command_part(payload)
 

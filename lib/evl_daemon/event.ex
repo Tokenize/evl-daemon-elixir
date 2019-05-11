@@ -13,6 +13,7 @@ defmodule EvlDaemon.Event do
   @doc """
   Return a new Event based on the payload and timestamp.
   """
+  @spec new(payload :: String.t(), timestamp :: Calendar.datetime()) :: %Event{}
   def new(payload, timestamp) do
     %Event{
       command: TPI.command_part(payload),
@@ -28,6 +29,7 @@ defmodule EvlDaemon.Event do
   @doc """
   Return a human readable version of both the command and data portions of the event.
   """
+  @spec description(payload :: String.t()) :: %{command: String.t(), data: String.t()}
   def description(payload) do
     %{
       command: Event.Command.description(payload),
