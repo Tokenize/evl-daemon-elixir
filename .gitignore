@@ -18,3 +18,7 @@ erl_crash.dump
 
 /evl_daemon
 /config/evl_daemon.json
+
+# Dialyzer PLT files
+/priv/plts/*.plt
+/priv/plts/*.plt.hash

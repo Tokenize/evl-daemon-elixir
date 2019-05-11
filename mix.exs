@@ -8,6 +8,9 @@ defmodule EvlDaemon.Mixfile do
       elixir: "~> 1.6",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
+      dialyzer: [
+        plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
+      ],
       deps: deps()
     ]
   end
