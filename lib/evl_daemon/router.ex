@@ -2,7 +2,7 @@ defmodule EvlDaemon.Router do
   use Plug.Router
 
   plug(Plug.Logger, log: :debug)
-  plug(Plug.Parsers, parsers: [:json], json_decoder: Poison)
+  plug(Plug.Parsers, parsers: [:json], json_decoder: Jason)
   plug(CORSPlug, origin: "*", methods: ["GET", "DELETE"])
   plug(EvlDaemon.Plug.AuthTokenValidator)
   plug(EvlDaemon.Plug.Events)

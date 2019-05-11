@@ -34,7 +34,7 @@ defmodule EvlDaemon.RouterTest do
       conn(:get, "/events?auth_token=invalid")
       |> EvlDaemon.Router.call(@opts)
 
-    decoded_response = Poison.decode!(conn.resp_body)
+    decoded_response = Jason.decode!(conn.resp_body)
 
     assert Map.has_key?(decoded_response, "error") == true
 

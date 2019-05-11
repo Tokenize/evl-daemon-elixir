@@ -6,7 +6,7 @@ defmodule EvlDaemon.Event do
 
   alias EvlDaemon.{Event, TPI}
 
-  @derive [Poison.Encoder]
+  @derive [Jason.Encoder]
 
   defstruct [:command, :data, :description, :priority, :partition, :zone, :timestamp]
 

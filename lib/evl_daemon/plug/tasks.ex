@@ -56,7 +56,7 @@ defmodule EvlDaemon.Plug.Tasks do
   def do_send_response(conn, code, payload) do
     conn
     |> put_resp_content_type("application/json")
-    |> send_resp(code, Poison.encode!(payload))
+    |> send_resp(code, Jason.encode!(payload))
     |> halt
   end
 

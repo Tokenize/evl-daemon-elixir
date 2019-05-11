@@ -7,7 +7,7 @@ defmodule EvlDaemon.Plug.SystemStatus do
   def call(%Plug.Conn{request_path: "/system_status"} = conn, _opts) do
     conn
     |> put_resp_content_type("application/json")
-    |> send_resp(:ok, Poison.encode!(system_status_body()))
+    |> send_resp(:ok, Jason.encode!(system_status_body()))
     |> halt
   end
 

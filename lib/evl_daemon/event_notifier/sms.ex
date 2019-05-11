@@ -67,6 +67,6 @@ defmodule EvlDaemon.EventNotifier.SMS do
   end
 
   defp handle_response({:ok, %{status_code: 201, body: body}}) do
-    body |> Poison.decode!()
+    body |> Jason.decode!()
   end
 end

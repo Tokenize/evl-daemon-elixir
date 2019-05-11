@@ -7,7 +7,7 @@ defmodule EvlDaemon.Plug.AuthTokenValidator do
     if invalid_auth_token?(conn) do
       conn
       |> put_resp_content_type("application/json")
-      |> send_resp(:unauthorized, Poison.encode!(unauthorized_response_body()))
+      |> send_resp(:unauthorized, Jason.encode!(unauthorized_response_body()))
       |> halt
     else
       conn

@@ -16,7 +16,7 @@ defmodule EvlDaemon.ConfigProvider do
     if File.exists?(config_path) do
       config_path
       |> File.read!()
-      |> Poison.decode!()
+      |> Jason.decode!()
       |> persist()
     else
       :ok

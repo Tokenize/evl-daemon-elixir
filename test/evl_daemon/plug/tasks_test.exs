@@ -25,7 +25,7 @@ defmodule EvlDaemon.Plug.TasksTest do
   describe "task creation" do
     test "returns 422 when attempting to create an invalid task" do
       conn =
-        conn(:post, "/tasks?auth_token=test_token", Poison.encode!(%{"type" => "foobar"}))
+        conn(:post, "/tasks?auth_token=test_token", Jason.encode!(%{"type" => "foobar"}))
         |> put_req_header("content-type", "application/json")
         |> EvlDaemon.Router.call(@opts)
 
@@ -35,7 +35,7 @@ defmodule EvlDaemon.Plug.TasksTest do
 
     test "returns 201 when attempting to create a valid task" do
       conn =
-        conn(:post, "/tasks?auth_token=test_token", Poison.encode!(@task_opts))
+        conn(:post, "/tasks?auth_token=test_token", Jason.encode!(@task_opts))
         |> put_req_header("content-type", "application/json")
         |> EvlDaemon.Router.call(@opts)
 
@@ -50,7 +50,7 @@ defmodule EvlDaemon.Plug.TasksTest do
       DynamicSupervisor.start_child(pid, {EvlDaemon.Task.SilentArm, opts})
 
       conn =
-        conn(:post, "/tasks?auth_token=test_token", Poison.encode!(@task_opts))
+        conn(:post, "/tasks?auth_token=test_token", Jason.encode!(@task_opts))
         |> put_req_header("content-type", "application/json")
         |> EvlDaemon.Router.call(@opts)
 
@@ -62,7 +62,7 @@ defmodule EvlDaemon.Plug.TasksTest do
   describe "task deletion" do
     test "returns 422 when attempting to delete an invalid task" do
       conn =
-        conn(:delete, "/tasks?auth_token=test_token", Poison.encode!(%{"type" => "foobar"}))
+        conn(:delete, "/tasks?auth_token=test_token", Jason.encode!(%{"type" => "foobar"}))
         |> put_req_header("content-type", "application/json")
         |> EvlDaemon.Router.call(@opts)
 
@@ -72,7 +72,7 @@ defmodule EvlDaemon.Plug.TasksTest do
 
     test "returns 422 when attempting to delete a non-running valid task" do
       conn =
-        conn(:delete, "/tasks?auth_token=test_token", Poison.encode!(@task_opts))
+        conn(:delete, "/tasks?auth_token=test_token", Jason.encode!(@task_opts))
         |> put_req_header("content-type", "application/json")
         |> EvlDaemon.Router.call(@opts)
 
@@ -87,7 +87,7 @@ defmodule EvlDaemon.Plug.TasksTest do
       DynamicSupervisor.start_child(pid, {EvlDaemon.Task.SilentArm, opts})
 
       conn =
-        conn(:delete, "/tasks?auth_token=test_token", Poison.encode!(@task_opts))
+        conn(:delete, "/tasks?auth_token=test_token", Jason.encode!(@task_opts))
         |> put_req_header("content-type", "application/json")
         |> EvlDaemon.Router.call(@opts)
 

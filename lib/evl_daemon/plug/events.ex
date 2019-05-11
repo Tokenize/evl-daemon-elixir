@@ -7,7 +7,7 @@ defmodule EvlDaemon.Plug.Events do
   def call(%Plug.Conn{request_path: "/events"} = conn, _opts) do
     conn
     |> put_resp_content_type("application/json")
-    |> send_resp(:ok, Poison.encode!(encoded_events(conn, events())))
+    |> send_resp(:ok, Jason.encode!(encoded_events(conn, events())))
     |> halt
   end
 

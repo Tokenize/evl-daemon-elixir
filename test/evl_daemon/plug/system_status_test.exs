@@ -34,7 +34,7 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
       conn(:get, "/system_status?auth_token=test_token")
       |> EvlDaemon.Router.call(@opts)
 
-    decoded_response = Poison.decode!(conn.resp_body)
+    decoded_response = Jason.decode!(conn.resp_body)
 
     assert conn.state == :sent
     assert conn.status == 200
@@ -58,7 +58,7 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
         conn(:get, "/system_status?auth_token=test_token")
         |> EvlDaemon.Router.call(@opts)
 
-      decoded_response = Poison.decode!(conn.resp_body)
+      decoded_response = Jason.decode!(conn.resp_body)
       last_event = Map.get(decoded_response, "last_event")
       assert last_event["command"] == "652"
       assert last_event["partition"] == "3"
@@ -77,7 +77,7 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
         conn(:get, "/system_status?auth_token=test_token")
         |> EvlDaemon.Router.call(@opts)
 
-      decoded_response = Poison.decode!(conn.resp_body)
+      decoded_response = Jason.decode!(conn.resp_body)
       state = Map.get(decoded_response, "armed_state")
       assert get_armed_state_for_partition(state, "1") == "Armed in Away mode."
     end
@@ -91,7 +91,7 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
         conn(:get, "/system_status?auth_token=test_token")
         |> EvlDaemon.Router.call(@opts)
 
-      decoded_response = Poison.decode!(conn.resp_body)
+      decoded_response = Jason.decode!(conn.resp_body)
       state = Map.get(decoded_response, "armed_state")
       assert get_armed_state_for_partition(state, "1") == "Armed in Stay mode."
     end
@@ -106,7 +106,7 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
         conn(:get, "/system_status?auth_token=test_token")
         |> EvlDaemon.Router.call(@opts)
 
-      decoded_response = Poison.decode!(conn.resp_body)
+      decoded_response = Jason.decode!(conn.resp_body)
       state = Map.get(decoded_response, "armed_state")
       assert get_armed_state_for_partition(state, "1") == "Armed in Zero-Entry-Away mode."
     end
@@ -121,7 +121,7 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
         conn(:get, "/system_status?auth_token=test_token")
         |> EvlDaemon.Router.call(@opts)
 
-      decoded_response = Poison.decode!(conn.resp_body)
+      decoded_response = Jason.decode!(conn.resp_body)
       state = Map.get(decoded_response, "armed_state")
       assert get_armed_state_for_partition(state, "1") == "Armed in Zero-Entry-Stay mode."
     end
@@ -137,7 +137,7 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
         conn(:get, "/system_status?auth_token=test_token")
         |> EvlDaemon.Router.call(@opts)
 
-      decoded_response = Poison.decode!(conn.resp_body)
+      decoded_response = Jason.decode!(conn.resp_body)
       state = Map.get(decoded_response, "armed_state")
       assert get_armed_state_for_partition(state, "1") == "Unarmed."
     end
@@ -153,7 +153,7 @@ defmodule EvlDaemon.Plug.SystemStatusTest do
         conn(:get, "/system_status?auth_token=test_token")
         |> EvlDaemon.Router.call(@opts)
 
-      decoded_response = Poison.decode!(conn.resp_body)
+      decoded_response = Jason.decode!(conn.resp_body)
       state = Map.get(decoded_response, "armed_state")
       assert get_armed_state_for_partition(state, "1") == "Failed to arm."
     end
