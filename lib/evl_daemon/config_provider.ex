@@ -74,6 +74,7 @@ defmodule EvlDaemon.ConfigProvider do
 
   defp transform_value(key, value) when key in [:zones, :partitions] do
     value
+    |> Enum.map(fn {k, v} -> {Atom.to_string(k), v} end)
     |> Enum.into(%{})
   end
 
