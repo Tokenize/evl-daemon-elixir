@@ -8,10 +8,12 @@ defmodule EvlDaemon.Mixfile do
       elixir: "~> 1.6",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
+      description: description(),
       dialyzer: [
         plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
       ],
-      deps: deps()
+      deps: deps(),
+      package: package()
     ]
   end
 
@@ -45,6 +47,18 @@ defmodule EvlDaemon.Mixfile do
       {:plug_cowboy, "~> 2.0"},
       {:cors_plug, "~> 1.5"},
       {:dialyxir, "~> 1.0.0-rc.6", only: [:dev], runtime: false}
+    ]
+  end
+
+  defp description do
+    "An Elixir based daemon for Envisalink EVL modules."
+  end
+
+  defp package do
+    [
+      maintainers: ["Zaid Al-Jarrah"],
+      licenses: ["GPL 3.0"],
+      links: %{"GitHub" => "https://github.com/Tokenize/evl-daemon-elixir"}
     ]
   end
 end
