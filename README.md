@@ -60,4 +60,4 @@ The following actions are supported via a simple API which is protected behind a
   curl --verbose -X DELETE -H Content-Type:application/json -d "{\"type\":\"silent_arm\", \"zones\":[\"001\",\"005\"]}" http://127.0.0.1:4000/tasks\?auth_token\=SECRET
   ```
 
-  The Silent Arm task will automatically terminate when it detects a *System Arming In Progress* or *Partition Armed" event.
+  The Silent Arm task will automatically terminate when it detects a *System Arming In Progress* or *Partition Armed* event.
