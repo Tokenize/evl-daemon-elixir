@@ -46,7 +46,7 @@ The following actions are supported via a simple API which is protected behind a
   All the actions requires setting the *auth_token* parameter and it must match the value in the config file.
 
   ### Tasks
-  Currently, there is only one support task type and that is *silent_arm* and to enable it, you can do the following:
+  Currently, the only supported task type is *silent_arm* and you can enable it by doing the following:
   
   ```
   curl --verbose -X POST -H Content-Type:application/json -d "{\"type\":\"silent_arm\", \"zones\":\"[1,5]\"}" http://127.0.0.1:4000/tasks\?auth_token\=SECRET
