@@ -48,7 +48,7 @@ defmodule EvlDaemon.Mixfile do
   defp deps do
     [
       {:bamboo, "~> 1.2.0"},
-      {:distillery, "~> 2.0"},
+      {:distillery, "~> 2.1"},
       {:httpoison, "~> 1.4.0"},
       {:jason, "~> 1.1"},
       {:plug_cowboy, "~> 2.0"},

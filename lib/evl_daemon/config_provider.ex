@@ -4,7 +4,7 @@ defmodule EvlDaemon.ConfigProvider do
   behavior, so that JSON files can be used for configuration in releases.
   """
 
-  use Mix.Releases.Config.Provider
+  use Distillery.Releases.Config.Provider
 
   @doc false
   def init([config_path]) do
