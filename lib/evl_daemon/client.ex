@@ -20,7 +20,7 @@ defmodule EvlDaemon.Client do
 
   def init(opts) do
     if Application.get_env(:evl_daemon, :auto_connect) do
-      {:ok, opts, 0}
+      {:ok, opts, {:continue, :auto_connect}}
     else
       {:ok, opts}
     end
@@ -80,7 +80,7 @@ defmodule EvlDaemon.Client do
     {:noreply, state, @poll_interval}
   end
 
-  def handle_info(:timeout, state) do
+  def handle_continue(:auto_connect, state) do
     if Connection.alive?() do
       do_poll()
     else
