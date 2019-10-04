@@ -32,6 +32,13 @@
       {
         "type": "status_report",
         "query_status": false
+      },
+      {
+        "type": "heartbeat",
+        "auth_token": "foobar",
+        "host": "mimir.localhost:3000",
+        "device": "42",
+        "interval": 5000,
       }
     ],
     "zones": {

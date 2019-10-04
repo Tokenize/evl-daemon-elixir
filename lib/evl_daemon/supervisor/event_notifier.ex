@@ -45,6 +45,9 @@ defmodule EvlDaemon.Supervisor.EventNotifier do
         "status_report" ->
           [Task.StatusReport, List.flatten(Keyword.delete(task, :type))]
 
+        "heartbeat" ->
+          [Task.Heartbeat, List.flatten(Keyword.delete(task, :type))]
+
         _ ->
           nil
       end
