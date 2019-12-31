@@ -4,8 +4,8 @@ defmodule EvlDaemon.EventNotifier do
   """
 
   @doc "Determines if the event is interesting to us."
-  @callback filter(event :: EvlDaemon.Event) :: boolean
+  @callback filter(event :: %EvlDaemon.Event{}) :: boolean
 
   @doc "Processes the notification for the event."
-  @callback notify(event :: EvlDaemon.Event, opts :: [any]) :: any
+  @callback notify(event :: %EvlDaemon.Event{}, opts :: [any]) :: any
 end

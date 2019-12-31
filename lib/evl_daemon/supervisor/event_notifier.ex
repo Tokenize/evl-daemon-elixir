@@ -21,6 +21,7 @@ defmodule EvlDaemon.Supervisor.EventNotifier do
         "console" -> [EventNotifier.Console]
         "email" -> [EventNotifier.Email, List.flatten(Keyword.delete(notifier, :type))]
         "sms" -> [EventNotifier.SMS, List.flatten(Keyword.delete(notifier, :type))]
+        "mimir" -> [EventNotifier.Mimir, List.flatten(Keyword.delete(notifier, :type))]
         _ -> nil
       end
     end

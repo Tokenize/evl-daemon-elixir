@@ -70,7 +70,9 @@ defmodule EvlDaemon.Task.Heartbeat do
   end
 
   @doc false
-  defp headers(), do: [{"Content-Type", "application/json"}]
+  defp headers() do
+    [{"Content-Type", "application/json"}, {"Accept", "application/json"}]
+  end
 
   @doc false
   defp body(opts) do

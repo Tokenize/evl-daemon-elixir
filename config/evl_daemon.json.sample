@@ -20,6 +20,12 @@
         "to": "+123456789",
         "sid": "SID",
         "auth_token": "Twilio AUTH TOKEN"
+      },
+      {
+        "type": "mimir",
+        "auth_token": "foobar",
+        "host": "mimir.localhost:3000",
+        "device": "42",
       }
     ],
     "storage_engines": [
