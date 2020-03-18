@@ -12,6 +12,7 @@ defmodule EvlDaemon.Event.Command do
     "505" => [description: "Login Interaction", priority: :medium],
     "510" => [description: "Keypad LED State", priority: :low],
     "511" => [description: "Keypad LED FLASH State", priority: :low],
+    "560" => [description: "Ring Detected", priority: :low],
     "601" => [description: "Zone Alarm", priority: :high],
     "602" => [description: "Zone Alarm Restore", priority: :medium],
     "603" => [description: "Zone Tamper", priority: :critical],
