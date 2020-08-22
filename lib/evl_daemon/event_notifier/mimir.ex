@@ -48,7 +48,7 @@ defmodule EvlDaemon.EventNotifier.Mimir do
     %{
       auth_token: Keyword.fetch!(opts, :auth_token),
       device: Keyword.fetch!(opts, :device),
-      event: normalized_event(event),
+      event: normalized_event(event)
     }
     |> Jason.encode!()
   end
@@ -58,7 +58,9 @@ defmodule EvlDaemon.EventNotifier.Mimir do
     combined_description = event.description[:command] <> " " <> event.description[:data]
 
     %{
-      event | description: combined_description, timestamp: (event.timestamp |> DateTime.from_unix!)
+      event
+      | description: combined_description,
+        timestamp: event.timestamp |> DateTime.from_unix!()
     }
   end
 

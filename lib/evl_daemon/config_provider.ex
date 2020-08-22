@@ -1,103 +1,90 @@
 defmodule EvlDaemon.ConfigProvider do
   @moduledoc """
-  This module provides an implementation of Distilery's configuration provider
+  This module provides an implementation of Elixir's configuration provider
   behavior, so that JSON files can be used for configuration in releases.
   """
 
-  use Distillery.Releases.Config.Provider
+  @behaviour Config.Provider
+
+  @supported_config_keys [
+    :host,
+    :port,
+    :mailer_api_key,
+    :password,
+    :auto_connect,
+    :event_notifiers,
+    :storage_engines,
+    :tasks,
+    :zones,
+    :partitions,
+    :system_emails_sender,
+    :system_emails_recipient,
+    :log_level,
+    :auth_token
+  ]
 
   @doc false
-  def init([config_path]) do
-    # Helper which expands paths to absolute form
-    # and expands env vars in the path of the form `${VAR}`
-    # to their value in the system environment
-    {:ok, config_path} = Provider.expand_path(config_path)
-    # All applications are already loaded at this point
-    if File.exists?(config_path) do
-      config_path
+  def init(path) when is_binary(path) or is_list(path), do: path
+
+  def load(config, path) do
+    {:ok, _} = Application.ensure_all_started(:jason)
+
+    custom_config =
+      path
+      |> resolve_config_file_path()
       |> File.read!()
-      |> Jason.decode!()
-      |> persist()
-    else
-      :ok
+      |> Jason.decode!(keys: :atoms)
+      |> parse_config()
+
+    Config.Reader.merge(config, evl_daemon: custom_config)
+  end
+
+  @doc false
+  defp parse_config(json_config) do
+    json_config
+    |> Map.get(:evl_daemon, %{})
+    |> Map.take(@supported_config_keys)
+    |> Enum.map(fn {key, value} -> parse_config_entry(key, value) end)
+  end
+
+  @doc false
+  defp parse_config_entry(key = :host, value), do: {key, value |> String.to_charlist()}
+  defp parse_config_entry(key = :log_level, value), do: {key, value |> String.to_atom()}
+
+  defp parse_config_entry(_key = :mailer_api_key, value) do
+    adapter = Application.get_env(:evl_daemon, EvlDaemon.Mailer) |> Keyword.get(:adapter)
+    {EvlDaemon.Mailer, [adapter: adapter, api_key: value]}
+  end
+
+  defp parse_config_entry(key, value) when key in [:zones, :partitions] do
+    stringified_map =
+      value
+      |> Enum.map(fn {k, v} -> {Atom.to_string(k), v} end)
+      |> Enum.into(%{})
+
+    {key, stringified_map}
+  end
+
+  defp parse_config_entry(key, value) when key in [:event_notifiers, :tasks, :storage_engines] do
+    {key, value |> Enum.map(fn x -> Map.to_list(x) end)}
+  end
+
+  defp parse_config_entry(key, value), do: {key, value}
+
+  @doc false
+  defp resolve_config_file_path(path) when is_binary(path), do: path
+
+  defp resolve_config_file_path(paths) when is_list(paths) do
+    local_config = paths |> Enum.find(fn path -> String.starts_with?(path, "~") end)
+    global_config = paths |> Enum.find(fn path -> path != local_config end)
+    expanded_local_config = local_config |> Path.expand()
+
+    cond do
+      File.exists?(expanded_local_config) ->
+        expanded_local_config
+
+      true ->
+        global_config
     end
   end
-
-  defp to_keyword(config) when is_map(config) do
-    for {k, v} <- config do
-      k = String.to_atom(k)
-      {k, to_keyword(v)}
-    end
-  end
-
-  defp to_keyword(config) when is_list(config) do
-    config
-    |> Enum.map(fn element ->
-      to_keyword(element)
-    end)
-  end
-
-  defp to_keyword(config), do: config
-
-  defp persist(config) when is_map(config) do
-    keyworded_config = to_keyword(config)
-
-    for {app, app_config} <- keyworded_config do
-      base_config = Application.get_all_env(app)
-      merged = merge_config(base_config, app_config)
-
-      for {k, v} <- merged do
-        transformed_key = transform_key(k)
-        transformed_value = transform_value(k, v)
-        Application.put_env(app, transformed_key, transformed_value, persistent: true)
-      end
-    end
-
-    :ok
-  end
-
-  defp merge_config(base, app) when is_list(base) and is_list(app) do
-    Keyword.merge(base, app, fn key, base_val, app_val ->
-      merge_config(key, base_val, app_val)
-    end)
-  end
-
-  defp merge_config(_key, val1, val2) when is_list(val1) and is_list(val2) do
-    if Keyword.keyword?(val1) and Keyword.keyword?(val2) do
-      Keyword.merge(val1, val2, &merge_config/3)
-    else
-      val2
-    end
-  end
-
-  defp merge_config(_key, _val1, val2), do: val2
-
-  defp transform_value(key, value) when key in [:zones, :partitions] do
-    value
-    |> Enum.map(fn {k, v} -> {Atom.to_string(k), v} end)
-    |> Enum.into(%{})
-  end
-
-  defp transform_value(_key = :host, value) do
-    value
-    |> String.to_charlist()
-  end
-
-  defp transform_value(_key = :log_level, value) do
-    value
-    |> String.to_atom()
-  end
-
-  defp transform_value(_key = :mailer_api_key, value) do
-    adapter =
-      Application.get_env(:evl_daemon, EvlDaemon.Mailer)
-      |> Keyword.get(:adapter)
-
-    [adapter: adapter, api_key: value]
-  end
-
-  defp transform_value(_key, value), do: value
-
-  defp transform_key(_key = :mailer_api_key), do: EvlDaemon.Mailer
-  defp transform_key(key), do: key
 end

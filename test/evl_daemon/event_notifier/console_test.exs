@@ -1,6 +1,6 @@
 defmodule EvlDaemon.EventNotifier.ConsoleTest do
   import ExUnit.CaptureLog
-  use ExUnit.Case
+  use ExUnit.Case, async: false
   doctest EvlDaemon.EventNotifier.Console
 
   setup do

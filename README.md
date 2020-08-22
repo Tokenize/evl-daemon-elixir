@@ -24,16 +24,16 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
 ## Usage
 
-  1. Edit the *evl_daemon.json* file under the **config** directory (you can use evl_daemon.json.sample as a template) and set your API keys, IP address and password.
+  1. Copy the `config/evl_daemon.json.sample` file to either `/etc/evl_daemon.json` or `$HOME/.config/evl_daemon/config.json` and set your API keys, IP address and password.
 
   2. Build a release by running one of the two commands:
-      - `mix distillery.release` to build a release in development mode (no emails will be sent in this mode).
-      - `MIX_ENV=prod mix distillery.release --env prod` to build a release in production mode.
+      - `mix release` to build a release in development mode (no emails will be sent in this mode).
+      - `MIX_ENV=prod mix release --env prod` to build a release in production mode.
 
   3. Run evl_daemon in one of the following ways (replace env with either *prod* / *dev*):
-      - Interactive: `_build/env/rel/evl_daemon/bin/evl_daemon console`
-      - Foreground: _build/env/rel/evl_daemon/bin/evl_daemon foreground
-      - Daemon: _build/env/rel/evl_daemon/bin/evl_daemon start
+      - Foreground: `_build/env/rel/evl_daemon/bin/evl_daemon start_iex`
+      - Daemon: `_build/env/rel/evl_daemon/bin/evl_daemon daemon`
+      - Remote console: `_build/env/rel/evl_daemon/bin/evl_daemon remote`
 
 ## HTTP JSON API
 

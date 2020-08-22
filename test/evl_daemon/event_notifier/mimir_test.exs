@@ -1,15 +1,16 @@
 defmodule EvlDaemon.EventNotifier.MimirTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
   doctest EvlDaemon.EventNotifier.Mimir
 
   setup do
     bypass = Bypass.open()
 
-    {:ok, _pid} = EvlDaemon.EventNotifier.Mimir.start_link(
-      auth_token: "foo",
-      host: "http://localhost:#{bypass.port}",
-      device: "123"
-    )
+    {:ok, _pid} =
+      EvlDaemon.EventNotifier.Mimir.start_link(
+        auth_token: "foo",
+        host: "http://localhost:#{bypass.port}",
+        device: "123"
+      )
 
     {:ok, bypass: bypass}
   end

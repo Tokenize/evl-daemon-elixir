@@ -20,7 +20,8 @@ defmodule EvlDaemon.Mixfile do
         plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
       ],
       deps: deps(),
-      package: package()
+      package: package(),
+      releases: releases()
     ]
   end
 
@@ -48,13 +49,12 @@ defmodule EvlDaemon.Mixfile do
   defp deps do
     [
       {:bamboo, "~> 1.2.0"},
-      {:distillery, "~> 2.1"},
-      {:httpoison, "~> 1.4.0"},
-      {:jason, "~> 1.1"},
+      {:httpoison, "~> 1.7.0"},
+      {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.0"},
       {:cors_plug, "~> 1.5"},
-      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev], runtime: false},
-      {:ex_doc, "~> 0.19.0", only: [:dev], runtime: false},
+      {:dialyxir, "~> 1.0.0", only: [:dev], runtime: false},
+      {:ex_doc, "~> 0.22.2", only: [:dev], runtime: false},
       {:bypass, "~> 1.0", only: [:test]}
     ]
   end
@@ -68,6 +68,24 @@ defmodule EvlDaemon.Mixfile do
       maintainers: ["Zaid Al-Jarrah"],
       licenses: ["GPL 3.0"],
       links: %{"GitHub" => "https://github.com/Tokenize/evl-daemon-elixir"}
+    ]
+  end
+
+  defp releases do
+    [
+      evl_daemon: [
+        config_providers: [
+          {
+            EvlDaemon.ConfigProvider,
+            [
+              "/etc/evl_daemon.json",
+              "~/.config/evl_daemon/config.json"
+            ]
+          }
+        ],
+        applications: [evl_daemon: :permanent],
+        include_erts: false
+      ]
     ]
   end
 end
