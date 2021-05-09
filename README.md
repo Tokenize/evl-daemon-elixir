@@ -1,4 +1,4 @@
-# EvlDaemon [![Build Status](https://travis-ci.org/Tokenize/evl-daemon-elixir.png)](https://travis-ci.org/Tokenize/evl-daemon-elixir)
+# EvlDaemon ![Build](https://github.com/Tokenize/evl-daemon-elixir/actions/workflows/elixir.yml/badge.svg)
 
 **An Elixir API & daemon for the Envisa TPI (DSC) module**
 
