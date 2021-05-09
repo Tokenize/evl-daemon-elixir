@@ -29,5 +29,10 @@ jobs:
       run: mix test
     - name: Check formatting
       run: mix format --check-formatted
+    - name: Retrieve PLT Cache
+      uses: actions/cache@v2
+      with:
+        path: priv/plts
+        key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-plts-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
     - name: Run Dialyzer
       run: mix dialyzer --halt-exit-status --format short
