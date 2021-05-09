@@ -51,6 +51,7 @@ defmodule EvlDaemon.Mixfile do
       {:bamboo, "~> 1.2.0"},
       {:httpoison, "~> 1.7.0"},
       {:jason, "~> 1.2"},
+      {:plug, "~> 1.8.3"},
       {:plug_cowboy, "~> 2.0"},
       {:cors_plug, "~> 1.5"},
       {:dialyxir, "~> 1.0.0", only: [:dev], runtime: false},
