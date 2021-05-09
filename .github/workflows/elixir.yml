@@ -4,6 +4,9 @@ on:
   push:
     branches: [ "**" ]
 
+env:
+  MIX_ENV: test
+
 jobs:
   build:
 
