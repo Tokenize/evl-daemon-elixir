@@ -48,7 +48,7 @@ defmodule EvlDaemon.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:bamboo, "~> 1.2.0"},
+      {:bamboo, "~> 2.1.0"},
       {:httpoison, "~> 1.7.0"},
       {:jason, "~> 1.2"},
       {:plug, "~> 1.8.3"},
