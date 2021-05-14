@@ -54,7 +54,7 @@ defmodule EvlDaemon.Mixfile do
       {:plug, "~> 1.11.1"},
       {:plug_cowboy, "~> 2.0"},
       {:cors_plug, "~> 2.0"},
-      {:dialyxir, "~> 1.0.0", only: [:dev], runtime: false},
+      {:dialyxir, "~> 1.1.0", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.22.2", only: [:dev], runtime: false},
       {:bypass, "~> 2.1", only: [:test]}
     ]
