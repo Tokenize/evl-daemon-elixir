@@ -12,7 +12,7 @@ defmodule EvlDaemon.EventNotifier.ConsoleTest do
   test "successfully logs the event" do
     output =
       capture_log(fn ->
-        EvlDaemon.EventDispatcher.enqueue("5051CB")
+        EvlDaemon.EventDispatcher.handle_cast({:enqueue, "5051CB", "1620960869"}, nil)
       end)
 
     assert Regex.match?(~r/Elixir\.EvlDaemon\.EventNotifier\.Console: \[\d+\] 505:1/, output)
