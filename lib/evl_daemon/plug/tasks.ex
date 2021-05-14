@@ -97,7 +97,7 @@ defmodule EvlDaemon.Plug.Tasks do
 
     case child do
       nil -> {:error, :not_found}
-      child_pid -> Supervisor.terminate_child(pid, child_pid)
+      child_pid -> DynamicSupervisor.terminate_child(pid, child_pid)
     end
   end
 
