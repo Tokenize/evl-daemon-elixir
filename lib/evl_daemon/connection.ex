@@ -93,7 +93,9 @@ defmodule EvlDaemon.Connection do
   def handle_cast(:disconnect, state) do
     Logger.debug("Disconnecting...")
 
-    {:noreply, :gen_tcp.close(state.socket)}
+    :ok = :gen_tcp.close(state.socket)
+
+    {:noreply, %{state | socket: nil}}
   end
 
   def handle_info({:tcp, socket, "5053" <> _trailer}, %{socket: socket} = state) do
