@@ -1,6 +1,6 @@
 import Config
 
-import_config "#{Mix.env()}.exs"
+import_config "#{config_env()}.exs"
 
 config :evl_daemon, host: '127.0.0.1'
 config :evl_daemon, port: 4025

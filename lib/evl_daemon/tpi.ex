@@ -4,8 +4,6 @@ defmodule EvlDaemon.TPI do
   from / to the EnvisaLink TPI hardware module.
   """
 
-  use Bitwise
-
   @doc """
   Takes a binary string and appends the checksum and the EOLs.
   """

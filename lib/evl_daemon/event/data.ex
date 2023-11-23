@@ -4,7 +4,7 @@ defmodule EvlDaemon.Event.Data do
   event data portion.
   """
 
-  use Bitwise
+  import Bitwise
   import EvlDaemon.Event.Guards
   alias EvlDaemon.TPI
 
