@@ -9,24 +9,33 @@ defmodule EvlDaemon.EventNotifier.HeartbeatTest do
   end
 
   test "fails if host is missing" do
+    Process.flag(:trap_exit, true)
     opts = [auth_token: "foo", device: "123"]
 
-    {status, _pid} = EvlDaemon.Task.Heartbeat.start_link(opts)
+    {status, reason} = EvlDaemon.Task.Heartbeat.start_link(opts)
+
     assert status == :error
+    assert reason == "invalid options"
   end
 
   test "fails if auth_token is missing" do
+    Process.flag(:trap_exit, true)
     opts = [host: "http://localhost", device: "123"]
 
-    {status, _pid} = EvlDaemon.Task.Heartbeat.start_link(opts)
+    {status, reason} = EvlDaemon.Task.Heartbeat.start_link(opts)
+
     assert status == :error
+    assert reason == "invalid options"
   end
 
   test "fails if device is missing" do
+    Process.flag(:trap_exit, true)
     opts = [auth_token: "foo", host: "http://localhost"]
 
-    {status, _pid} = EvlDaemon.Task.Heartbeat.start_link(opts)
+    {status, reason} = EvlDaemon.Task.Heartbeat.start_link(opts)
+
     assert status == :error
+    assert reason == "invalid options"
   end
 
   test "starts if all arguments are present", %{bypass: bypass, host: host} do
