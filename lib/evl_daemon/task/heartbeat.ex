@@ -96,7 +96,7 @@ defmodule EvlDaemon.Task.Heartbeat do
          {:ok, auth_token} <- Keyword.fetch(opts, :auth_token),
          interval <- Keyword.get(opts, :interval, @default_interval) do
       {:ok, [host: host, device: device, auth_token: auth_token, interval: interval]}
-    else 
+    else
       _ -> {:error, "invalid options"}
     end
   end
