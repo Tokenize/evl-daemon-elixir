@@ -20,9 +20,15 @@ defmodule EvlDaemon.Task.Heartbeat do
 
   @impl GenServer
   def init(opts) do
-    state = filter_options!(opts)
+    opts
+    |> filter_options()
+    |> case do
+      {:ok, state} ->
+        {:ok, state, {:continue, :send_heartbeat}}
 
-    {:ok, state, {:continue, :send_heartbeat}}
+      {:error, reason} ->
+        {:stop, reason}
+    end
   end
 
   @doc "Return the timestamp of the latest heartbeat."
@@ -84,18 +90,15 @@ defmodule EvlDaemon.Task.Heartbeat do
   end
 
   @doc false
-  defp filter_options!(opts) do
-    host = Keyword.fetch!(opts, :host)
-    device = Keyword.fetch!(opts, :device)
-    auth_token = Keyword.fetch!(opts, :auth_token)
-    interval = Keyword.get(opts, :interval, @default_interval)
-
-    [
-      host: host,
-      device: device,
-      auth_token: auth_token,
-      interval: interval
-    ]
+  defp filter_options(opts) do
+    with {:ok, host} <- Keyword.fetch(opts, :host),
+         {:ok, device} <- Keyword.fetch(opts, :device),
+         {:ok, auth_token} <- Keyword.fetch(opts, :auth_token),
+         interval <- Keyword.get(opts, :interval, @default_interval) do
+      {:ok, [host: host, device: device, auth_token: auth_token, interval: interval]}
+    else
+      _ -> {:error, "invalid options"}
+    end
   end
 
   @doc false

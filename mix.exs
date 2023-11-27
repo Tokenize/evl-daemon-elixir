@@ -5,7 +5,7 @@ defmodule EvlDaemon.Mixfile do
     [
       app: :evl_daemon,
       version: "0.4.0",
-      elixir: "~> 1.6",
+      elixir: "~> 1.10",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       name: "EvlDaemon",
@@ -48,11 +48,11 @@ defmodule EvlDaemon.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:bamboo, "~> 2.1.0"},
+      {:bamboo, "~> 2.3.0"},
       {:httpoison, "~> 1.7.0"},
       {:jason, "~> 1.2"},
-      {:plug, "~> 1.11.1"},
-      {:plug_cowboy, "~> 2.0"},
+      {:plug, "~> 1.15"},
+      {:plug_cowboy, "~> 2.6"},
       {:cors_plug, "~> 2.0"},
       {:dialyxir, "~> 1.1.0", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.22.2", only: [:dev], runtime: false},
