@@ -165,7 +165,7 @@ defmodule EvlDaemon.Event.Data do
 
   defp do_zone(command, data) when is_partition_zone_command(command) do
     data
-    |> String.slice(1..-1)
+    |> String.slice(1..-1//1)
   end
 
   defp do_zone(_command, _data) do

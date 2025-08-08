@@ -61,6 +61,6 @@ defmodule EvlDaemon.TPI do
   """
   @spec data_part(String.t()) :: String.t()
   def data_part(string) do
-    String.slice(string, 3..-3)
+    String.slice(string, 3..-3//1)
   end
 end
