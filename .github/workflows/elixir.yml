@@ -30,7 +30,7 @@ jobs:
     - name: Check formatting
       run: mix format --check-formatted
     - name: Retrieve PLT Cache
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: priv/plts
         key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-plts-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
