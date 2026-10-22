@@ -11,6 +11,7 @@ defmodule EvlDaemon.Mixfile do
       name: "EvlDaemon",
       source_url: "https://github.com/Tokenize/evl-daemon-elixir",
       homepage_url: "https://github.com/Tokenize/evl-daemon-elixir",
+      compilers: [:leex, :yecc] ++ Mix.compilers(),
       docs: [
         main: "EvlDaemon",
         extras: ["README.md"]
