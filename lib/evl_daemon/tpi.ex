@@ -29,7 +29,8 @@ defmodule EvlDaemon.TPI do
   def valid?(string) do
     data_bytes_size = byte_size(string) - 4
 
-    <<command_and_data::binary-size(^data_bytes_size), cks::binary-size(2), _eols::binary-size(2)>> =
+    <<command_and_data::binary-size(^data_bytes_size), cks::binary-size(2),
+      _eols::binary-size(2)>> =
       string
 
     cks == checksum(command_and_data)
