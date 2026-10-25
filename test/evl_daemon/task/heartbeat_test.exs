@@ -45,7 +45,7 @@ defmodule EvlDaemon.EventNotifier.HeartbeatTest do
       Plug.Conn.resp(conn, 202, "{}")
     end)
 
-    {status, pid} = EvlDaemon.Task.Heartbeat.start_link(opts)
+    {status, pid} = start_supervised({EvlDaemon.Task.Heartbeat, [opts]})
 
     assert status == :ok
     assert Process.alive?(pid)
@@ -58,7 +58,7 @@ defmodule EvlDaemon.EventNotifier.HeartbeatTest do
       Plug.Conn.resp(conn, 202, "{}")
     end)
 
-    {:ok, _pid} = EvlDaemon.Task.Heartbeat.start_link(opts)
+    {:ok, _pid} = start_supervised({EvlDaemon.Task.Heartbeat, [opts]})
     EvlDaemon.Task.Heartbeat.latest_sent_at()
   end
 
@@ -69,7 +69,7 @@ defmodule EvlDaemon.EventNotifier.HeartbeatTest do
       Plug.Conn.resp(conn, 202, "{}")
     end)
 
-    {:ok, _pid} = EvlDaemon.Task.Heartbeat.start_link(opts)
+    {:ok, _pid} = start_supervised({EvlDaemon.Task.Heartbeat, [opts]})
     latest_heartbeat = EvlDaemon.Task.Heartbeat.latest_sent_at()
 
     assert Time.diff(latest_heartbeat, Time.utc_now()) <= 1
