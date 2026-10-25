@@ -28,7 +28,9 @@ defmodule EvlDaemon.EventNotifier.Mimir do
   # Private functions
 
   defp do_notify(event, opts) do
-    HTTPoison.post(service_url(opts), body(event, opts), headers())
+    :post
+    |> Finch.build(service_url(opts), headers(), body(event, opts))
+    |> Finch.request(EvlDaemon.Finch)
     |> handle_response
   end
 
@@ -65,7 +67,11 @@ defmodule EvlDaemon.EventNotifier.Mimir do
   end
 
   @doc false
-  defp handle_response({:ok, %{status_code: 201, body: body}}) do
+  defp handle_response({:ok, %{status: 201, body: body}}) do
     body |> Jason.decode!()
+  end
+
+  defp handle_response({:error, error}) do
+    inspect(error)
   end
 end

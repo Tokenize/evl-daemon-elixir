@@ -7,6 +7,7 @@ defmodule EvlDaemon.Supervisor do
 
   def init([]) do
     child_processes = [
+      {Finch, name: EvlDaemon.Finch},
       EvlDaemon.Supervisor.EventDispatcher,
       EvlDaemon.Supervisor.Connection,
       EvlDaemon.Supervisor.Task,

@@ -61,7 +61,9 @@ defmodule EvlDaemon.Task.Heartbeat do
 
   @doc false
   defp do_send_heartbeat(opts) do
-    HTTPoison.put!(service_url(opts), body(opts), headers())
+    :put
+    |> Finch.build(service_url(opts), headers(), body(opts))
+    |> Finch.request!(EvlDaemon.Finch)
 
     opts
     |> Keyword.put(:latest_sent_at, Time.utc_now())
