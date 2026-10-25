@@ -1,6 +1,6 @@
 defmodule EvlDaemon.Plug.SystemStatusTest do
   use ExUnit.Case, async: false
-  use Plug.Test
+  import Plug.Test
   doctest EvlDaemon.Plug.SystemStatus
 
   @opts EvlDaemon.Router.init([])
