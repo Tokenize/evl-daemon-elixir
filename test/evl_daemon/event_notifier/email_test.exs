@@ -1,12 +1,17 @@
 defmodule EvlDaemon.EventNotifier.EmailTest do
-  use ExUnit.Case
-  use Bamboo.Test, shared: true
+  use ExUnit.Case, async: true
+  import Swoosh.TestAssertions
   doctest EvlDaemon.EventNotifier.Email
 
   setup do
-    EvlDaemon.EventNotifier.Email.start_link(
-      recipient: "person@example.com",
-      sender: "noreply@example.com"
+    start_supervised!(
+      {EvlDaemon.EventNotifier.Email,
+       [
+         [
+           recipient: "person@example.com",
+           sender: "noreply@example.com"
+         ]
+       ]}
     )
 
     :ok
@@ -17,7 +22,8 @@ defmodule EvlDaemon.EventNotifier.EmailTest do
     timestamp = DateTime.utc_now() |> DateTime.to_unix()
     event = EvlDaemon.Event.new("60111F9", timestamp)
     notification = EvlDaemon.Email.Event.build(event, "person@example.com", "noreply@example.com")
+    EvlDaemon.Mailer.deliver(notification)
 
-    assert_delivered_email(notification)
+    assert_email_sent(notification)
   end
 end

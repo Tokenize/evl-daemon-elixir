@@ -13,7 +13,7 @@ defmodule EvlDaemon.ErrorNotifier do
 
       def terminate(reason, _state) do
         EvlDaemon.Email.Application.process_terminating(__MODULE__, reason)
-        |> EvlDaemon.Mailer.deliver_now()
+        |> EvlDaemon.Mailer.deliver()
       end
     end
   end

@@ -1,13 +1,13 @@
 defmodule EvlDaemon.Email.ApplicationTest do
-  use ExUnit.Case
-  use Bamboo.Test, shared: true
+  use ExUnit.Case, async: true
+  import Swoosh.TestAssertions
   doctest EvlDaemon.Email.Application
 
   test "process_terminating handles atom reason" do
     notification = EvlDaemon.Email.Application.process_terminating(__MODULE__, :foobar)
-    notification |> EvlDaemon.Mailer.deliver_now()
+    [notification] |> EvlDaemon.Mailer.deliver_many()
 
-    assert_delivered_email(notification)
+    assert_emails_sent([notification])
   end
 
   test "process_terminating handles tuple reason" do
@@ -22,15 +22,15 @@ defmodule EvlDaemon.Email.ApplicationTest do
        ]}
 
     notification = EvlDaemon.Email.Application.process_terminating(__MODULE__, reason)
-    notification |> EvlDaemon.Mailer.deliver_now()
+    notification |> EvlDaemon.Mailer.deliver()
 
-    assert_delivered_email(notification)
+    assert_email_sent(notification)
   end
 
   test "process_terminating handles list reason" do
     notification = EvlDaemon.Email.Application.process_terminating(__MODULE__, [{:foo, :bar}])
-    notification |> EvlDaemon.Mailer.deliver_now()
+    notification |> EvlDaemon.Mailer.deliver()
 
-    assert_delivered_email(notification)
+    assert_email_sent(notification)
   end
 end

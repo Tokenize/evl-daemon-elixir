@@ -4,4 +4,4 @@
 import Config
 
 config :logger, level: :info
-config :evl_daemon, EvlDaemon.Mailer, adapter: Bamboo.SendGridAdapter, api_key: "SECRET"
+config :evl_daemon, EvlDaemon.Mailer, adapter: Swoosh.Adapters.Sendgrid, api_key: "SECRET"

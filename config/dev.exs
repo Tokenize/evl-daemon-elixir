@@ -4,4 +4,4 @@
 import Config
 
 config :logger, level: :debug
-config :evl_daemon, EvlDaemon.Mailer, adapter: Bamboo.LocalAdapter
+config :evl_daemon, EvlDaemon.Mailer, adapter: Swoosh.Adapters.Local

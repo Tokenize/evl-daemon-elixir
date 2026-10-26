@@ -1,5 +1,5 @@
 defmodule EvlDaemon.Email.Application do
-  import Bamboo.Email
+  import Swoosh.Email
 
   def starting(version) do
     base_email()
@@ -23,7 +23,7 @@ defmodule EvlDaemon.Email.Application do
   end
 
   def base_email do
-    new_email()
+    new()
     |> from(sender())
     |> to(recipient())
     |> text_body(default_body())
