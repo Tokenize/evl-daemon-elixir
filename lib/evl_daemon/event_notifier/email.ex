@@ -30,6 +30,6 @@ defmodule EvlDaemon.EventNotifier.Email do
 
   defp do_notify(event, opts) do
     Email.Event.build(event, Keyword.get(opts, :recipient), Keyword.get(opts, :sender))
-    |> Mailer.deliver_now()
+    |> Mailer.deliver()
   end
 end

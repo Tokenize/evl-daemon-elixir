@@ -1,5 +1,5 @@
 defmodule EvlDaemon.Email.Event do
-  import Bamboo.Email
+  import Swoosh.Email
 
   def build(event, recipient, sender) do
     utc_timestamp =
@@ -9,7 +9,7 @@ defmodule EvlDaemon.Email.Event do
 
     description = (event.description.command <> " " <> event.description.data) |> String.trim()
 
-    new_email()
+    new()
     |> from(sender)
     |> to(recipient)
     |> subject("Event #{description} (#{event.command}) triggered at #{utc_timestamp}")

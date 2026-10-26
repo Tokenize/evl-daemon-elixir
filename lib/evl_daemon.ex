@@ -6,13 +6,13 @@ defmodule EvlDaemon do
 
   def start(_type, _args) do
     Logger.info("Starting EvlDaemon v#{@version}")
-    EvlDaemon.Email.Application.starting(@version) |> EvlDaemon.Mailer.deliver_later()
+    EvlDaemon.Email.Application.starting(@version) |> EvlDaemon.Mailer.deliver()
 
     EvlDaemon.Supervisor.start_link()
   end
 
   def stop(_state) do
     Logger.info("Stopping EvlDaemon v#{@version}")
-    EvlDaemon.Email.Application.stopping(@version) |> EvlDaemon.Mailer.deliver_now()
+    EvlDaemon.Email.Application.stopping(@version) |> EvlDaemon.Mailer.deliver()
   end
 end

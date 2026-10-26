@@ -49,7 +49,8 @@ defmodule EvlDaemon.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:bamboo, "~> 2.5.0"},
+      {:hackney, "~> 4.2"},
+      {:swoosh, "~> 1.29"},
       {:finch, "~> 0.24"},
       {:jason, "~> 1.2"},
       {:plug, "~> 1.15"},
