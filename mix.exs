@@ -50,11 +50,11 @@ defmodule EvlDaemon.Mixfile do
   defp deps do
     [
       {:bamboo, "~> 2.5.0"},
-      {:httpoison, "~> 1.7.0"},
+      {:finch, "~> 0.24"},
       {:jason, "~> 1.2"},
       {:plug, "~> 1.15"},
-      {:plug_cowboy, "~> 2.7"},
-      {:cors_plug, "~> 2.0"},
+      {:plug_cowboy, "~> 2.9"},
+      {:cors_plug, "~> 3.0"},
       {:dialyxir, "~> 1.1.0", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.22.2", only: [:dev], runtime: false},
       {:bypass, "~> 2.1", only: [:test]}

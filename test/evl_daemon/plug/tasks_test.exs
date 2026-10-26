@@ -1,6 +1,7 @@
 defmodule EvlDaemon.Plug.TasksTest do
   use ExUnit.Case, async: false
-  use Plug.Test
+  import Plug.Conn
+  import Plug.Test
   doctest EvlDaemon.Plug.Tasks
 
   @opts EvlDaemon.Router.init([])

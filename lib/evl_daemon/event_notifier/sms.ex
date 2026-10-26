@@ -30,7 +30,9 @@ defmodule EvlDaemon.EventNotifier.SMS do
   def do_notify(event, opts) do
     headers = [content_type_header(), authorization_header(opts)]
 
-    HTTPoison.post(service_url(opts), body(event, opts), headers)
+    :post
+    |> Finch.build(service_url(opts), headers, body(event, opts))
+    |> Finch.request(EvlDaemon.Finch)
     |> handle_response
   end
 
@@ -66,7 +68,11 @@ defmodule EvlDaemon.EventNotifier.SMS do
     "https://api.twilio.com/2010-04-01/Accounts/" <> Keyword.get(opts, :sid) <> "/Messages.json"
   end
 
-  defp handle_response({:ok, %{status_code: 201, body: body}}) do
+  defp handle_response({:ok, %{status: 201, body: body}}) do
     body |> Jason.decode!()
+  end
+
+  defp handle_response({:error, error}) do
+    inspect(error)
   end
 end

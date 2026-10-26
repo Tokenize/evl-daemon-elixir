@@ -6,10 +6,11 @@ defmodule EvlDaemon.EventNotifier.MimirTest do
     bypass = Bypass.open()
 
     {:ok, _pid} =
-      EvlDaemon.EventNotifier.Mimir.start_link(
-        auth_token: "foo",
-        host: "http://localhost:#{bypass.port}",
-        device: "123"
+      start_supervised(
+        {EvlDaemon.EventNotifier.Mimir,
+         [
+           [auth_token: "foo", host: "http://localhost:#{bypass.port}", device: "123"]
+         ]}
       )
 
     {:ok, bypass: bypass}
