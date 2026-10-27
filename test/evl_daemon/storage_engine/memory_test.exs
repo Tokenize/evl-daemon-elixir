@@ -3,7 +3,7 @@ defmodule EvlDaemon.StorageEngine.MemoryTest do
   doctest EvlDaemon.StorageEngine.Memory
 
   setup do
-    {:ok, _pid} = EvlDaemon.StorageEngine.Memory.start_link(maximum_events: "5")
+    start_supervised!({EvlDaemon.StorageEngine.Memory, [[maximum_events: "5"]]})
 
     :ok
   end

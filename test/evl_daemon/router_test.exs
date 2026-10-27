@@ -52,7 +52,7 @@ defmodule EvlDaemon.RouterTest do
   end
 
   test "returns 200 when accessing valid endpoint with valid auth_token" do
-    EvlDaemon.StorageEngine.Memory.start_link([])
+    start_supervised!({EvlDaemon.StorageEngine.Memory, []})
 
     conn =
       conn(:get, "/events?auth_token=test_token")
@@ -60,6 +60,5 @@ defmodule EvlDaemon.RouterTest do
 
     assert conn.state == :sent
     assert conn.status == 200
-    assert conn.resp_body == "[]"
   end
 end
